@@ -32,13 +32,14 @@ const usuarioSchema = {
     type: DataTypes.DATE,
     defaultValue: Sequelize.fn('now')
   },
-  idRol: {
+  //El nombre del campo en el schema debe ser igual que el foreingkey del hasMany
+  rolId: {
     field: 'id_rol',
     allowNull: false,
     type: DataTypes.INTEGER,
     references: {
       model: TABLA_ROL,
-      key: 'idRol'
+      key: 'id_rol'
     },
     onUpdate: 'cascade',
     onDelete: 'cascade',
@@ -47,8 +48,9 @@ const usuarioSchema = {
   status: {
     allowNUll: false,
     type: DataTypes.STRING,
+    defualtValue: 'activo',
     validate: {
-      isIn: [['activo', 'inactivo']]
+      isIn: ['activo', 'inactivo']
     }
   }
 }
@@ -69,13 +71,13 @@ class Usuario extends Model{
       timestamps: false,
       hooks: {
         beforeCreate: async(instance) => {
-          const hash = bcrypt.hash(instance.password, 10);
+          const hash = await bcrypt.hash(instance.contrasena, 10);
           instance.password = hash;
         }
       },
       defaultScope: {
         attributes: {
-          exclude: ['password', 'recoveryToken']
+          exclude: ['contrasena', 'recoveryToken']
         }
       },
       scopes: {

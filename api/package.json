@@ -8,7 +8,7 @@
     "inspect": "nodemon --inspect index.js",
     "run": "node index.js",
     "migrations:generate": "sequelize-cli migration:generate --name",
-    "migrations:run": "sequlize-cli db:migrate",
+    "migrations:run": "sequelize-cli db:migrate",
     "migrations:revert": "sequelize-cli db:migrate:undo",
     "migrations:delete": "sequelize-cli db:migrate:undo:all"
   },
@@ -30,7 +30,7 @@
     "sequelize": "^6.37.3"
   },
   "devDependencies": {
-    "eslint": "^9.0.0",
+    "eslint": "^9.1.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "nodemon": "^3.1.0",

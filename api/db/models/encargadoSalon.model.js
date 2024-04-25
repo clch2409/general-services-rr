@@ -51,7 +51,7 @@ const encargadoSchema = {
     unique: true,
     references: {
       model: TABLA_USUARIO,
-      key: 'idUsuario'
+      key: 'id_usuario'
     },
     onUpdate: 'cascade',
     onDelete: 'cascade',

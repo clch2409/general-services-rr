@@ -3,7 +3,7 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 const TABLA_ROL = 'roles';
 
 const rolSchema = {
-  idRol: {
+  id: {
     field: 'id_rol',
     allowNull: false,
     primaryKey: true,
@@ -28,7 +28,7 @@ class Rol extends Model{
   static associate(models){
     this.hasMany(models.Usuario, {
       as: 'usuarios',
-      foreignKey: 'idRol'
+      foreignKey: 'rolId'
     })
   }
 

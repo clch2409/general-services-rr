@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 
 const config = require('./config/config');
+const { routerApi } = require('./routes');
+const { logErrors, isBoomHandler, errorHandler } = require('./middlewares/error.handler');
+
 
 const app = express();
 const port = config.port;
@@ -26,6 +29,12 @@ app.get('/welcome',
     res.json('Hello World')
   }
 )
+
+routerApi(app);
+
+app.use(logErrors);
+app.use(errorHandler);
+app.use(isBoomHandler);
 
 app.listen(port, () =>{
   console.log('Escuchando el puerto ' + port)
