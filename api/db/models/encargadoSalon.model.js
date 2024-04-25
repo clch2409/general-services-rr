@@ -4,7 +4,7 @@ const { TABLA_USUARIO } = require('./usuario.model');
 const TABLA_ENCARGADO = 'encargado_salon';
 
 const encargadoSchema = {
-  idEncargado: {
+  id: {
     field: 'id_encargado',
     allowNull: false,
     primaryKey: true,
@@ -44,7 +44,7 @@ const encargadoSchema = {
     type: DataTypes.DATE,
     defaultValue: Sequelize.fn('now')
   },
-  idUsuario: {
+  usuarioId: {
     field: 'id_usuario',
     allowNull: false,
     type: DataTypes.INTEGER,

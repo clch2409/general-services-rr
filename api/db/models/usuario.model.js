@@ -5,7 +5,7 @@ const { TABLA_ROL } = require('./rol.model');
 const TABLA_USUARIO = 'usuarios';
 
 const usuarioSchema = {
-  idUsuario: {
+  id: {
     field: 'id_usuario',
     allowNull: false,
     primaryKey: true,
@@ -58,8 +58,8 @@ const usuarioSchema = {
 class Usuario extends Model{
 
   static associate(models){
-    this.hasOne(models.Cliente, {as: 'cliente', foreignKey: 'idUsuario'});
-    this.hasOne(models.EncargadoSalon, { as: 'jefaSalon', foreignKey: 'idUsuario' });
+    this.hasOne(models.Cliente, {as: 'cliente', foreignKey: 'usuarioId'});
+    this.hasOne(models.EncargadoSalon, { as: 'jefaSalon', foreignKey: 'usuarioId' });
     this.belongsTo(models.Rol, { as: 'rol' })
   }
 
