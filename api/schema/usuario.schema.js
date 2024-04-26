@@ -1,5 +1,5 @@
 const joi = require('joi');
-const patronContrasena = RegExp(/^(?=\w*)(?=.*?[#?!@$ %^&*-])\S{8,16}$/)
+const patronContrasena = RegExp(/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}/)
 
 
 const id = joi.number().integer();

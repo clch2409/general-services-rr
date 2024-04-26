@@ -41,9 +41,9 @@ const clienteSchema = {
     field: 'created_at',
     allowNull: false,
     type: DataTypes.DATE,
-    defaultValue: Sequelize.fn('now')
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
   },
-  idUsuario: {
+  usuarioId: {
     field: 'id_usuario',
     allowNull: false,
     type: DataTypes.INTEGER,

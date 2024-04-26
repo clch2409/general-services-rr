@@ -11,7 +11,8 @@ const sequelize = new Sequelize(
   URI,
   {
     dialect: 'mysql',
-    logging: true
+    logging: true,
+    timezone: '-05:00'
   }
 );
 
