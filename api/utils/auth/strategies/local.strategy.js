@@ -8,7 +8,7 @@ const localStrategy = new Strategy({
   },
   async (email, password, done) => {
     try{
-      const foundUser = authService.checkUserCredentiasl(email, password);
+      const foundUser = await authService.checkUserCredentiasl(email, password);
 
       done(null, foundUser);
     }

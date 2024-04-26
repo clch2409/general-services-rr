@@ -82,10 +82,11 @@ class Usuario extends Model{
       },
       scopes: {
         withPassword: {
-          attributes: ['idUsuario', 'email', 'contrasena'],
+          attributes: ['id', 'email', 'contrasena'],
+          include: ['rol']
         },
         withRecoveryToken: {
-          attributes: ['idUsuario', 'email', 'recoveryToken'],
+          attributes: ['id', 'email', 'recoveryToken'],
         },
       },
     }
