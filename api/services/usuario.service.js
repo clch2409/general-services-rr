@@ -23,6 +23,12 @@ class UsuarioService{
     return foundUser;
   }
 
+  async findUserByIdWithRecovery(id){
+    const foundUser = await models.Usuario.scope('withRecoveryToken').findByPk(id);
+
+    return foundUser;
+  }
+
   async findUserByEmail(email){
     const foundUser = await models.Usuario.scope('withPassword').findOne({
       where: {
@@ -31,6 +37,16 @@ class UsuarioService{
     })
 
     return foundUser;
+  }
+
+  async updateUser(userID, changes){
+    const updatedUser = await models.Usuario.update(changes, {
+      where: {
+        id: userID
+      }
+    });
+
+    return updatedUser;
   }
 }
 

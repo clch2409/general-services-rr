@@ -9,7 +9,9 @@ const config = {
   dbPort: process.env.DB_PORT,
   nodeEnv: process.env.NODE_ENV,
   jwtSecretAuth: process.env.JWT_SECRET_AUTHENTICATE,
-  jwtSecretRecovery: process.env.JWT_SECRET_RECOVERY
+  jwtSecretRecovery: process.env.JWT_SECRET_RECOVERY,
+  senderEmail: process.env.SENDER_EMAIL,
+  senderPassword: process.env.SENDER_PASSWORD,
 }
 
 

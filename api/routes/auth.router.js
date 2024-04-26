@@ -26,4 +26,37 @@ authRouter.post('/login',
   }
 );
 
+authRouter.post('/recovery',
+  passport.authenticate('jwt', {session: false}),
+  async (req, res, next) =>{
+    try{
+      const payload = req.user;
+      const rta = await authService.getMailInfo(payload.sub);
+
+      res.status(202).json({
+        rta
+      })
+    }
+    catch(e){
+      next(e)
+    }
+  }
+);
+
+authRouter.post('/change/password',
+  async (req, res, next) =>{
+    try{
+      const {token, contrasena} = req.body;
+      const rta = await authService.changePassword(token, contrasena);
+
+      res.status(202).json({
+        rta
+      })
+    }
+    catch(e){
+      next(e)
+    }
+  }
+);
+
 module.exports = { authRouter };
