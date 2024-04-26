@@ -4,10 +4,7 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
 const config = require('./../config/config');
-const { models } = require('../libs/sequelize');
-
 const usuarioService = require('./usuario.service');
-const { resolveContent } = require('nodemailer/lib/shared');
 
 class AuthService{
 
