@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const passport = require('passport');
 
 const config = require('./config/config');
 const { routerApi } = require('./routes');
@@ -23,6 +24,10 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+require('./utils/auth');
+app.use(passport.initialize({
+  session: false
+}))
 
 app.get('/welcome',
   (req, res, next) =>{
@@ -32,9 +37,10 @@ app.get('/welcome',
 
 routerApi(app);
 
+app.use(isBoomHandler);
 app.use(logErrors);
 app.use(errorHandler);
-app.use(isBoomHandler);
+
 
 app.listen(port, () =>{
   console.log('Escuchando el puerto ' + port)

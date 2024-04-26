@@ -72,7 +72,7 @@ class Usuario extends Model{
       hooks: {
         beforeCreate: async(instance) => {
           const hash = await bcrypt.hash(instance.contrasena, 10);
-          instance.password = hash;
+          instance.contrasena = hash;
         }
       },
       defaultScope: {

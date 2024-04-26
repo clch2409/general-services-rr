@@ -8,6 +8,8 @@ const config = {
   dbName: process.env.DB_NAME,
   dbPort: process.env.DB_PORT,
   nodeEnv: process.env.NODE_ENV,
+  jwtSecretAuth: process.env.JWT_SECRET_AUTHENTICATE,
+  jwtSecretRecovery: process.env.JWT_SECRET_RECOVERY
 }
 
 

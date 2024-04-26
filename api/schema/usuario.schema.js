@@ -24,4 +24,9 @@ const updateUsuarioSchema = joi.object({
   email,
 });
 
-module.exports = { createUsuarioSchema, getUsuarioSchema, updateUsuarioSchema }
+const loginSchema = joi.object({
+  email: email.required(),
+  contrasena: contrasena.required(),
+})
+
+module.exports = { createUsuarioSchema, getUsuarioSchema, updateUsuarioSchema, loginSchema }

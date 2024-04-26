@@ -4,7 +4,7 @@ const { TABLA_USUARIO } = require('./usuario.model');
 const TABLA_CLIENTE = 'clientes';
 
 const clienteSchema = {
-  idCliente: {
+  id: {
     field: 'id_cliente',
     allowNull: false,
     primaryKey: true,
