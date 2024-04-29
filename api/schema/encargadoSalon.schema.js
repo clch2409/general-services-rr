@@ -1,6 +1,6 @@
 const joi = require('joi');
 
-const { createUsuarioSchema } = require('./usuario.schema');
+const { createUsuarioSchema, getUsuarioByEmailSchema } = require('./usuario.schema');
 
 const regexDniRule = RegExp(/^\d{8,9}$/);
 const regexNumberRule = RegExp(/^\d{9}$/);
@@ -23,12 +23,12 @@ const createEncargadoSchema = joi.object({
   usuario: createUsuarioSchema.required()
 });
 
-const getEncargadoSchema = joi.object({
+const getEncargadoByDniSchema = joi.object({
   id: id.required(),
 });
 
-const getEncargadoByDniSchema = joi.object({
-  dni: dni.required(),
+const getEncargadoByEmailSchema = joi.object({
+  getUsuarioByEmailSchema: getUsuarioByEmailSchema.required()
 });
 
 const updateEncargadoSchema  = joi.object({
@@ -41,4 +41,4 @@ const updateEncargadoSchema  = joi.object({
   usuario
 });
 
-module.exports = { createClienteSchema, getClienteByIdSchema, updateClienteSchema, getClienteByDniSchema }
+module.exports = { createEncargadoSchema, getEncargadoByDniSchema, updateEncargadoSchema, getEncargadoByEmailSchema }

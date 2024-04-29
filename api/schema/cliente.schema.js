@@ -33,7 +33,7 @@ const getClienteByDniSchema = joi.object({
 });
 
 const getClienteByEmailSchema = joi.object({
-  email: getUsuarioByEmail
+  email: getUsuarioByEmail.required()
 });
 
 const updateClienteSchema  = joi.object({

@@ -68,7 +68,11 @@ class ClienteService{
   }
 
   async updateCliente(clienteId, changes){
-    const updatedCliente = await models.Cliente.update(clienteId, changes);
+    const updatedCliente = await models.Cliente.update(changes, {
+      where: {
+        id: clienteId
+      }
+    });
 
     if(!updatedCliente){
       throw boom.notFound('El cliente buscado, no existe');
