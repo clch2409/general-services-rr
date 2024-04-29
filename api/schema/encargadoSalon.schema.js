@@ -13,6 +13,8 @@ const telefono = joi.string().min(9).max(9).pattern(regexNumberRule);
 const fechaContratacion = joi.date();
 const usuario = createUsuarioSchema;
 
+const email = joi.string().email();
+
 const createEncargadoSchema = joi.object({
   nombres: nombres.required(),
   apPaterno: apPaterno.required(),
@@ -28,7 +30,7 @@ const getEncargadoByDniSchema = joi.object({
 });
 
 const getEncargadoByEmailSchema = joi.object({
-  getUsuarioByEmailSchema: getUsuarioByEmailSchema.required()
+  email: email.required()
 });
 
 const updateEncargadoSchema  = joi.object({

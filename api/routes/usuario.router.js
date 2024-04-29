@@ -5,7 +5,7 @@ const validatorHandler = require('../middlewares/validator.handler');
 const usuarioService = require('../services/usuario.service');
 const { createUsuarioSchema, getUsuarioSchema } = require('../schema/usuario.schema');
 const { validateRoles } = require('../middlewares/auth.handler');
-const { ADMIN, ENCARGADO } = require('./../utils/enums/rol');
+const { ADMIN, ENCARGADO } = require('./../utils/enums/rol.enum');
 
 
 const usuarioRouter = express.Router();

@@ -37,12 +37,6 @@ const clienteSchema = {
     allowNull: false,
     type: DataTypes.STRING,
   },
-  createdAt: {
-    field: 'created_at',
-    allowNull: false,
-    type: DataTypes.DATE,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-  },
   usuarioId: {
     field: 'id_usuario',
     allowNull: false,
@@ -54,8 +48,19 @@ const clienteSchema = {
     },
     onUpdate: 'cascade',
     onDelete: 'cascade',
-  }
-
+  },
+  createdAt: {
+    field: 'created_at',
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+  },
+  updatedAt: {
+    field: 'updated_at',
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+  },
 }
 
 class Cliente extends Model{
@@ -69,6 +74,11 @@ class Cliente extends Model{
       sequelize,
       tableName: TABLA_CLIENTE,
       modelName: 'Cliente',
+      hooks: {
+        afterUpdate: async (instance) => {
+          instance.updatedAt = Sequelize.literal('CURRENT_TIMESTAMP');
+        }
+      },
       defaultScope: {
         include: ['usuario']
       },

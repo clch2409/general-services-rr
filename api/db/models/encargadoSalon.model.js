@@ -38,12 +38,6 @@ const encargadoSchema = {
     allowNull: false,
     type: DataTypes.DATE,
   },
-  createdAt: {
-    field: 'created_at',
-    allowNull: false,
-    type: DataTypes.DATE,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-  },
   usuarioId: {
     field: 'id_usuario',
     allowNull: false,
@@ -55,8 +49,26 @@ const encargadoSchema = {
     },
     onUpdate: 'cascade',
     onDelete: 'cascade',
-  }
-
+  },
+  status: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    validate: {
+      isIn: ['activo', 'inactivo']
+    }
+  },
+  createdAt: {
+    field: 'created_at',
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+  },
+  updatedAt: {
+    field: 'updated_at',
+    allowNull: false,
+    type: DataTypes.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+  },
 }
 
 class EncargadoSalon extends Model{
@@ -70,6 +82,11 @@ class EncargadoSalon extends Model{
       sequelize,
       tableName: TABLA_ENCARGADO,
       modelName: 'EncargadoSalon',
+      hooks: {
+        afterUpdate: async (instance) => {
+          instance.updatedAt = Sequelize.literal('CURRENT_TIMESTAMP');
+        }
+      },
       defaultScope: {
         include:['usuario']
       }

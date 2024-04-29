@@ -6,7 +6,7 @@ const authenticationByJwt = require('./../utils/auth/functions/passport.auth');
 
 const { createClienteSchema, getClienteByIdSchema, updateClienteSchema, getClienteByDniSchema, getClienteByEmailSchema } = require('./../schema/cliente.schema');
 const { validateRoles } = require('./../middlewares/auth.handler');
-const { ADMIN, ENCARGADO } = require('./../utils/enums/rol');
+const { ADMIN, ENCARGADO } = require('./../utils/enums/rol.enum');
 
 const clienteRouter = express.Router();
 

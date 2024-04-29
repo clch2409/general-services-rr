@@ -4,7 +4,7 @@ const rolService = require('../services/rol.service');
 const authJwt = require('./../utils/auth/functions/passport.auth');
 
 const { validateRoles } = require('../middlewares/auth.handler');
-const { ADMIN } = require('../utils/enums/rol');
+const { ADMIN } = require('../utils/enums/rol.enum');
 const { createRolSchema, getRolSchema } = require('./../schema/rol.schema');
 const validatorHandler = require('../middlewares/validator.handler');
 
