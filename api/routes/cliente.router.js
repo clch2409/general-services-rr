@@ -10,105 +10,123 @@ const { ADMIN, ENCARGADO } = require('./../utils/enums/rol');
 
 const clienteRouter = express.Router();
 
+//***************** Rutas ******************
 clienteRouter.get('',
   authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
-  async (req, res, next) => {
-    try{
-      const clientes = await clienteService.findAll();
-
-      res.status(202).json({
-        clientes
-      })
-    }
-    catch(e){
-      next(e)
-    }
-  }
+  findAll
 );
 
 clienteRouter.post('',
   validatorHandler(createClienteSchema, 'body'),
-  async (req, res, next) => {
-    try{
-      const newCliente = await clienteService.createCliente(req.body);
-      res.status(201).json({
-        newCliente
-      });
-    }
-    catch(e){
-      next(e);
-    }
-  }
+  createCliente
 );
 
 clienteRouter.get('/:id',
   authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getClienteByIdSchema, 'params'),
-  async (req, res, next) => {
-    try{
-      const foundCliente = await clienteService.findClienteById(req.params.id);
-      res.status(201).json({
-        foundCliente
-      })
-    }
-    catch(e){
-      next(e);
-    }
-  }
+  findClienteById
 );
 
 clienteRouter.get('/dni/:dni',
   authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getClienteByDniSchema, 'params'),
-  async (req, res, next) => {
-    try{
-      const foundCliente = await clienteService.findClienteByDni(req.params.dni);
-      res.status(201).json({
-        foundCliente
-      })
-    }
-    catch(e){
-      next(e);
-    }
-  }
+  findClienteByDni
 );
 
 clienteRouter.get('/email/:email',
   authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getClienteByEmailSchema, 'params'),
-  async (req, res, next) => {
-    try{
-      const foundCliente = await clienteService.findClienteByEmail(req.params.email);
-      res.status(201).json({
-        foundCliente
-      })
-    }
-    catch(e){
-      next(e);
-    }
-  }
+  findClienteByEmail
 );
 
 clienteRouter.patch('/:id',
   validatorHandler(getClienteByIdSchema, 'params'),
   validatorHandler(updateClienteSchema, 'body'),
-  async (req, res, next) => {
-    try{
-      const { params, body } = req
-      const updatedCliente = clienteService.updateCliente(params.id, body);
-
-      res.json(200).json(
-        updatedCliente
-      );
-    }
-    catch(e){
-      next(e)
-    }
-  }
+  updateCliente
 );
+//***************** Rutas ******************
+
+//***************** Funciones ******************
+async function findAll(req, res, next){
+  try{
+    const clientes = await clienteService.findAll();
+
+    res.status(202).json({
+      clientes
+    })
+  }
+  catch(e){
+    next(e)
+  }
+}
+
+async function createCliente(req, res, next){
+  try{
+    const newCliente = await clienteService.createCliente(req.body);
+    res.status(201).json({
+      newCliente
+    });
+  }
+  catch(e){
+    next(e);
+  }
+}
+
+async function findClienteById(req, res, next){
+  try{
+    const foundCliente = await clienteService.findClienteById(req.params.id);
+    res.status(201).json({
+      foundCliente
+    })
+  }
+  catch(e){
+    next(e);
+  }
+}
+
+async function findClienteByDni(req, res, next){
+  try{
+    const foundCliente = await clienteService.findClienteByDni(req.params.dni);
+    res.status(201).json({
+      foundCliente
+    })
+  }
+  catch(e){
+    next(e);
+  }
+}
+
+async function findClienteByEmail(req, res, next) {
+  try{
+    const foundCliente = await clienteService.findClienteByEmail(req.params.email);
+    res.status(201).json({
+      foundCliente
+    })
+  }
+  catch(e){
+    next(e);
+  }
+}
+
+async function updateCliente(req, res, next) {
+  try{
+    const { params, body } = req
+    const updatedCliente = await clienteService.updateCliente(params.id, body);
+
+    console.log(updatedCliente)
+
+    res.status(200).json({
+      updatedCliente
+    });
+  }
+  catch(e){
+    next(e)
+  }
+}
+//***************** Funciones ******************
 
 module.exports = { clienteRouter };

@@ -74,7 +74,7 @@ class UsuarioService{
     return {
       message: 'El usuario ha sido eliminado',
       deletedUser
-     }
+    }
   }
 }
 

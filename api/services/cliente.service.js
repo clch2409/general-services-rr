@@ -7,7 +7,7 @@ class ClienteService{
   //El "include" permite obtener los datos del cliente con el usuario
   async findAll(){
     return await models.Cliente.findAll({
-      include: ['usuario']
+      // include: ['usuario']
     });
   }
 
@@ -23,11 +23,8 @@ class ClienteService{
   }
 
   async findClienteById(clienteId){
-    const foundCliente = await models.Cliente.findOne({
-      where: {
-        id: clienteId
-      },
-      include: ['usuario']
+    const foundCliente = await models.Cliente.findByPk(clienteId, {
+      // include: ['usuario']
     });
 
     if (!foundCliente){
@@ -42,7 +39,7 @@ class ClienteService{
       where: {
         dni: dni
       },
-      include: ['usuario']
+      // include: ['usuario']
     });
 
     if (!foundCliente){
@@ -57,7 +54,7 @@ class ClienteService{
       where: {
         '$usuario.email$': email
       },
-      include: ['usuario']
+      // include: ['usuario']
     });
 
     if (!foundCliente){
@@ -68,15 +65,13 @@ class ClienteService{
   }
 
   async updateCliente(clienteId, changes){
-    const updatedCliente = await models.Cliente.update(changes, {
-      where: {
-        id: clienteId
-      }
-    });
+    const foundCliente = await models.Cliente.findByPk(clienteId);
 
-    if(!updatedCliente){
+    if(!foundCliente){
       throw boom.notFound('El cliente buscado, no existe');
     }
+
+    const updatedCliente = await foundCliente.update(changes);
 
     return updatedCliente;
   }

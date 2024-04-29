@@ -69,6 +69,9 @@ class Cliente extends Model{
       sequelize,
       tableName: TABLA_CLIENTE,
       modelName: 'Cliente',
+      defaultScope: {
+        include: ['usuario']
+      },
     }
   }
 }

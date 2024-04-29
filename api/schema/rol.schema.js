@@ -1,10 +1,10 @@
 const joi = require('joi');
 
 const id = joi.number().integer();
-const name = joi.string().min(5).max(9);
+const nombre = joi.string().min(5);
 
 const createRolSchema = joi.object({
-  name: name.required(),
+  nombre: nombre.required(),
 });
 
 const getRolSchema = joi.object({
@@ -13,7 +13,7 @@ const getRolSchema = joi.object({
 
 const updateRolSchema = joi.object({
   id,
-  name
+  nombre
 });
 
 module.exports = { createRolSchema, getRolSchema, updateRolSchema }

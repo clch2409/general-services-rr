@@ -24,7 +24,7 @@ const getUsuarioByEmailSchema = joi.object({
 });
 
 const updateUsuarioSchema = joi.object({
-  id,
+  // id,
   email,
 });
 

@@ -7,6 +7,7 @@ const { loginSchema } = require('../schema/usuario.schema');
 
 const authRouter = express.Router();
 
+//***************** Rutas ******************
 authRouter.post('/login',
   validatorHandler(loginSchema, 'body'),
   passport.authenticate('local', {session: false}),
@@ -21,7 +22,9 @@ authRouter.post('/recovery',
 authRouter.post('/change/password',
   changePassword
 );
+//***************** Rutas ******************
 
+//***************** Funciones ******************
 async function loginUser(req, res, next){
   try{
     const { user } = req;
@@ -64,5 +67,6 @@ async function changePassword(req, res, next){
     next(e)
   }
 }
+//***************** Funciones ******************
 
 module.exports = { authRouter };

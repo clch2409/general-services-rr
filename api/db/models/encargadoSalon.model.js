@@ -70,6 +70,9 @@ class EncargadoSalon extends Model{
       sequelize,
       tableName: TABLA_ENCARGADO,
       modelName: 'EncargadoSalon',
+      defaultScope: {
+        include:['usuario']
+      }
     }
   }
 }
