@@ -1,7 +1,7 @@
 const joi = require('joi');
 
 const id = joi.number().integer();
-const name = joi.string().min(5).max(9).allow(['cliente', 'admin', 'encargado']);
+const name = joi.string().min(5).max(9);
 
 const createRolSchema = joi.object({
   name: name.required(),

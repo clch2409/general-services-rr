@@ -5,7 +5,7 @@ const patronContrasena = RegExp(/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}/)
 const id = joi.number().integer();
 const email = joi.string().email();
 const contrasena = joi.string().pattern(patronContrasena);
-const rolId = joi.number().integer().min(1).max(3)
+const rolId = joi.number().integer().min(1).max(3);
 // const status = joi.string().allow(['activo', 'inactivo']);
 
 const createUsuarioSchema = joi.object({
@@ -19,6 +19,10 @@ const getUsuarioSchema = joi.object({
   id: id.required()
 });
 
+const getUsuarioByEmail = joi.object({
+  email: email.required(),
+});
+
 const updateUsuarioSchema = joi.object({
   id,
   email,
@@ -29,4 +33,4 @@ const loginSchema = joi.object({
   contrasena: contrasena.required(),
 })
 
-module.exports = { createUsuarioSchema, getUsuarioSchema, updateUsuarioSchema, loginSchema }
+module.exports = { createUsuarioSchema, getUsuarioSchema, updateUsuarioSchema, loginSchema, getUsuarioByEmail }

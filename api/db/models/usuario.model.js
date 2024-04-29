@@ -30,7 +30,7 @@ const usuarioSchema = {
     field: 'created_at',
     allowNull: false,
     type: DataTypes.DATE,
-    defaultValue: Sequelize.fn('now')
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
   },
   //El nombre del campo en el schema debe ser igual que el foreingkey del hasMany
   rolId: {
@@ -68,7 +68,6 @@ class Usuario extends Model{
       sequelize,
       tableName: TABLA_USUARIO,
       modelName: 'Usuario',
-      timestamps: false,
       hooks: {
         beforeCreate: async(instance) => {
           const hash = await bcrypt.hash(instance.contrasena, 10);

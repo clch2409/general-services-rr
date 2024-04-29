@@ -45,3 +45,5 @@ app.use(errorHandler);
 app.listen(port, () =>{
   console.log('Escuchando el puerto ' + port)
 })
+
+Date.prototype.toJSON = function(){ return this.toLocaleString(); };

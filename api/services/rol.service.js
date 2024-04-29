@@ -8,6 +8,10 @@ class RolService{
     })
   }
 
+  async createRol(body){
+    return await models.Rol.create(body);
+  }
+
 }
 
 module.exports = new RolService()

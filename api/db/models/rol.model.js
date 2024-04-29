@@ -19,7 +19,7 @@ const rolSchema = {
     field: 'created_at',
     allowNull: false,
     type: DataTypes.DATE,
-    defaultValue: Sequelize.fn('now')
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
   },
 }
 
@@ -37,7 +37,6 @@ class Rol extends Model{
       sequelize,
       tableName: TABLA_ROL,
       modelName: 'Rol',
-      timestamps: false,
     }
   }
 }

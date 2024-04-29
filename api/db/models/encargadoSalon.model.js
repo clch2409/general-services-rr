@@ -42,7 +42,7 @@ const encargadoSchema = {
     field: 'created_at',
     allowNull: false,
     type: DataTypes.DATE,
-    defaultValue: Sequelize.fn('now')
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
   },
   usuarioId: {
     field: 'id_usuario',
@@ -70,7 +70,6 @@ class EncargadoSalon extends Model{
       sequelize,
       tableName: TABLA_ENCARGADO,
       modelName: 'EncargadoSalon',
-      timestamps: false,
     }
   }
 }

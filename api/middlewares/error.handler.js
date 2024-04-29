@@ -10,6 +10,7 @@ function errorHandler(err, req, res, next){
   });
 }
 
+//Verifica si el error enviado es de tipo "Boom", que viene a partir de la librería @hapi/boom
 function isBoomHandler(err, req, res, next){
   if (err.isBoom){
     const { output } = err;

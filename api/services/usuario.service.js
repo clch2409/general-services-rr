@@ -1,5 +1,6 @@
+const boom = require('@hapi/boom');
+
 const { models } = require('../libs/sequelize');
-const bcrypt = require('bcrypt')
 
 class UsuarioService{
 
@@ -20,11 +21,19 @@ class UsuarioService{
   async findUserById(id){
     const foundUser = await models.Usuario.findByPk(id);
 
+    if (!foundUser){
+      throw boom.notFound('El usuario buscado no existe');
+    }
+
     return foundUser;
   }
 
   async findUserByIdWithRecovery(id){
     const foundUser = await models.Usuario.scope('withRecoveryToken').findByPk(id);
+
+    if (!foundUser){
+      throw boom.notFound('El usuario buscado no existe');
+    }
 
     return foundUser;
   }
@@ -36,6 +45,10 @@ class UsuarioService{
       }
     })
 
+    if (!foundUser){
+      throw boom.notFound('El usuario buscado no existe');
+    }
+
     return foundUser;
   }
 
@@ -46,7 +59,22 @@ class UsuarioService{
       }
     });
 
+    if (!foundUser){
+      throw boom.notFound('El usuario buscado no existe');
+    }
+
     return updatedUser;
+  }
+
+  async deleteUser(userId){
+    const deletedUser = await this.updateUser(userId, {
+      status: false,
+    });
+
+    return {
+      message: 'El usuario ha sido eliminado',
+      deletedUser
+     }
   }
 }
 

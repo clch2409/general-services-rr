@@ -12,7 +12,10 @@ const sequelize = new Sequelize(
   {
     dialect: 'mysql',
     logging: true,
-    timezone: '-05:00'
+    timezone: '-05:00',
+    define: {
+      timestamps: false
+    }
   }
 );
 
