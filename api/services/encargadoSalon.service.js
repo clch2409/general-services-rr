@@ -20,7 +20,7 @@ class EncargadoService{
   }
 
   async findEncargadoById(encargadoId){
-    const foundEncargado = await models.EncargadoSalon.findByPk(clienteId);
+    const foundEncargado = await models.EncargadoSalon.findByPk(encargadoId);
 
     if (!foundEncargado){
       throw boom.notFound('El encargado buscado no existe');
@@ -58,7 +58,7 @@ class EncargadoService{
     return foundEncargado;
   }
 
-  async updateCliente(encargadoId, changes){
+  async updateEncargado(encargadoId, changes){
     const foundEncargado = await this.findEncargadoById(encargadoId);
 
     const updatedEncargado = await foundEncargado.update(changes);

@@ -5,13 +5,14 @@ const { createUsuarioSchema, getUsuarioByEmailSchema } = require('./usuario.sche
 const regexDniRule = RegExp(/^\d{8,9}$/);
 const regexNumberRule = RegExp(/^\d{9}$/);
 
+const id = joi.number().integer();
 const nombres = joi.string().min(3).max(50);
 const apPaterno = joi.string().min(3).max(25);
 const apMaterno = joi.string().min(3).max(25);
 const dni = joi.string().min(8).max(9).pattern(regexDniRule);
 const telefono = joi.string().min(9).max(9).pattern(regexNumberRule);
 const fechaContratacion = joi.date();
-const usuario = createUsuarioSchema;
+// const usuario = createUsuarioSchema;
 
 const email = joi.string().email();
 
@@ -25,8 +26,12 @@ const createEncargadoSchema = joi.object({
   usuario: createUsuarioSchema.required()
 });
 
-const getEncargadoByDniSchema = joi.object({
+const getEncargadoByIdSchema = joi.object({
   id: id.required(),
+});
+
+const getEncargadoByDniSchema = joi.object({
+  dni: dni.required(),
 });
 
 const getEncargadoByEmailSchema = joi.object({
@@ -40,7 +45,6 @@ const updateEncargadoSchema  = joi.object({
   dni,
   telefono,
   fechaContratacion,
-  usuario
 });
 
-module.exports = { createEncargadoSchema, getEncargadoByDniSchema, updateEncargadoSchema, getEncargadoByEmailSchema }
+module.exports = { createEncargadoSchema, getEncargadoByIdSchema, getEncargadoByDniSchema, updateEncargadoSchema, getEncargadoByEmailSchema }

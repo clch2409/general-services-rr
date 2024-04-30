@@ -75,7 +75,7 @@ class Cliente extends Model{
       tableName: TABLA_CLIENTE,
       modelName: 'Cliente',
       hooks: {
-        afterUpdate: async (instance) => {
+        beforeUpdate: (instance) => {
           instance.updatedAt = Sequelize.literal('CURRENT_TIMESTAMP');
         }
       },

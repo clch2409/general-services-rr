@@ -1,12 +1,12 @@
 const express = require('express');
-const passport = require('passport');
 
 const validatorHandler = require('../middlewares/validator.handler');
 const usuarioService = require('../services/usuario.service');
+
 const { createUsuarioSchema, getUsuarioSchema } = require('../schema/usuario.schema');
 const { validateRoles } = require('../middlewares/auth.handler');
 const { ADMIN, ENCARGADO } = require('./../utils/enums/rol.enum');
-
+const { authenticationByJwt } = require('./../utils/auth/functions/passport.auth');
 
 const usuarioRouter = express.Router();
 
@@ -18,8 +18,8 @@ usuarioRouter.get('',
 );
 
 usuarioRouter.post('',
-  authenticationByJwt(),
-  validateRoles(ADMIN.name, ENCARGADO.name),
+  // authenticationByJwt(),
+  // validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(createUsuarioSchema, 'body'),
   createUser
 );
@@ -111,9 +111,5 @@ async function deleteUsuario(req, res, next) {
   }
 }
 //***************** Funciones ******************
-
-function authenticationByJwt(){
-  return passport.authenticate('jwt', { session: false });
-}
 
 module.exports = { usuarioRouter }

@@ -2,11 +2,11 @@ const express = require('express');
 
 const validatorHandler = require('./../middlewares/validator.handler');
 const clienteService = require('./../services/cliente.service');
-const authenticationByJwt = require('./../utils/auth/functions/passport.auth');
 
 const { createClienteSchema, getClienteByIdSchema, updateClienteSchema, getClienteByDniSchema, getClienteByEmailSchema } = require('./../schema/cliente.schema');
 const { validateRoles } = require('./../middlewares/auth.handler');
 const { ADMIN, ENCARGADO } = require('./../utils/enums/rol.enum');
+const { authenticationByJwt } = require('./../utils/auth/functions/passport.auth');
 
 const clienteRouter = express.Router();
 
@@ -64,6 +64,7 @@ async function findAll(req, res, next){
   }
 }
 
+//TODO Recuerda que tienes que verificar si te manda el payload cuando haces la autenticacion
 async function createCliente(req, res, next){
   try{
     const newCliente = await clienteService.createCliente(req.body);
@@ -78,6 +79,7 @@ async function createCliente(req, res, next){
 
 async function findClienteById(req, res, next){
   try{
+
     const foundCliente = await clienteService.findClienteById(req.params.id);
     res.status(201).json({
       foundCliente

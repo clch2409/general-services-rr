@@ -4,4 +4,4 @@ function authenticationByJwt(){
   return passport.authenticate('jwt', { session: false });
 }
 
-module.exports = authenticationByJwt;
+module.exports = { authenticationByJwt };

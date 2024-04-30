@@ -1,32 +1,32 @@
 const express = require('express');
 
 const rolService = require('../services/rol.service');
-const authJwt = require('./../utils/auth/functions/passport.auth');
+const validatorHandler = require('../middlewares/validator.handler');
 
 const { validateRoles } = require('../middlewares/auth.handler');
-const { ADMIN } = require('../utils/enums/rol.enum');
+const { ADMIN, ENCARGADO } = require('../utils/enums/rol.enum');
 const { createRolSchema, getRolSchema } = require('./../schema/rol.schema');
-const validatorHandler = require('../middlewares/validator.handler');
+const { authenticationByJwt } = require('./../utils/auth/functions/passport.auth');
 
 const rolRouter = express.Router();
 
 //***************** Rutas ******************
 rolRouter.get('',
-  // authJwt(),
-  // validateRoles(ADMIN.name),
+authenticationByJwt(),
+  validateRoles(ADMIN.name, ENCARGADO.name),
   findAll
 );
 
 rolRouter.post('',
-  // authJwt(),
-  // validateRoles(ADMIN.name),
+  authenticationByJwt(),
+  validateRoles(ADMIN.name),
   validatorHandler(createRolSchema, 'body'),
   createRol
 );
 
 rolRouter.patch('/:id',
-  // authJwt(),
-  // validateRoles(ADMIN.name),
+  authenticationByJwt(),
+  validateRoles(ADMIN.name),
   validatorHandler(getRolSchema, 'params'),
   validatorHandler(createRolSchema, 'body'),
   async (req, res, next) => {
