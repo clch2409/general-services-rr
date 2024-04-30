@@ -1,5 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { TABLA_USUARIO } = require('./usuario.model');
+const { ACTIVO, INACTIVO } = require('../../utils/enums/status.enum');
 
 const TABLA_ENCARGADO = 'encargado_salon';
 
@@ -53,8 +54,9 @@ const encargadoSchema = {
   status: {
     allowNull: false,
     type: DataTypes.STRING,
+    defaultValue: INACTIVO.name,
     validate: {
-      isIn: ['activo', 'inactivo']
+      isIn: [[ACTIVO.name, INACTIVO.name]]
     }
   },
   createdAt: {

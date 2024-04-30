@@ -6,7 +6,7 @@ const encargadoService = require('./../services/encargadoSalon.service');
 const { createEncargadoSchema, getEncargadoByIdSchema, getEncargadoByDniSchema, getEncargadoByEmailSchema,
         updateEncargadoSchema } = require('../schema/encargadoSalon.schema');
 const { validateRoles } = require('../middlewares/auth.handler');
-const { ADMIN } = require('../utils/enums/rol.enum');
+const { ADMIN, ENCARGADO } = require('../utils/enums/rol.enum');
 const { authenticationByJwt } = require('../utils/auth/functions/passport.auth');
 
 const encargadoRouter = express.Router();
@@ -16,6 +16,12 @@ encargadoRouter.get('',
   authenticationByJwt(),
   validateRoles(ADMIN.name),
   findAll
+);
+
+encargadoRouter.get('/activos',
+  authenticationByJwt(),
+  validateRoles(ADMIN.name),
+  findAllActivos
 );
 
 encargadoRouter.post('',
@@ -47,25 +53,16 @@ encargadoRouter.get('/email/:email',
 );
 
 encargadoRouter.patch('/:id',
+  validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getEncargadoByIdSchema, 'params'),
   validatorHandler(updateEncargadoSchema, 'body'),
   updateEncargado
 );
 
 encargadoRouter.delete('/:id',
-  async(req, res, next) => {
-    try{
-      const { id } = req.params;
-      const deleteEncargado = encargadoService.deleteEncargado(id);
-
-      res.status(200).json({
-        deleteEncargado
-      });
-    }
-    catch(e){
-      next(e)
-    }
-  }
+  authenticationByJwt(),
+  validateRoles(ADMIN.name),
+  deleteEncargado
 );
 //***************** Rutas ******************
 
@@ -80,6 +77,19 @@ async function findAll(req, res, next){
   }
   catch(e){
     next(e)
+  }
+}
+
+async function findAllActivos(req, res, next) {
+  try{
+    const encargadoActivos = await encargadoService.findAllActiveEncargados();
+
+    res.status(200).json({
+      encargadoActivos
+    })
+  }
+  catch(e){
+    next(e);
   }
 }
 
@@ -144,6 +154,20 @@ async function updateEncargado(req, res, next) {
 
     res.status(200).json({
       updatedCliente
+    });
+  }
+  catch(e){
+    next(e)
+  }
+}
+
+async function deleteEncargado (req, res, next) {
+  try{
+    const { id } = req.params;
+    const deleteEncargado = await encargadoService.deleteEncargado(id);
+
+    res.status(200).json({
+      deleteEncargado
     });
   }
   catch(e){

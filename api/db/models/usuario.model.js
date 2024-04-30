@@ -50,7 +50,7 @@ const usuarioSchema = {
     type: DataTypes.STRING,
     defualtValue: 'activo',
     validate: {
-      isIn: ['activo', 'inactivo']
+      isIn: [['activo', 'inactivo']]
     }
   }
 }

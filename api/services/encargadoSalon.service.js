@@ -1,12 +1,23 @@
 const boom = require('@hapi/boom');
 
+const usuarioService = require('./../services/usuario.service');
+
 const { models } = require('../libs/sequelize');
-const { INACTIVO } = require('../utils/enums/status.enum');
+const { INACTIVO, ACTIVO } = require('../utils/enums/status.enum');
 
 class EncargadoService{
 
   async findAll(){
     return await models.EncargadoSalon.findAll();
+  }
+
+  async findAllActiveEncargados(){
+    return await models.EncargadoSalon.findAll({
+      where: {
+        status: ACTIVO.name,
+        '$usuario.status$': ACTIVO.name
+      }
+    })
   }
 
   async createEncargado(body){
@@ -69,9 +80,16 @@ class EncargadoService{
   async deleteEncargado(encargadoId){
     const foundEncargado = await this.findEncargadoById(encargadoId);
 
+    if (foundEncargado.status === INACTIVO.name){
+      throw boom.notAcceptable('El encargado ya se encuentra inactivo')
+    }
+
+    const deletedUsuario = await usuarioService.deleteUser(foundEncargado.usuario.id);
+
     const deletedEncargado = await foundEncargado.update({
       status: INACTIVO.name
     });
+
 
     return deletedEncargado;
   }

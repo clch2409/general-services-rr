@@ -1,6 +1,7 @@
 const boom = require('@hapi/boom');
 
 const { models } = require('../libs/sequelize');
+const { INACTIVO } = require('../utils/enums/status.enum');
 
 class UsuarioService{
 
@@ -9,6 +10,8 @@ class UsuarioService{
       include: ['rol']
     });
   }
+
+
 
   async createUser(newUser){
     const nuevoUsuario = await models.Usuario.create(newUser);
@@ -52,24 +55,20 @@ class UsuarioService{
     return foundUser;
   }
 
-  async updateUser(userID, changes){
-    const updatedUser = await models.Usuario.update(changes, {
-      where: {
-        id: userID
-      }
-    });
+  async updateUser(userId, changes){
+    const foundUser = await this.findUserById(userId);
 
-    if (!foundUser){
-      throw boom.notFound('El usuario buscado no existe');
-    }
+    const updatedUser = await foundUser.update(changes);
 
     return updatedUser;
   }
 
   async deleteUser(userId){
-    const deletedUser = await this.updateUser(userId, {
-      status: false,
-    });
+    const foundUser = await this.findUserById(userId);
+
+    if (foundUser.status === INACTIVO.name){
+      throw boom.notAcceptable('El usuario ya se encuentra inactivo')
+    }
 
     return {
       message: 'El usuario ha sido eliminado',
