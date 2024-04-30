@@ -2,7 +2,7 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 const { TABLA_USUARIO } = require('./usuario.model');
 const { ACTIVO, INACTIVO } = require('../../utils/enums/status.enum');
 
-const TABLA_ENCARGADO = 'encargado_salon';
+const TABLA_ENCARGADO = 'encargados_salon';
 
 const encargadoSchema = {
   id: {
@@ -32,7 +32,7 @@ const encargadoSchema = {
   },
   dni: {
     allowNull: false,
-    type: DataTypes.STRING,
+    type: DataTypes.CHAR(9),
   },
   fechaContratacion: {
     field: 'fecha_contratacion',
