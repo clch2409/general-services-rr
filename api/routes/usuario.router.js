@@ -18,8 +18,8 @@ usuarioRouter.get('',
 );
 
 usuarioRouter.post('',
-  // authenticationByJwt(),
-  // validateRoles(ADMIN.name, ENCARGADO.name),
+  authenticationByJwt(),
+  validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(createUsuarioSchema, 'body'),
   createUser
 );

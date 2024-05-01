@@ -32,7 +32,7 @@ const encargadoSchema = {
   },
   dni: {
     allowNull: false,
-    type: DataTypes.CHAR(9),
+    type: DataTypes.CHAR(8),
   },
   fechaContratacion: {
     field: 'fecha_contratacion',

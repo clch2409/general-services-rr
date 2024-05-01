@@ -60,18 +60,18 @@ const localSchema = {
 class Local extends Model{
 
   static associate(models){
-    this.hasMany(models.Insumo, {
+    this.belongsToMany(models.Insumo, {
       as: 'insumos',
       through: models.InsumoLocal,
       foreignKey: 'idLocal',
       otherKey: 'idInsumo',
     });
-    this.hasMany(models.Dia, {
+    this.belongsToMany(models.Dia, {
       as: 'precios',
-      through: 'localDia',
+      through: models.LocalDia,
       foreignKey: 'idLocal',
       otherKey: 'idDia'
-    })
+    });
   }
 
   static config(sequelize){
@@ -79,6 +79,9 @@ class Local extends Model{
       sequelize,
       tableName: TABLA_LOCAL,
       modelName: 'Local',
+      defaultScope: {
+        include: ['insumos'],
+      },
       hooks:{
         beforeUpdate: (instance) =>{
           instance.updatedAt = Sequelize.literal('CURRENT_TIMESTAMP');

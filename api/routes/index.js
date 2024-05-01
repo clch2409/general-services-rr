@@ -4,6 +4,7 @@ const { rolRouter } = require('./rol.router');
 const { authRouter } = require('./auth.router');
 const { clienteRouter } = require('./cliente.router');
 const { encargadoRouter } = require('./encargadoSalon.router');
+const { localRouter } = require('./local.router');
 
 const root = '/api/v1';
 
@@ -16,6 +17,7 @@ function routerApi(app){
   router.use('/auth', authRouter);
   router.use('/clientes', clienteRouter);
   router.use('/encargados', encargadoRouter);
+  router.use('/locales', localRouter);
 }
 
 module.exports = { routerApi }

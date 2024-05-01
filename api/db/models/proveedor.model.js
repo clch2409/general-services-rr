@@ -24,9 +24,9 @@ const proveedorSchema = {
     type: DataTypes.CHAR(9),
   },
   fechaContrato: {
-    field: 'aforo_maximo',
-    allowNull: false,
-    type: DataTypes.SMALLINT,
+    field: 'fecha_contrato',
+    allowNull: true,
+    type: DataTypes.DATE,
   },
   createdAt: {
     field: 'created_at',
@@ -50,28 +50,22 @@ const proveedorSchema = {
   }
 }
 
-class Local extends Model{
+class Proveedor extends Model{
 
   static associate(models){
-    this.hasMany(models.Insumo, {
+    this.belongsToMany(models.Insumo, {
       as: 'insumos',
-      through: models.InsumoLocal,
-      foreignKey: 'idLocal',
+      through: models.ProveedorInsumo,
+      foreignKey: 'idProveedor',
       otherKey: 'idInsumo',
     });
-    this.hasMany(models.Dia, {
-      as: 'precios',
-      through: 'localDia',
-      foreignKey: 'idLocal',
-      otherKey: 'idDia'
-    })
   }
 
   static config(sequelize){
     return {
       sequelize,
-      tableName: TABLA_LOCAL,
-      modelName: 'Local',
+      tableName: TABLA_PROVEEDOR,
+      modelName: 'Proveedor',
       hooks:{
         beforeUpdate: (instance) =>{
           instance.updatedAt = Sequelize.literal('CURRENT_TIMESTAMP');
@@ -81,4 +75,4 @@ class Local extends Model{
   }
 }
 
-module.exports = { Local, TABLA_LOCAL, localSchema }
+module.exports = { Proveedor, TABLA_PROVEEDOR, proveedorSchema}

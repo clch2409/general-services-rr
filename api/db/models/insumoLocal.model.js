@@ -13,6 +13,7 @@ const insumoLocalSchema = {
     autoIncrement: true,
   },
   idInsumo: {
+    field: 'id_insumo',
     allowNull: false,
     type: DataTypes.INTEGER,
     references: {
@@ -20,9 +21,10 @@ const insumoLocalSchema = {
       key: 'id_insumo'
     },
     onUpdate: 'CASCADE',
-    onDelete: 'SET NULL',
+    onDelete: 'RESTRICT',
   },
   idLocal: {
+    field: 'id_local',
     allowNull: false,
     type: DataTypes.INTEGER,
     references: {
@@ -30,7 +32,7 @@ const insumoLocalSchema = {
       key: 'id_local'
     },
     onUpdate: 'CASCADE',
-    onDelete: 'SET NULL',
+    onDelete: 'RESTRICT',
   },
   createdAt: {
     field: 'created_at',

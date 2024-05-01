@@ -31,7 +31,7 @@ const clienteSchema = {
   },
   dni: {
     allowNull: false,
-    type: DataTypes.CHAR(9),
+    type: DataTypes.CHAR(8),
   },
   direccion: {
     allowNull: false,

@@ -3,8 +3,9 @@ const cors = require('cors');
 const passport = require('passport');
 
 const config = require('./config/config');
+
 const { routerApi } = require('./routes');
-const { logErrors, isBoomHandler, errorHandler } = require('./middlewares/error.handler');
+const { logErrors, isBoomHandler, errorHandler, isValidationError } = require('./middlewares/error.handler');
 
 
 const app = express();
@@ -37,6 +38,7 @@ app.get('/welcome',
 
 routerApi(app);
 
+app.use(isValidationError);
 app.use(isBoomHandler);
 app.use(logErrors);
 app.use(errorHandler);
