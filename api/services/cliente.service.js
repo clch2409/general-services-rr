@@ -1,6 +1,7 @@
 const boom = require('@hapi/boom');
 
 const { models } = require('../libs/sequelize');
+const { ACTIVO } = require('../utils/enums/status.enum');
 
 class ClienteService{
 
@@ -9,6 +10,14 @@ class ClienteService{
     return await models.Cliente.findAll({
       // include: ['usuario']
     });
+  }
+
+  async findAllActivos(){
+    return await models.Cliente.findAll({
+      where: {
+        '$usuario.status$': ACTIVO.name
+      }
+    })
   }
 
   //Permite crear el cliente con el usuario en el mismo cuerpo de la solicitud

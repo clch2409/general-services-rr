@@ -1,6 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const bcrypt = require('bcrypt');
 const { TABLA_ROL } = require('./rol.model');
+const { ACTIVO, INACTIVO } = require('../../utils/enums/status.enum');
 
 const TABLA_USUARIO = 'usuarios';
 
@@ -48,9 +49,9 @@ const usuarioSchema = {
   status: {
     allowNUll: false,
     type: DataTypes.STRING,
-    defualtValue: 'activo',
+    defualtValue: ACTIVO.name,
     validate: {
-      isIn: [['activo', 'inactivo']]
+      isIn: [[ACTIVO.name, INACTIVO.name]]
     }
   }
 }

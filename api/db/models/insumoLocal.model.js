@@ -1,6 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { TABLA_INSUMO } = require('./insumo.model');
 const { TABLA_LOCAL } = require('./local.model');
+const { ACTIVO, INACTIVO } = require('../../utils/enums/status.enum');
 
 const TABLA_INSUMO_LOCAL = 'insumo_local';
 
@@ -34,6 +35,19 @@ const insumoLocalSchema = {
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
   },
+  cantidad: {
+    allowNull: false,
+    type: DataTypes.INTEGER.UNSIGNED,
+  },
+  precio: {
+    allowNull: false,
+    type: DataTypes.FLOAT(6,2).UNSIGNED,
+  },
+  fechaPrecio: {
+    field: 'fecha_precio',
+    allowNull: false,
+    type: DataTypes.DATE,
+  },
   createdAt: {
     field: 'created_at',
     allowNull: false,
@@ -45,6 +59,14 @@ const insumoLocalSchema = {
     allowNull: false,
     type: DataTypes.DATE,
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+  },
+  status: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: ACTIVO.name,
+    validate: {
+      isIn: [[ACTIVO.name, INACTIVO.name]]
+    }
   }
 }
 

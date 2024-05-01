@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 const localService = require('./../services/local.service');
 
-const { createLocalSchema, getLocalByIdSchema, updateLocalSchema } = require('./../schema/local.schema');
+const { createLocalSchema, getLocalByIdSchema, updateLocalSchema, addInsumoToLocalSchema } = require('./../schema/local.schema');
 const validatorHandler = require('./../middlewares/validator.handler');
 
 const localRouter = Router();
@@ -43,6 +43,22 @@ localRouter.post('',
       const newLocal = await localService.createLocal(body);
       res.status(200).json({
         newLocal
+      })
+    }
+    catch(e){
+      next(e)
+    }
+  }
+);
+
+localRouter.post('/insumos',
+  validatorHandler(addInsumoToLocalSchema, 'body'),
+  async (req, res, next) => {
+    try{
+      const { body } = req
+      const newInsumoAdded = await localService.addInsumoToLocal(body, next);
+      res.status(200).json({
+        newInsumoAdded
       })
     }
     catch(e){

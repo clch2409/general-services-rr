@@ -1,4 +1,5 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
+const { INACTIVO, ACTIVO } = require('../../utils/enums/status.enum');
 
 const TABLA_INSUMO = 'insumos';
 
@@ -29,7 +30,15 @@ const insumoSchema = {
     allowNull: false,
     type: DataTypes.DATE,
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-  }
+  },
+  status: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: ACTIVO.name,
+    validate: {
+      isIn: [[ACTIVO.name, INACTIVO.name]]
+    }
+  },
 }
 
 class Insumo extends Model{
