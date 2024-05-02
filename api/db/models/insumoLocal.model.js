@@ -39,15 +39,6 @@ const insumoLocalSchema = {
     allowNull: false,
     type: DataTypes.INTEGER.UNSIGNED,
   },
-  precio: {
-    allowNull: false,
-    type: DataTypes.FLOAT(6,2).UNSIGNED,
-  },
-  fechaPrecio: {
-    field: 'fecha_precio',
-    allowNull: false,
-    type: DataTypes.DATE,
-  },
   createdAt: {
     field: 'created_at',
     allowNull: false,
@@ -60,14 +51,6 @@ const insumoLocalSchema = {
     type: DataTypes.DATE,
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
   },
-  status: {
-    allowNull: false,
-    type: DataTypes.STRING,
-    defaultValue: ACTIVO.name,
-    validate: {
-      isIn: [[ACTIVO.name, INACTIVO.name]]
-    }
-  }
 }
 
 class InsumoLocal extends Model{

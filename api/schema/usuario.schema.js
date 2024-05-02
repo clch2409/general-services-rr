@@ -2,7 +2,7 @@ const joi = require('joi');
 
 const { ACTIVO, INACTIVO } = require('../utils/enums/status.enum');
 
-const patronContrasena = RegExp(/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}/)
+const patronContrasena = RegExp(/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/)
 
 const id = joi.number().integer();
 const email = joi.string().email();

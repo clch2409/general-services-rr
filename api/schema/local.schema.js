@@ -10,7 +10,10 @@ const aforoMaximo = joi.number().positive().min(50).max(500);
 const fechaInactivacion = joi.date();
 const status = joi.string().valid(ACTIVO.name, INACTIVO.name);
 
+const idLocal = id;
+const idInsumo = id;
 const cantidad = joi.number().positive().min(1).max(100);
+const precio = joi.number().precision(2).min(1).max(1000);
 
 const createLocalSchema = joi.object({
   nombre: nombre.required(),
@@ -34,8 +37,8 @@ const updateLocalSchema = joi.object({
 });
 
 const addInsumoToLocalSchema = joi.object({
-  idInsumo: id.required(),
-  idLocal: id.required(),
+  idInsumo: idInsumo.required(),
+  idLocal: idLocal.required(),
   cantidad: cantidad.required()
 })
 

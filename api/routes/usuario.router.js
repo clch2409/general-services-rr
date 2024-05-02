@@ -13,7 +13,7 @@ const usuarioRouter = express.Router();
 //***************** Rutas ******************
 usuarioRouter.get('',
   authenticationByJwt(),
-  validateRoles(ADMIN.name, ENCARGADO.NAME),
+  validateRoles(ADMIN.name, ENCARGADO.name),
   findAll
 );
 

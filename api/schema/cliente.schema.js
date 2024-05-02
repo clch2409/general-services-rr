@@ -5,7 +5,7 @@ const { createUsuarioSchema, getUsuarioByEmailSchema } = require('./usuario.sche
 const regexDniRule = RegExp(/^\d{8,9}$/);
 const regexNumberRule = RegExp(/^\d{9}$/);
 
-const id = joi.number().integer();
+const id = joi.number().integer().positive();
 const nombres = joi.string().min(3).max(50);
 const apPaterno = joi.string().min(3).max(25);
 const apMaterno = joi.string().min(3).max(25);

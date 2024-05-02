@@ -38,7 +38,7 @@ app.get('/welcome',
 
 routerApi(app);
 
-app.use(isValidationError);
+
 app.use(isBoomHandler);
 app.use(logErrors);
 app.use(errorHandler);

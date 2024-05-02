@@ -42,12 +42,14 @@ class LocalService{
   }
 
   async updateLocal(localId, changes){
+
     const localFound = await this.findLocalById(localId);
 
     const updatedLocal = await localFound.update(changes);
 
     return updatedLocal;
   }
+
 
   async deleteLocal (localId){
     const localFound = await this.findLocalById(localId);
@@ -63,7 +65,10 @@ class LocalService{
     const insumoExists = await insumoService.checkInsumoExistence(insumoId);
     const localExits = await this.checkLocalExistence(localId);
 
-    return insumoExists && localExits;
+    return {
+      insumoExists,
+      localExits
+    };
   }
 
   async findInsumosByLocal(localId, insumoId){
@@ -75,24 +80,28 @@ class LocalService{
     return insumosFound;
   }
 
+  //Se agrega el insumo por local y su cantidad, verifica si el insumo ya está en el local y le agrega la cantidad ingresada
   async addInsumoToLocal(body){
     const { idLocal, idInsumo, cantidad } = body;
 
     const localAndInsumoExist = await this.checkInsumoAndLocalExistence(idLocal, idInsumo);
 
-
-    if (!localAndInsumoExist){
+    if (!localAndInsumoExist.insumoExists || !localAndInsumoExist.localExits){
       throw boom.notFound('El local o el insumo no se encuentran registrados en el sistema, regístrelos para poder continuar.')
     }
 
     const insumosFound = await this.findInsumosByLocal(idLocal, idInsumo)
 
     if (!insumosFound){
-      insumoAdded = await models.InsumoLocal.create({
+      const insumoFound = localAndInsumoExist.insumoExists;
+      const newInsumoLocal = {
         idLocal,
         idInsumo,
-        cantidad
-      })
+        cantidad,
+        precio: insumoFound.precio,
+        fechaPrecio: insumoFound.createdAt,
+      }
+      const insumoAdded = await models.InsumoLocal.create(newInsumoLocal);
       return insumoAdded;
     }
 
@@ -101,6 +110,7 @@ class LocalService{
     });
   }
 
+  //Retiro de insumos de los locales
   async takeInsumosOffLocal(body){
     const { idLocal, idInsumo, cantidad } = body;
 
@@ -112,9 +122,16 @@ class LocalService{
 
     const insumosFound = await this.findInsumosByLocal(idLocal, idInsumo);
 
-    if (insumosFound.cantidad === 0){
-      throw boom.badRequest('No puede retirar dicho producto');
+    if (cantidad > insumosFound.cantidad){
+      throw boom.badRequest('No puede retirar más insumos de los que se encuentran registrados');
     }
+    else if (insumosFound.cantidad === 0){
+      throw boom.badRequest('Ya no hay insumos en el local');
+    }
+
+    return await insumosFound.update({
+      cantidad: insumosFound.cantidad - cantidad
+    })
   }
 }
 

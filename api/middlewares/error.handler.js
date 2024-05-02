@@ -23,16 +23,16 @@ function isBoomHandler(err, req, res, next){
   next(err);
 }
 
-function isValidationError(err, req, res, next){
-  if (err.original){
-    res.status(400).json({
-      sqlMessage: err.original.sqlMessage,
-      message: err.errors[0].message,
-      stack: err.stack,
-    })
-  }
-  next(err);
-}
+// function isValidationError(err, req, res, next){
+//   if (err.original){
+//     res.status(400).json({
+//       sqlMessage: err.original.sqlMessage,
+//       message: err.errors[0].message,
+//       stack: err.stack,
+//     })
+//   }
+//   next(err);
+// }
 
 
-module.exports = { logErrors, errorHandler, isBoomHandler, isValidationError }
+module.exports = { logErrors, errorHandler, isBoomHandler }

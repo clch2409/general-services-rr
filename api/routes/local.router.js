@@ -51,14 +51,30 @@ localRouter.post('',
   }
 );
 
-localRouter.post('/insumos',
+localRouter.post('/add/insumos',
   validatorHandler(addInsumoToLocalSchema, 'body'),
   async (req, res, next) => {
     try{
       const { body } = req
-      const newInsumoAdded = await localService.addInsumoToLocal(body, next);
+      const newInsumoAdded = await localService.addInsumoToLocal(body);
       res.status(200).json({
         newInsumoAdded
+      })
+    }
+    catch(e){
+      next(e)
+    }
+  }
+);
+
+localRouter.post('/retire/insumos',
+  validatorHandler(addInsumoToLocalSchema, 'body'),
+  async (req, res, next) => {
+    try{
+      const { body } = req
+      const insumosRetired = await localService.takeInsumosOffLocal(body);
+      res.status(200).json({
+        insumosRetired
       })
     }
     catch(e){
