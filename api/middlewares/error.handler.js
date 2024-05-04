@@ -20,7 +20,9 @@ function isBoomHandler(err, req, res, next){
       message: output.payload
     });
   }
-  next(err);
+  else{
+    next(err);
+  }
 }
 
 // function isValidationError(err, req, res, next){

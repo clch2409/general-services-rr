@@ -40,6 +40,13 @@ const addInsumoToLocalSchema = joi.object({
   idInsumo: idInsumo.required(),
   idLocal: idLocal.required(),
   cantidad: cantidad.required()
-})
+});
 
-module.exports = { createLocalSchema, getLocalByIdSchema, updateLocalSchema, addInsumoToLocalSchema }
+const moveInsumoToLocalSchema = joi.object({
+  idInsumo: idInsumo.required(),
+  idOldLocal: idLocal.required(),
+  idNewLocal: idLocal.required(),
+  cantidad: cantidad.required()
+});
+
+module.exports = { createLocalSchema, getLocalByIdSchema, updateLocalSchema, addInsumoToLocalSchema, moveInsumoToLocalSchema }

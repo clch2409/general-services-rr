@@ -4,6 +4,7 @@ const insumoService = require('./../services/insumo.service');
 
 const { models } = require('./../libs/sequelize');
 const { INACTIVO, ACTIVO } = require('../utils/enums/status.enum');
+const { Sequelize } = require('sequelize');
 
 class LocalService{
 
@@ -42,7 +43,6 @@ class LocalService{
   }
 
   async updateLocal(localId, changes){
-
     const localFound = await this.findLocalById(localId);
 
     const updatedLocal = await localFound.update(changes);
@@ -55,7 +55,8 @@ class LocalService{
     const localFound = await this.findLocalById(localId);
 
     const deletedLocal = await localFound.update({
-      status: INACTIVO.name
+      status: INACTIVO.name,
+      fechaInactivacion: Sequelize.literal('CURRENT_TIMESTAMP')
     });
 
     return deletedLocal;
@@ -65,7 +66,10 @@ class LocalService{
     const insumoExists = await insumoService.checkInsumoExistence(insumoId);
     const localExits = await this.checkLocalExistence(localId);
 
+    console.log()
+
     return {
+      bothExist: insumoExists && localExits,
       insumoExists,
       localExits
     };
@@ -73,24 +77,31 @@ class LocalService{
 
   async findInsumosByLocal(localId, insumoId){
     const insumosFound = await models.InsumoLocal.findOne({
-      idLocal: localId,
-      idInsumo: insumoId
+      where: {
+        idLocal: localId,
+        idInsumo: insumoId
+      }
     })
 
     return insumosFound;
   }
 
   //Se agrega el insumo por local y su cantidad, verifica si el insumo ya está en el local y le agrega la cantidad ingresada
-  async addInsumoToLocal(body){
-    const { idLocal, idInsumo, cantidad } = body;
+  async addInsumoToLocal(localId, insumoId, cantidad){
 
-    const localAndInsumoExist = await this.checkInsumoAndLocalExistence(idLocal, idInsumo);
+    const localAndInsumoExist = await this.checkInsumoAndLocalExistence(localId, insumoId);
 
-    if (!localAndInsumoExist.insumoExists || !localAndInsumoExist.localExits){
-      throw boom.notFound('El local o el insumo no se encuentran registrados en el sistema, regístrelos para poder continuar.')
+    if (!localAndInsumoExist.bothExist){
+      throw boom.notFound('El local o el insumo no se encuentran registrados en el sistema, regístrelos para poder continuar.');
+    }
+    else if (localAndInsumoExist.localExits.status === INACTIVO.name){
+      throw boom.notFound('No puede agregar insumos a un local que está inactivo');
+    }
+    else if (localAndInsumoExist.insumoExists.status === INACTIVO.name){
+      throw boom.notFound('No puede agregar un insumo que se encuentra inactivo');
     }
 
-    const insumosFound = await this.findInsumosByLocal(idLocal, idInsumo)
+    const insumosFound = await this.findInsumosByLocal(localId, insumoId);
 
     if (!insumosFound){
       const insumoFound = localAndInsumoExist.insumoExists;
@@ -111,27 +122,46 @@ class LocalService{
   }
 
   //Retiro de insumos de los locales
-  async takeInsumosOffLocal(body){
-    const { idLocal, idInsumo, cantidad } = body;
+  async takeInsumosOffLocal(localId, insumoId, cantidad){
 
-    const localAndInsumoExist = await this.checkInsumoAndLocalExistence(idLocal, idInsumo);
+    const localAndInsumoExist = await this.checkInsumoAndLocalExistence(localId, insumoId);
 
-    if (!localAndInsumoExist){
-      throw boom.notFound('Ingrese correctamente el local y el insumo a retirar');
+    if (!localAndInsumoExist.bothExist){
+      throw boom.notFound('El local o el insumo no se encuentran registrados en el sistema, regístrelos para poder continuar.');
     }
 
-    const insumosFound = await this.findInsumosByLocal(idLocal, idInsumo);
+    const insumosFound = await this.findInsumosByLocal(localId, insumoId);
 
-    if (cantidad > insumosFound.cantidad){
-      throw boom.badRequest('No puede retirar más insumos de los que se encuentran registrados');
+    if (!insumosFound){
+      throw boom.notFound('El insumo solicitado no se encuentra ingresado en este local.');
     }
     else if (insumosFound.cantidad === 0){
       throw boom.badRequest('Ya no hay insumos en el local');
     }
+    else if (cantidad > insumosFound.cantidad){
+      throw boom.badRequest('No puede retirar más insumos de los que se encuentran registrados');
+    }
+
 
     return await insumosFound.update({
       cantidad: insumosFound.cantidad - cantidad
     })
+  }
+
+  async moveInsumosToAnotherLocal(oldLocalId, newLocalId, insumoId, cantidad){
+
+    if (oldLocalId === newLocalId){
+      throw boom.badRequest('El id de los locales es el mismo, por favor, ingrese unos diferentes. Sino, use otras rutas');
+    }
+
+    const retiredInsumosFromLocal = await this.takeInsumosOffLocal(oldLocalId, insumoId, cantidad);
+
+    const addedInsumoToLocal = await this.addInsumoToLocal(newLocalId, insumoId, cantidad);
+
+    return {
+      retiredInsumosFromLocal,
+      addedInsumoToLocal
+    };
   }
 }
 

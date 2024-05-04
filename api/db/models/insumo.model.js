@@ -56,7 +56,7 @@ class Insumo extends Model{
         beforeUpdate: (instance) =>{
           instance.updatedAt = Sequelize.literal('CURRENT_TIMESTAMP');
         }
-      }
+      },
     }
   }
 }

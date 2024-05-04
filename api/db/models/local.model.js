@@ -54,6 +54,17 @@ const localSchema = {
     validate: {
       isIn: [[ACTIVO.name, INACTIVO.name]]
     }
+  },
+  insumosEnAlmacen: {
+    type: DataTypes.VIRTUAL,
+    get(){
+      if (this.insumos.length){
+        let CANTIDAD_INSUMOS_TOTALES = 0;
+        this.insumos.forEach(insumo => CANTIDAD_INSUMOS_TOTALES += insumo.InsumoLocal.cantidad);
+        return CANTIDAD_INSUMOS_TOTALES;
+      }
+      return 0;
+    }
   }
 }
 

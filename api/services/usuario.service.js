@@ -11,8 +11,6 @@ class UsuarioService{
     });
   }
 
-
-
   async createUser(newUser){
     const nuevoUsuario = await models.Usuario.create(newUser);
 

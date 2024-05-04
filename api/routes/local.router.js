@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 const localService = require('./../services/local.service');
 
-const { createLocalSchema, getLocalByIdSchema, updateLocalSchema, addInsumoToLocalSchema } = require('./../schema/local.schema');
+const { createLocalSchema, getLocalByIdSchema, updateLocalSchema, addInsumoToLocalSchema, moveInsumoToLocalSchema } = require('./../schema/local.schema');
 const validatorHandler = require('./../middlewares/validator.handler');
 
 const localRouter = Router();
@@ -55,8 +55,8 @@ localRouter.post('/add/insumos',
   validatorHandler(addInsumoToLocalSchema, 'body'),
   async (req, res, next) => {
     try{
-      const { body } = req
-      const newInsumoAdded = await localService.addInsumoToLocal(body);
+      const { idLocal, idInsumo, cantidad } = req.body;
+      const newInsumoAdded = await localService.addInsumoToLocal(idLocal, idInsumo, cantidad);
       res.status(200).json({
         newInsumoAdded
       })
@@ -71,10 +71,26 @@ localRouter.post('/retire/insumos',
   validatorHandler(addInsumoToLocalSchema, 'body'),
   async (req, res, next) => {
     try{
-      const { body } = req
-      const insumosRetired = await localService.takeInsumosOffLocal(body);
+      const { idLocal, idInsumo, cantidad } = req.body;
+      const insumosRetired = await localService.takeInsumosOffLocal(idLocal, idInsumo, cantidad);
       res.status(200).json({
         insumosRetired
+      })
+    }
+    catch(e){
+      next(e)
+    }
+  }
+);
+
+localRouter.post('/move/insumos',
+  validatorHandler(moveInsumoToLocalSchema, 'body'),
+  async (req, res, next) => {
+    try{
+      const { idOldLocal, idNewLocal, idInsumo, cantidad } = req.body;
+      const movedInsumos = await localService.moveInsumosToAnotherLocal(idOldLocal, idNewLocal, idInsumo, cantidad);
+      res.status(200).json({
+        movedInsumos
       })
     }
     catch(e){
