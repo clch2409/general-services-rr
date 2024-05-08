@@ -27,6 +27,10 @@ const insumoSchema = {
     onUpdate: 'cascade',
     onDelete: 'cascade',
   },
+  precio: {
+    allowNull: false,
+    type: DataTypes.FLOAT(6,2).UNSIGNED,
+  },
   createdAt: {
     field: 'created_at',
     allowNull: false,

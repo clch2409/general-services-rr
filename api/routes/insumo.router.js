@@ -37,12 +37,12 @@ insumoRouter.patch('/:id',
   updateInsumo
 );
 
-insumoRouter.delete('/:id',
-  authenticationByJwt(),
-  validateRoles(ADMIN.name, ENCARGADO.name),
-  validatorHandler(getInsumoByIdSchema, 'params'),
-  deleteInsumo
-);
+// insumoRouter.delete('/:id',
+//   authenticationByJwt(),
+//   validateRoles(ADMIN.name, ENCARGADO.name),
+//   validatorHandler(getInsumoByIdSchema, 'params'),
+//   deleteInsumo
+// );
 //****************** Rutas *************************
 
 
@@ -104,20 +104,20 @@ async function updateInsumo(req, res, next) {
   }
 }
 
-async function deleteInsumo(req, res, next){
-  try{
-    const { id } = req.params;
+// async function deleteInsumo(req, res, next){
+//   try{
+//     const { id } = req.params;
 
-    const deletedInsumo = await insumoService.deleteInsumo(id);
+//     const deletedInsumo = await insumoService.deleteInsumo(id);
 
-    res.status(200).json({
-      deletedInsumo
-    })
-  }
-  catch(e){
-    next(e)
-  }
-}
+//     res.status(200).json({
+//       deletedInsumo
+//     })
+//   }
+//   catch(e){
+//     next(e)
+//   }
+// }
 //****************** Funciones *************************
 
 module.exports = { insumoRouter }
