@@ -8,7 +8,7 @@ const { InsumoLocal, insumoLocalSchema } = require('./insumoLocal.model');
 const { Local, localSchema } = require('./local.model');
 const { LocalDia, localDiaSchema } = require('./localDia.model');
 const { Proveedor, proveedorSchema } = require('./proveedor.model');
-const { ProveedorInsumo, proveedorInsumoSchema } = require('./proveedorInsumo.model');
+// const { ProveedorInsumo, proveedorInsumoSchema } = require('./proveedorInsumo.model');
 
 
 function setupModels(sequelize){
@@ -22,7 +22,7 @@ function setupModels(sequelize){
   Local.init(localSchema, Local.config(sequelize));
   LocalDia.init(localDiaSchema, LocalDia.config(sequelize));
   Proveedor.init(proveedorSchema, Proveedor.config(sequelize));
-  ProveedorInsumo.init(proveedorInsumoSchema, ProveedorInsumo.config(sequelize));
+  // ProveedorInsumo.init(proveedorInsumoSchema, ProveedorInsumo.config(sequelize));
 
   Rol.associate(sequelize.models);
   Usuario.associate(sequelize.models);

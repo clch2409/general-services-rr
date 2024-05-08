@@ -12,21 +12,21 @@ const usuarioRouter = express.Router();
 
 //***************** Rutas ******************
 usuarioRouter.get('',
-  authenticationByJwt(),
-  validateRoles(ADMIN.name, ENCARGADO.name),
+  // authenticationByJwt(),
+  // validateRoles(ADMIN.name, ENCARGADO.name),
   findAll
 );
 
 usuarioRouter.post('',
-  authenticationByJwt(),
-  validateRoles(ADMIN.name, ENCARGADO.name),
+  // authenticationByJwt(),
+  // validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(createUsuarioSchema, 'body'),
   createUser
 );
 
 usuarioRouter.get('/:id',
-  authenticationByJwt(),
-  validateRoles(ADMIN.name, ENCARGADO.name),
+  // authenticationByJwt(),
+  // validateRoles(ADMIN.name, ENCARGADO.name),
   findUsuarioById
 );
 

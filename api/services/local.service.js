@@ -66,8 +66,6 @@ class LocalService{
     const insumoExists = await insumoService.checkInsumoExistence(insumoId);
     const localExits = await this.checkLocalExistence(localId);
 
-    console.log()
-
     return {
       bothExist: insumoExists && localExits,
       insumoExists,
@@ -145,7 +143,7 @@ class LocalService{
 
     return await insumosFound.update({
       cantidad: insumosFound.cantidad - cantidad
-    })
+    });
   }
 
   async moveInsumosToAnotherLocal(oldLocalId, newLocalId, insumoId, cantidad){
@@ -161,8 +159,9 @@ class LocalService{
     return {
       retiredInsumosFromLocal,
       addedInsumoToLocal
-    };
+    }
   }
+
 }
 
 module.exports = new LocalService();

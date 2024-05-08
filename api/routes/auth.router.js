@@ -30,7 +30,7 @@ async function loginUser(req, res, next){
     const { user } = req;
     const token = await authService.singToken(user);
 
-    res.status(202).json({
+    res.status(200).json({
       user,
       token
     })
@@ -45,7 +45,7 @@ async function sendRecoveryEmail(req, res, next){
     const payload = req.user;
     const rta = await authService.getMailInfo(payload.sub);
 
-    res.status(202).json({
+    res.status(200).json({
       rta
     })
   }
@@ -59,7 +59,7 @@ async function changePassword(req, res, next){
     const {token, contrasena} = req.body;
     const rta = await authService.changePassword(token, contrasena);
 
-    res.status(202).json({
+    res.status(200).json({
       rta
     })
   }

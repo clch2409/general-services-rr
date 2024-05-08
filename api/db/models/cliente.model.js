@@ -1,5 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { TABLA_USUARIO } = require('./usuario.model');
+const { INACTIVO, ACTIVO } = require('../../utils/enums/status.enum');
 
 const TABLA_CLIENTE = 'clientes';
 
@@ -49,6 +50,14 @@ const clienteSchema = {
     onUpdate: 'cascade',
     onDelete: 'cascade',
   },
+  status: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: ACTIVO.name,
+    validate: {
+      isIn: [[ACTIVO.name, INACTIVO.name]]
+    }
+  },
   createdAt: {
     field: 'created_at',
     allowNull: false,
@@ -66,7 +75,7 @@ const clienteSchema = {
 class Cliente extends Model{
 
   static associate(models){
-    this.belongsTo(models.Usuario, { as: 'usuario' })
+    this.belongsTo(models.Usuario, { as: 'usuario' });
   }
 
   static config(sequelize){

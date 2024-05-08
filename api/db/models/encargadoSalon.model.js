@@ -54,7 +54,7 @@ const encargadoSchema = {
   status: {
     allowNull: false,
     type: DataTypes.STRING,
-    defaultValue: INACTIVO.name,
+    defaultValue: ACTIVO.name,
     validate: {
       isIn: [[ACTIVO.name, INACTIVO.name]]
     }

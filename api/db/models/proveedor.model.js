@@ -17,11 +17,16 @@ const proveedorSchema = {
   },
   email: {
     allowNUll: true,
+    unique: true,
     type: DataTypes.STRING,
   },
   telefono: {
     allowNull: false,
     type: DataTypes.CHAR(9),
+  },
+  direccion: {
+    allowNull: true,
+    type: DataTypes.STRING,
   },
   fechaContrato: {
     field: 'fecha_contrato',
@@ -53,11 +58,15 @@ const proveedorSchema = {
 class Proveedor extends Model{
 
   static associate(models){
-    this.belongsToMany(models.Insumo, {
+    // this.belongsToMany(models.Insumo, {
+    //   as: 'insumos',
+    //   through: models.ProveedorInsumo,
+    //   foreignKey: 'idProveedor',
+    //   otherKey: 'idInsumo',
+    // });
+    this.hasMany(models.Insumo, {
       as: 'insumos',
-      through: models.ProveedorInsumo,
-      foreignKey: 'idProveedor',
-      otherKey: 'idInsumo',
+      foreignKey: 'idProveedor'
     });
   }
 

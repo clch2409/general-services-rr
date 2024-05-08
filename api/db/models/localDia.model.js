@@ -1,6 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { TABLA_LOCAL } = require('./local.model');
 const { TABLA_DIA } = require('./dia.model');
+const { ACTIVO, INACTIVO } = require('../../utils/enums/status.enum');
 
 const TABLA_LOCAL_DIA = 'local_dia';
 
@@ -45,6 +46,14 @@ const localDiaSchema = {
     allowNull: false,
     type: DataTypes.DATE,
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+  },
+  status: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: ACTIVO.name,
+    validate: {
+      isIn: [[ACTIVO.name, INACTIVO.name]]
+    }
   }
 }
 

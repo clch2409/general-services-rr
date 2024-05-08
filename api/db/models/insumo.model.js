@@ -1,5 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { INACTIVO, ACTIVO } = require('../../utils/enums/status.enum');
+const { TABLA_PROVEEDOR } = require('./proveedor.model');
 
 const TABLA_INSUMO = 'insumos';
 
@@ -15,9 +16,16 @@ const insumoSchema = {
     allowNull: false,
     type: DataTypes.STRING,
   },
-  precio: {
+  proveedorId: {
+    field: 'id_proveedor',
     allowNull: false,
-    type: DataTypes.FLOAT(6,2).UNSIGNED,
+    type: DataTypes.INTEGER,
+    references: {
+      model: TABLA_PROVEEDOR,
+      key: 'id_proveedor'
+    },
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
   },
   createdAt: {
     field: 'created_at',
@@ -44,7 +52,9 @@ const insumoSchema = {
 class Insumo extends Model{
 
   static associate(models){
-
+    this.belongsTo(models.Proveedor, {
+      as: 'proveedor'
+    });
   }
 
   static config(sequelize){

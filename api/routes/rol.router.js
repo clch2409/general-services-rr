@@ -12,36 +12,24 @@ const rolRouter = express.Router();
 
 //***************** Rutas ******************
 rolRouter.get('',
-authenticationByJwt(),
-  validateRoles(ADMIN.name, ENCARGADO.name),
+  // authenticationByJwt(),
+  // validateRoles(ADMIN.name, ENCARGADO.name),
   findAll
 );
 
 rolRouter.post('',
-  authenticationByJwt(),
-  validateRoles(ADMIN.name),
+  // authenticationByJwt(),
+  // validateRoles(ADMIN.name),
   validatorHandler(createRolSchema, 'body'),
   createRol
 );
 
 rolRouter.patch('/:id',
-  authenticationByJwt(),
-  validateRoles(ADMIN.name),
+  // authenticationByJwt(),
+  // validateRoles(ADMIN.name),
   validatorHandler(getRolSchema, 'params'),
   validatorHandler(createRolSchema, 'body'),
-  async (req, res, next) => {
-    try{
-      const { params, body } = req;
-      const updatedRol = await rolService.updateRol(params.id, body);
-
-      res.status(200).json({
-        updatedRol
-      });
-    }
-    catch(e){
-      next(e);
-    }
-  }
+  updateRol
 );
 //***************** Rutas ******************
 
@@ -49,7 +37,7 @@ rolRouter.patch('/:id',
 async function findAll(req, res, next){
   try{
     const roles = await rolService.findAll()
-    res.status(201).json({
+    res.status(200).json({
       roles
     })
   }
@@ -66,6 +54,20 @@ async function createRol(req, res, next){
     res.status(201).json(
       newRol
     )
+  }
+  catch(e){
+    next(e);
+  }
+}
+
+async function updateRol (req, res, next){
+  try{
+    const { params, body } = req;
+    const updatedRol = await rolService.updateRol(params.id, body);
+
+    res.status(200).json({
+      updatedRol
+    });
   }
   catch(e){
     next(e);

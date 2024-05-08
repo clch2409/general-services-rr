@@ -49,7 +49,7 @@ const usuarioSchema = {
   status: {
     allowNUll: false,
     type: DataTypes.STRING,
-    defualtValue: ACTIVO.name,
+    defaultValue: ACTIVO.name,
     validate: {
       isIn: [[ACTIVO.name, INACTIVO.name]]
     }

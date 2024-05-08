@@ -58,7 +58,7 @@ class AuthService{
     const changedPasswordUser = await usuarioService.updateUser(foundUser.id, {
       recoveryToken: null,
       contrasena: passwordHashed,
-    })
+    });
 
     return changedPasswordUser;
   }

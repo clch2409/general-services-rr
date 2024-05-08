@@ -12,21 +12,22 @@ const { TABLA_PROVEEDOR_INSUMO, proveedorInsumoSchema } = require('../models/pro
 module.exports = {
   async up (queryInterface, Sequelize) {
     queryInterface.createTable(TABLA_DIA, diaSchema);
+    queryInterface.createTable(TABLA_PROVEEDOR, proveedorSchema);
     queryInterface.createTable(TABLA_INSUMO, insumoSchema);
     queryInterface.createTable(TABLA_INSUMO_LOCAL, insumoLocalSchema);
     queryInterface.createTable(TABLA_LOCAL, localSchema);
     queryInterface.createTable(TABLA_LOCAL_DIA, localDiaSchema);
-    queryInterface.createTable(TABLA_PROVEEDOR, proveedorSchema);
-    queryInterface.createTable(TABLA_PROVEEDOR_INSUMO, proveedorInsumoSchema);
+
+    // queryInterface.createTable(TABLA_PROVEEDOR_INSUMO, proveedorInsumoSchema);
   },
 
   async down (queryInterface, Sequelize) {
     queryInterface.dropTable(TABLA_DIA);
+    queryInterface.dropTable(TABLA_PROVEEDOR);
     queryInterface.dropTable(TABLA_INSUMO);
     queryInterface.dropTable(TABLA_INSUMO_LOCAL);
     queryInterface.dropTable(TABLA_LOCAL);
     queryInterface.dropTable(TABLA_LOCAL_DIA);
-    queryInterface.dropTable(TABLA_PROVEEDOR);
-    queryInterface.dropTable(TABLA_PROVEEDOR_INSUMO);
+    // queryInterface.dropTable(TABLA_PROVEEDOR_INSUMO);
   }
 };

@@ -64,7 +64,6 @@ async function findAll(req, res, next){
   }
 }
 
-//TODO Recuerda que tienes que verificar si te manda el payload cuando haces la autenticacion
 async function createCliente(req, res, next){
   try{
     const newCliente = await clienteService.createCliente(req.body);
