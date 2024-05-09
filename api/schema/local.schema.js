@@ -2,10 +2,12 @@ const joi = require('joi');
 
 const { ACTIVO, INACTIVO } = require('./../utils/enums/status.enum');
 
-const id = joi.number().integer();
-const nombre = joi.string().min(5).max(50);
-const descripcion = joi.string().min(5);
-const direccion = joi.string().min(5);
+const regexNameRule = RegExp(/^[A-Za-z\s]+$/)
+
+const id = joi.number().integer().positive();
+const nombre = joi.string().min(5).max(50).regex(regexNameRule);
+const descripcion = joi.string().min(5).regex(regexNameRule);
+const direccion = joi.string().min(5).regex(regexNameRule);
 const aforoMaximo = joi.number().positive().min(50).max(500);
 const fechaInactivacion = joi.date();
 const status = joi.string().valid(ACTIVO.name, INACTIVO.name);

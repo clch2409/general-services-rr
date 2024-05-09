@@ -1,7 +1,9 @@
 const joi = require('joi');
 
-const id = joi.number().integer();
-const nombre = joi.string().min(5);
+const regexNameRule = RegExp(/^[A-Za-z\s]+$/)
+
+const id = joi.number().integer().positive();
+const nombre = joi.string().min(5).regex(regexNameRule);
 
 const createRolSchema = joi.object({
   nombre: nombre.required(),

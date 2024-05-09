@@ -39,19 +39,20 @@ class InsumoService {
     return updatedInsumo;
   }
 
-  // async deleteInsumo (insumoId){
-  //   const foundInsumo = await this.findInsumoById(insumoId);
+  async deleteInsumo (insumoId){
 
-  //   if (foundInsumo.status === INACTIVO.name){
-  //     throw boom.notAcceptable('El insumo ya se encuentra inactivo!');
-  //   }
+    const foundInsumo = await this.findInsumoById(insumoId);
 
-  //   const deletedInsumo = await foundInsumo.update({
-  //     status: INACTIVO.name
-  //   });
+    if (foundInsumo.status === INACTIVO.name){
+      throw boom.notAcceptable('El insumo ya se encuentra inactivo!');
+    }
 
-  //   return deletedInsumo;
-  // }
+    const deletedInsumo = await foundInsumo.update({
+      status: INACTIVO.name
+    });
+
+    return deletedInsumo;
+  }
 }
 
 module.exports = new InsumoService();

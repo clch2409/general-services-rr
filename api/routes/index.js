@@ -7,6 +7,8 @@ const { encargadoRouter } = require('./encargadoSalon.router');
 const { localRouter } = require('./local.router');
 const { insumoRouter } = require('./insumo.router');
 const { proveedorRouter } = require('./proveedor.router');
+const { cargoRouter } = require('./cargo.router');
+const { colaboradorRouter } = require('./colaborador.router');
 
 const root = '/api/v1';
 
@@ -22,6 +24,8 @@ function routerApi(app){
   router.use('/locales', localRouter);
   router.use('/insumos', insumoRouter);
   router.use('/proveedores', proveedorRouter);
+  router.use('/cargos', cargoRouter);
+  router.use('/colaboradores', colaboradorRouter);
 }
 
 module.exports = { routerApi }

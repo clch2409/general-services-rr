@@ -3,12 +3,12 @@ const { models } = require('./../libs/sequelize');
 
 const boom = require('@hapi/boom');
 
+const insumoService = require('./insumo.service');
+
 class ProveedorService{
 
   async findAll(){
-    return await models.Proveedor.findAll({
-      include: ['insumos']
-    });
+    return await models.Proveedor.findAll();
   }
 
   async createProveedor(body){
@@ -38,6 +38,12 @@ class ProveedorService{
 
     const deletedProveedor = await foundProveedor.update({
       status: INACTIVO.name
+    });
+
+    deletedProveedor.insumos.forEach(insumo => {
+      insumo.update({
+        status: INACTIVO.name
+      });
     });
 
     return deletedProveedor;

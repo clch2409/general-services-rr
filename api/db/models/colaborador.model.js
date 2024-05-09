@@ -1,12 +1,12 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
-const { TABLA_USUARIO } = require('./usuario.model');
-const { INACTIVO, ACTIVO } = require('../../utils/enums/status.enum');
+const { TABLA_CARGO } = require('./cargo.model');
+const { ACTIVO, INACTIVO } = require('../../utils/enums/status.enum');
 
-const TABLA_CLIENTE = 'clientes';
+const TABLA_COLABORADOR = 'colaboradores';
 
-const clienteSchema = {
+const colaboradorSchema = {
   id: {
-    field: 'id_cliente',
+    field: 'id_colaborador',
     allowNull: false,
     primaryKey: true,
     type: DataTypes.INTEGER,
@@ -28,24 +28,29 @@ const clienteSchema = {
   },
   telefono: {
     allownull: false,
-    type: DataTypes.STRING,
+    type: DataTypes.CHAR(9),
   },
   dni: {
     allowNull: false,
-    type: DataTypes.CHAR(8),
+    type: DataTypes.STRING(9),
   },
-  direccion: {
+  email: {
     allowNull: false,
+    unique: true,
     type: DataTypes.STRING,
   },
-  usuarioId: {
-    field: 'id_usuario',
+  fechaContratacion: {
+    field: 'fecha_contratacion',
+    allowNull: false,
+    type: DataTypes.DATE,
+  },
+  cargoId: {
+    field: 'id_cargo',
     allowNull: false,
     type: DataTypes.INTEGER,
-    unique: true,
     references: {
-      model: TABLA_USUARIO,
-      key: 'id_usuario'
+      model: TABLA_CARGO,
+      key: 'id_cargo'
     },
     onUpdate: 'cascade',
     onDelete: 'cascade',
@@ -72,31 +77,27 @@ const clienteSchema = {
   },
 }
 
-class Cliente extends Model{
+class Colaborador extends Model{
 
   static associate(models){
-    this.belongsTo(models.Usuario, { as: 'usuario' });
-    this.hasMany(models.Evento, {
-      as: 'eventos',
-      foreignKey: 'clienteId',
-    })
+    this.belongsTo(models.Cargo, { as: 'cargo' });
   }
 
   static config(sequelize){
     return {
       sequelize,
-      tableName: TABLA_CLIENTE,
-      modelName: 'Cliente',
+      tableName: TABLA_COLABORADOR,
+      modelName: 'Colaborador',
       hooks: {
-        beforeUpdate: (instance) => {
+        afterUpdate: async (instance) => {
           instance.updatedAt = Sequelize.literal('CURRENT_TIMESTAMP');
         }
       },
       defaultScope: {
-        include: ['usuario']
-      },
+        include: ['cargo']
+      }
     }
   }
 }
 
-module.exports = { Cliente, TABLA_CLIENTE, clienteSchema }
+module.exports = { Colaborador, TABLA_COLABORADOR, colaboradorSchema }

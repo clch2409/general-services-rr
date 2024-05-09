@@ -28,11 +28,11 @@ const encargadoSchema = {
   },
   telefono: {
     allownull: false,
-    type: DataTypes.STRING,
+    type: DataTypes.CHAR(9),
   },
   dni: {
     allowNull: false,
-    type: DataTypes.CHAR(8),
+    type: DataTypes.STRING(9),
   },
   fechaContratacion: {
     field: 'fecha_contratacion',
@@ -76,7 +76,11 @@ const encargadoSchema = {
 class EncargadoSalon extends Model{
 
   static associate(models){
-    this.belongsTo(models.Usuario, { as: 'usuario' })
+    this.belongsTo(models.Usuario, { as: 'usuario' });
+    this.hasMany(models.Evento, {
+      as: 'eventos',
+      foreignKey: 'encargadoId'
+    })
   }
 
   static config(sequelize){

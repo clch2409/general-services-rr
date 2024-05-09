@@ -12,26 +12,28 @@ const insumoRouter = Router();
 
 //****************** Rutas *************************
 insumoRouter.get('',
-  authenticationByJwt(),
-  validateRoles(ADMIN.name, ENCARGADO.name),
+  // authenticationByJwt(),
+  // validateRoles(ADMIN.name, ENCARGADO.name),
   findAll
 );
 
 insumoRouter.post('',
-  authenticationByJwt(),
-  validateRoles(ADMIN.name, ENCARGADO.name),
+  // authenticationByJwt(),
+  // validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(createInsumoSchema, 'body'),
   createInsumo
 );
 
 insumoRouter.get('/:id',
-  authenticationByJwt(),
-  validateRoles(ADMIN.name, ENCARGADO.name),
+  // authenticationByJwt(),
+  // validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getInsumoByIdSchema, 'params'),
   findInsumoById
 );
 
 insumoRouter.patch('/:id',
+  // authenticationByJwt(),
+  // validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getInsumoByIdSchema, 'params'),
   validatorHandler(updatedInsumoSchema, 'body'),
   updateInsumo

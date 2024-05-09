@@ -9,6 +9,13 @@ const { Local, localSchema } = require('./local.model');
 const { LocalDia, localDiaSchema } = require('./localDia.model');
 const { Proveedor, proveedorSchema } = require('./proveedor.model');
 // const { ProveedorInsumo, proveedorInsumoSchema } = require('./proveedorInsumo.model');
+const { Cargo, cargoSchema } = require('./cargo.model');
+const { TipoEvento, tipoEventoSchema } = require('./tipoEvento.model');
+const { Servicio, servicioSchema} = require('./servicio.model');
+const { Colaborador, colaboradorSchema } = require('./colaborador.model');
+const { Evento, eventoSchema} = require('./evento.model');
+const { ColaboradorEvento, colaboradorEventoSchema} = require('./colaboradorEvento.model');
+const { ServicioEvento, servicioEventoSchema } = require('./servicioEvento.model');
 
 
 function setupModels(sequelize){
@@ -23,6 +30,13 @@ function setupModels(sequelize){
   LocalDia.init(localDiaSchema, LocalDia.config(sequelize));
   Proveedor.init(proveedorSchema, Proveedor.config(sequelize));
   // ProveedorInsumo.init(proveedorInsumoSchema, ProveedorInsumo.config(sequelize));
+  Cargo.init(cargoSchema, Cargo.config(sequelize));
+  TipoEvento.init(tipoEventoSchema, TipoEvento.config(sequelize));
+  Servicio.init(servicioSchema, Servicio.config(sequelize));
+  Colaborador.init(colaboradorSchema, Colaborador.config(sequelize));
+  Evento.init(eventoSchema, Evento.config(sequelize));
+  ColaboradorEvento.init(colaboradorEventoSchema, ColaboradorEvento.config(sequelize));
+  ServicioEvento.init(servicioEventoSchema, ServicioEvento.config(sequelize));
 
   Rol.associate(sequelize.models);
   Usuario.associate(sequelize.models);
@@ -30,6 +44,10 @@ function setupModels(sequelize){
   EncargadoSalon.associate(sequelize.models);
   Local.associate(sequelize.models);
   Proveedor.associate(sequelize.models);
+  Cargo.associate(sequelize.models);
+  TipoEvento.associate(sequelize.models);
+  Colaborador.associate(sequelize.models);
+  Evento.associate(sequelize.models);
 }
 
 module.exports = setupModels

@@ -83,6 +83,10 @@ class Local extends Model{
       foreignKey: 'idLocal',
       otherKey: 'idDia'
     });
+    this.hasMany(models.Evento, {
+      as: 'eventos',
+      foreignKey: 'localId'
+    });
   }
 
   static config(sequelize){

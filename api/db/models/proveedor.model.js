@@ -66,7 +66,7 @@ class Proveedor extends Model{
     // });
     this.hasMany(models.Insumo, {
       as: 'insumos',
-      foreignKey: 'idProveedor'
+      foreignKey: 'proveedorId'
     });
   }
 
@@ -79,6 +79,9 @@ class Proveedor extends Model{
         beforeUpdate: (instance) =>{
           instance.updatedAt = Sequelize.literal('CURRENT_TIMESTAMP');
         },
+      },
+      defaultScope: {
+        include: ['insumos']
       }
     }
   }

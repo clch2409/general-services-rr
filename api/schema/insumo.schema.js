@@ -2,13 +2,20 @@ const joi = require('joi');
 
 const { ACTIVO, INACTIVO } = require('./../utils/enums/status.enum');
 
-const id = joi.number().integer();
-const nombre = joi.string().min(5).max(50);
+const regexNameRule = RegExp(/^[A-Za-z\s]+$/)
+
+const id = joi.number().integer().positive();
+const nombre = joi.string().min(5).max(50).regex(regexNameRule);
+const precio = joi.number().precision(6,2);
 const status = joi.string().valid(ACTIVO.name, INACTIVO.name);
+
+const proveedorId = id;
 
 const createInsumoSchema = joi.object({
   nombre: nombre.required(),
-  status
+  precio: precio.required(),
+  proveedorId: proveedorId.required(),
+  status,
 });
 
 const getInsumoByIdSchema = joi.object({
@@ -17,6 +24,8 @@ const getInsumoByIdSchema = joi.object({
 
 const updatedInsumoSchema = joi.object({
   nombre,
+  precio,
+  proveedorId,
   status,
 });
 

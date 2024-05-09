@@ -12,21 +12,21 @@ const rolRouter = express.Router();
 
 //***************** Rutas ******************
 rolRouter.get('',
-  // authenticationByJwt(),
-  // validateRoles(ADMIN.name, ENCARGADO.name),
+  authenticationByJwt(),
+  validateRoles(ADMIN.name, ENCARGADO.name),
   findAll
 );
 
 rolRouter.post('',
-  // authenticationByJwt(),
-  // validateRoles(ADMIN.name),
+  authenticationByJwt(),
+  validateRoles(ADMIN.name),
   validatorHandler(createRolSchema, 'body'),
   createRol
 );
 
 rolRouter.patch('/:id',
-  // authenticationByJwt(),
-  // validateRoles(ADMIN.name),
+  authenticationByJwt(),
+  validateRoles(ADMIN.name),
   validatorHandler(getRolSchema, 'params'),
   validatorHandler(createRolSchema, 'body'),
   updateRol

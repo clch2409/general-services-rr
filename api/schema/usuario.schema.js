@@ -4,9 +4,9 @@ const { ACTIVO, INACTIVO } = require('../utils/enums/status.enum');
 
 const patronContrasena = RegExp(/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/)
 
-const id = joi.number().integer();
+const id = joi.number().integer().positive();
 const email = joi.string().email();
-const contrasena = joi.string().pattern(patronContrasena);
+const contrasena = joi.string().regex(patronContrasena);
 const rolId = joi.number().integer().min(1);
 const status = joi.string().valid(ACTIVO.name, INACTIVO.name);
 
