@@ -10,6 +10,7 @@ const { proveedorRouter } = require('./proveedor.router');
 const { cargoRouter } = require('./cargo.router');
 const { colaboradorRouter } = require('./colaborador.router');
 const { tipoEventoRouter } = require('./tipoEvento.router');
+const { servicioRouter } = require('./servicio.router');
 
 const root = '/api/v1';
 
@@ -28,6 +29,7 @@ function routerApi(app){
   router.use('/cargos', cargoRouter);
   router.use('/colaboradores', colaboradorRouter);
   router.use('/tipoevento', tipoEventoRouter);
+  router.use('/servicios', servicioRouter);
 }
 
 module.exports = { routerApi }

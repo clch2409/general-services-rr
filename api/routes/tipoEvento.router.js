@@ -39,6 +39,23 @@ tipoEventoRouter.post('',
   }
 );
 
+tipoEventoRouter.get('/:id',
+  validatorHandler(getTipoEventoSchema, 'params'),
+  async (req, res, next) => {
+    try{
+      const { id } = req.params;
+      const foundTipoEvento = await tipoEventoService.findTipoEventoById(id);
+
+      res.status(200).json({
+        foundTipoEvento
+      })
+    }
+    catch(e){
+      next(e)
+    }
+  }
+);
+
 tipoEventoRouter.patch('/:id',
   validatorHandler(getTipoEventoSchema, 'params'),
   validatorHandler(updateTipoEventoSchema, 'body'),

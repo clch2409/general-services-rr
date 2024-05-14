@@ -13,7 +13,7 @@ class TipoEventoService{
   }
 
   async findTipoEventoById(tipoEventoId){
-    const tipoEventoFound = models.TipoEvento.findByPk(tipoEventoId);
+    const tipoEventoFound = await models.TipoEvento.findByPk(tipoEventoId);
 
     if (!tipoEventoFound){
       throw boom.notFound('El tipo de evento no existe');

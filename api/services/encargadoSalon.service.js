@@ -21,12 +21,7 @@ class EncargadoService{
   }
 
   async createEncargado(body){
-    const fechaHoy = new Date();
-    const fechaContratacionColaborador = new Date(body.fechaContratacion);
-
-    if (fechaHoy < fechaContratacionColaborador){
-      throw boom.notAcceptable('La fecha de contratación no puede ser después a la fecha de hoy')
-    }
+    await this.checkDniAndHiringDate(body);
 
     const newEncargado = await models.EncargadoSalon.create(body, {
       include: ['usuario']
@@ -99,6 +94,33 @@ class EncargadoService{
 
 
     return deletedEncargado;
+  }
+
+  async checkDniAndHiringDate(body){
+    const encargadoFound = await this.checkExistenceByDni(body.dni);
+    const checkFechaContrato = this.validateHiringDate(body.fechaContratacion)
+
+    if (encargadoFound){
+      throw boom.notAcceptable('El dni ya se encuentra registrado en el sistema');
+    }
+    else if (!checkFechaContrato){
+      throw boom.notAcceptable('La fecha de contratación no puede ser después a la fecha de hoy');
+    }
+  }
+
+  async checkExistenceByDni(encargadoDni){
+    return await models.EncargadoSalon.findOne({
+      where: {
+        dni: encargadoDni,
+      }
+    });
+  }
+
+  async validateHiringDate(fechaContrato){
+    const fechaHoy = new Date();
+    const fechaContratacionColaborador = new Date(fechaContrato)
+
+    return fechaHoy > fechaContratacionColaborador;
   }
 
 }

@@ -6,6 +6,8 @@ const nodemailer = require('nodemailer');
 const config = require('./../config/config');
 const usuarioService = require('./usuario.service');
 
+const { ACTIVO, INACTIVO } = require('./../utils/enums/status.enum');
+
 class AuthService{
 
   async checkUserCredentiasl(email, password){
@@ -14,6 +16,9 @@ class AuthService{
 
     if(!foundUser){
       throw boom.unauthorized('El usuario no existe');
+    }
+    else if (foundUser.status === INACTIVO){
+      throw boom.unauthorized('El usuario se encuentra inactivo');
     }
 
     const passwordMatches = await bcrypt.compare(password, foundUser.dataValues.contrasena);
