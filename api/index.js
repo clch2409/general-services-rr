@@ -32,6 +32,16 @@ app.use(passport.initialize({
 
 app.get('/welcome',
   (req, res, next) =>{
+    // const fechaHoy = new Date();
+    // const otraFecha = new Date('2024-12-12 00:00:00');
+    // const validacion = fechaHoy > otraFecha;
+
+    // res.json({
+    //   fechaHoy,
+    //   otraFecha,
+    //   validacion
+    // });
+
     res.json('Hello World')
   }
 )

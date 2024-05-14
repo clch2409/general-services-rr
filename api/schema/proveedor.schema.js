@@ -2,7 +2,7 @@ const joi = require('joi');
 
 const { ACTIVO, INACTIVO } = require('./../utils/enums/status.enum');
 
-const regexNameRule = RegExp(/^[A-Za-z\s]+$/)
+const regexNameRule = RegExp(/^[A-Za-z\sñ]+$/)
 const regexNumberRule = RegExp(/^\d{9}$/);
 
 const id = joi.number().integer().positive();

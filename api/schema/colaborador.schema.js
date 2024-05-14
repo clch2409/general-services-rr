@@ -2,7 +2,7 @@ const joi = require('joi');
 
 const { ACTIVO, INACTIVO } = require('./../utils/enums/status.enum');
 
-const regexNameRule = RegExp(/^[A-Za-z\s]+$/);
+const regexNameRule = RegExp(/^[A-Za-z\sñ]+$/);
 const regexDniRule = RegExp(/^\d{8,9}$/);
 const regexNumberRule = RegExp(/^\d{9}$/);
 
@@ -34,6 +34,10 @@ const getColaboradorByIdSchema = joi.object({
   id: id.required(),
 });
 
+const getColaboradorByDniSchema = joi.object({
+  dni: dni.required(),
+});
+
 const updateColaboradorSchema = joi.object({
   nombres,
   apPaterno,
@@ -46,4 +50,4 @@ const updateColaboradorSchema = joi.object({
   status,
 });
 
-module.exports = { createColaboradorSchema, getColaboradorByIdSchema, updateColaboradorSchema }
+module.exports = { createColaboradorSchema, getColaboradorByIdSchema, updateColaboradorSchema, getColaboradorByDniSchema }

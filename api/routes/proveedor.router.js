@@ -11,8 +11,8 @@ const { validateRoles } = require('./../middlewares/auth.handler');
 const { ADMIN, ENCARGADO } = require('./../utils/enums/rol.enum');
 
 proveedorRouter.get('',
-  // authenticationByJwt(),
-  // validateRoles(ADMIN.name, ENCARGADO.name),
+  authenticationByJwt(),
+  validateRoles(ADMIN.name, ENCARGADO.name),
   findAll
 );
 
@@ -45,12 +45,12 @@ proveedorRouter.delete('/:id',
   deleteProveedor
 );
 
-proveedorRouter.post('/add/insumo',
-  authenticationByJwt(),
-  validateRoles(ADMIN.name, ENCARGADO.name),
-  validatorHandler(addInsumoToProveedorSchema, 'body'),
-  addInsumoToProveedor
-);
+// proveedorRouter.post('/add/insumo',
+//   authenticationByJwt(),
+//   validateRoles(ADMIN.name, ENCARGADO.name),
+//   validatorHandler(addInsumoToProveedorSchema, 'body'),
+//   addInsumoToProveedor
+// );
 
 
 async function findAll (req, res, next) {
@@ -123,18 +123,18 @@ async function deleteProveedor(req, res, next){
   }
 }
 
-async function addInsumoToProveedor(req, res, next) {
-  try{
-    const { body } = req;
-    const addedInsumo = proveedorService.addInsumoToProvedor(body);
+// async function addInsumoToProveedor(req, res, next) {
+//   try{
+//     const { body } = req;
+//     const addedInsumo = proveedorService.addInsumoToProvedor(body);
 
-    res.status(201).json({
-      addedInsumo
-    });
-  }
-  catch(e){
-    next(e);
-  }
-}
+//     res.status(201).json({
+//       addedInsumo
+//     });
+//   }
+//   catch(e){
+//     next(e);
+//   }
+// }
 
 module.exports = { proveedorRouter }

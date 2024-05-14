@@ -21,6 +21,13 @@ class EncargadoService{
   }
 
   async createEncargado(body){
+    const fechaHoy = new Date();
+    const fechaContratacionColaborador = new Date(body.fechaContratacion);
+
+    if (fechaHoy < fechaContratacionColaborador){
+      throw boom.notAcceptable('La fecha de contratación no puede ser después a la fecha de hoy')
+    }
+
     const newEncargado = await models.EncargadoSalon.create(body, {
       include: ['usuario']
     });

@@ -1,6 +1,6 @@
 const joi = require('joi');
 
-const regexNameRule = RegExp(/^[A-Za-z\s]+$/)
+const regexNameRule = RegExp(/^[A-Za-z\sñ]+$/)
 
 const id = joi.number().integer().positive();
 const nombre = joi.string().min(5).regex(regexNameRule);

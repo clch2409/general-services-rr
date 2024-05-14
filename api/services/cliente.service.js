@@ -22,6 +22,12 @@ class ClienteService{
 
   //Permite crear el cliente con el usuario en el mismo cuerpo de la solicitud
   async createCliente(body){
+    const clienteFound = this.checkClienteExistenceByDni(body.dni);
+
+    if (clienteFound){
+      throw boom.notAcceptable('El dni ingresado ya se encuentra registrado');
+    }
+
     const newCliente = await models.Cliente.create(body, {
       include: ['usuario']
     });
@@ -88,6 +94,14 @@ class ClienteService{
   // async deleteCliente(clienteId){
 
   // }
+
+  async checkClienteExistenceByDni(clienteDni){
+    return await models.Cliente.findOne({
+      where: {
+        dni: clienteDni
+      }
+    })
+  }
 
 }
 

@@ -34,13 +34,10 @@ class InsumoService {
 
     const updatedInsumo = await foundInsumo.update(changes);
 
-    console.log(updatedInsumo);
-
     return updatedInsumo;
   }
 
   async deleteInsumo (insumoId){
-
     const foundInsumo = await this.findInsumoById(insumoId);
 
     if (foundInsumo.status === INACTIVO.name){

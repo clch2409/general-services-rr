@@ -2,7 +2,7 @@ const joi = require('joi');
 
 const { createUsuarioSchema, getUsuarioByEmailSchema } = require('./usuario.schema');
 
-const regexNameRule = RegExp(/^[A-Za-z\s]+$/)
+const regexNameRule = RegExp(/^[A-Za-z\sñ]+$/)
 const regexDniRule = RegExp(/^\d{8,9}$/);
 const regexNumberRule = RegExp(/^\d{9}$/);
 

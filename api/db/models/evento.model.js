@@ -130,9 +130,6 @@ class Evento extends Model{
           instance.updatedAt = Sequelize.literal('CURRENT_TIMESTAMP');
         }
       },
-      defaultScope: {
-        include:['usuario']
-      }
     }
   }
 }

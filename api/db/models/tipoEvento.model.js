@@ -12,6 +12,7 @@ const tipoEventoSchema = {
   },
   nombre: {
     allowNull: false,
+    unique: true,
     type: DataTypes.STRING,
   },
   createdAt: {

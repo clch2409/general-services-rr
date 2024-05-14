@@ -62,27 +62,6 @@ class LocalService{
     return deletedLocal;
   }
 
-  async checkInsumoAndLocalExistence(localId, insumoId){
-    const insumoExists = await insumoService.checkInsumoExistence(insumoId);
-    const localExits = await this.checkLocalExistence(localId);
-
-    return {
-      bothExist: insumoExists && localExits,
-      insumoExists,
-      localExits
-    };
-  }
-
-  async findInsumosByLocal(localId, insumoId){
-    const insumosFound = await models.InsumoLocal.findOne({
-      where: {
-        idLocal: localId,
-        idInsumo: insumoId
-      }
-    })
-
-    return insumosFound;
-  }
 
   //Se agrega el insumo por local y su cantidad, verifica si el insumo ya está en el local y le agrega la cantidad ingresada
   async addInsumoToLocal(localId, insumoId, cantidad){
@@ -162,6 +141,28 @@ class LocalService{
     }
   }
 
+
+  async checkInsumoAndLocalExistence(localId, insumoId){
+    const insumoExists = await insumoService.checkInsumoExistence(insumoId);
+    const localExits = await this.checkLocalExistence(localId);
+
+    return {
+      bothExist: insumoExists && localExits,
+      insumoExists,
+      localExits
+    };
+  }
+
+  async findInsumosByLocal(localId, insumoId){
+    const insumosFound = await models.InsumoLocal.findOne({
+      where: {
+        idLocal: localId,
+        idInsumo: insumoId
+      }
+    })
+
+    return insumosFound;
+  }
 }
 
 module.exports = new LocalService();

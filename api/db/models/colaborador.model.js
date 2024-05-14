@@ -1,4 +1,5 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
+
 const { TABLA_CARGO } = require('./cargo.model');
 const { ACTIVO, INACTIVO } = require('../../utils/enums/status.enum');
 
@@ -91,7 +92,11 @@ class Colaborador extends Model{
       hooks: {
         afterUpdate: async (instance) => {
           instance.updatedAt = Sequelize.literal('CURRENT_TIMESTAMP');
-        }
+        },
+        // beforeCreate:  (instance) => {
+
+
+        // }
       },
       defaultScope: {
         include: ['cargo']

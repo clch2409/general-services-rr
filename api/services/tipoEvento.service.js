@@ -1,0 +1,35 @@
+const boom = require('@hapi/boom');
+
+const { models } = require('./../libs/sequelize');
+
+class TipoEventoService{
+
+  async findAll(){
+    return models.TipoEvento.findAll();
+  }
+
+  async createTipoEvento(body){
+    return models.TipoEvento.create(body);
+  }
+
+  async findTipoEventoById(tipoEventoId){
+    const tipoEventoFound = models.TipoEvento.findByPk(tipoEventoId);
+
+    if (!tipoEventoFound){
+      throw boom.notFound('El tipo de evento no existe');
+    }
+
+    return tipoEventoFound;
+  }
+
+  async updateTipoEvento(tipoEventoId, changes){
+    const tipoEventoFound = await this.findTipoEventoById(tipoEventoId);
+
+    const tipoEventoUpdated = await tipoEventoFound.update(changes);
+
+    return tipoEventoUpdated;
+  }
+
+}
+
+module.exports = new TipoEventoService();

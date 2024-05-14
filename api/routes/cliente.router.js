@@ -118,10 +118,11 @@ async function updateCliente(req, res, next) {
     const { params, body } = req
     const updatedCliente = await clienteService.updateCliente(params.id, body);
 
-    console.log(updatedCliente)
+    const clientes = await clienteService.findAll();
 
     res.status(200).json({
-      updatedCliente
+      updatedCliente,
+      clientes
     });
   }
   catch(e){

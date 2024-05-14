@@ -1,9 +1,9 @@
+const boom = require('@hapi/boom');
+
 const { INACTIVO } = require('../utils/enums/status.enum');
 const { models } = require('./../libs/sequelize');
 
-const boom = require('@hapi/boom');
-
-const insumoService = require('./insumo.service');
+// const insumoService = require('./insumo.service');
 
 class ProveedorService{
 
@@ -49,9 +49,9 @@ class ProveedorService{
     return deletedProveedor;
   }
 
-  async addInsumoToProvedor(body){
-    return await models.ProveedorInsumo.create(body);
-  }
+  // async addInsumoToProvedor(body){
+  //   return await models.ProveedorInsumo.create(body);
+  // }
 }
 
 module.exports = new ProveedorService();
