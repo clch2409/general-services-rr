@@ -3,7 +3,7 @@ const { TABLA_ENCARGADO } = require('./encargadoSalon.model');
 const { TABLA_CLIENTE } = require('./cliente.model');
 const { TABLA_LOCAL } = require('./local.model');
 const { TABLA_TIPO_EVENTO } = require('./tipoEvento.model');
-const { RESERVADO, REALIZADO, EN_PROCESO } = require('../../utils/enums/statusEvento.enum');
+const { RESERVADO, REALIZADO, EN_PROCESO, CANCELADO } = require('../../utils/enums/statusEvento.enum');
 
 const TABLA_EVENTO = 'eventos';
 
@@ -24,6 +24,16 @@ const eventoSchema = {
     field: 'fecha_evento',
     allowNull: false,
     type: DataTypes.DATE,
+  },
+  horaInicio: {
+    field: 'hora_inicio',
+    allowNull: false,
+    type: DataTypes.TIME,
+  },
+  horaFin: {
+    field: 'hora_fin',
+    allowNull: false,
+    type: DataTypes.TIME,
   },
   encargadoId: {
     field: 'id_encargado',
@@ -74,7 +84,7 @@ const eventoSchema = {
     type: DataTypes.STRING,
     defaultValue: RESERVADO.name,
     validate: {
-      isIn: [[RESERVADO.name, REALIZADO.name, EN_PROCESO.name]]
+      isIn: [[RESERVADO.name, REALIZADO.name, EN_PROCESO.name, CANCELADO.name]]
     }
   },
   createdAt: {
