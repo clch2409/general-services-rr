@@ -16,6 +16,7 @@ const { Colaborador, colaboradorSchema } = require('./colaborador.model');
 const { Evento, eventoSchema} = require('./evento.model');
 const { ColaboradorEvento, colaboradorEventoSchema} = require('./colaboradorEvento.model');
 const { ServicioEvento, servicioEventoSchema } = require('./servicioEvento.model');
+const { TipoBuffet, tipoBuffetSchema } = require('./tipoBuffet.model');
 
 
 function setupModels(sequelize){
@@ -37,6 +38,7 @@ function setupModels(sequelize){
   Evento.init(eventoSchema, Evento.config(sequelize));
   ColaboradorEvento.init(colaboradorEventoSchema, ColaboradorEvento.config(sequelize));
   ServicioEvento.init(servicioEventoSchema, ServicioEvento.config(sequelize));
+  TipoBuffet.init(tipoBuffetSchema, TipoBuffet.config(sequelize));
 
   Rol.associate(sequelize.models);
   Usuario.associate(sequelize.models);
@@ -48,6 +50,7 @@ function setupModels(sequelize){
   TipoEvento.associate(sequelize.models);
   Colaborador.associate(sequelize.models);
   Evento.associate(sequelize.models);
+  TipoBuffet.associate(sequelize.models);
 }
 
 module.exports = setupModels

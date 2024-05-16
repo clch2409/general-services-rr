@@ -11,6 +11,8 @@ const { cargoRouter } = require('./cargo.router');
 const { colaboradorRouter } = require('./colaborador.router');
 const { tipoEventoRouter } = require('./tipoEvento.router');
 const { servicioRouter } = require('./servicio.router');
+const { eventoRouter } = require('./evento.router');
+const { tipoBuffetRouter } = require('./tipoBuffet.router');
 
 const root = '/api/v1';
 
@@ -30,6 +32,8 @@ function routerApi(app){
   router.use('/colaboradores', colaboradorRouter);
   router.use('/tipoevento', tipoEventoRouter);
   router.use('/servicios', servicioRouter);
+  router.use('/eventos', eventoRouter);
+  router.use('/buffets', tipoBuffetRouter);
 }
 
 module.exports = { routerApi }

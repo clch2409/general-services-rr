@@ -62,6 +62,10 @@ class LocalService{
     return deletedLocal;
   }
 
+  async addPriceToLocal(body){
+
+  }
+
 
   //Se agrega el insumo por local y su cantidad, verifica si el insumo ya está en el local y le agrega la cantidad ingresada
   async addInsumoToLocal(localId, insumoId, cantidad){

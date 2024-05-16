@@ -1,4 +1,5 @@
 const boom = require('@hapi/boom');
+const bcrypt = require('bcrypt');
 
 const { models } = require('../libs/sequelize');
 const { INACTIVO } = require('../utils/enums/status.enum');
@@ -7,7 +8,7 @@ class UsuarioService{
 
   async findAll(){
     return await models.Usuario.findAll({
-      include: ['rol']
+      // include: ['rol']
     });
   }
 

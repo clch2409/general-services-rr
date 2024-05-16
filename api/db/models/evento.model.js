@@ -3,7 +3,8 @@ const { TABLA_ENCARGADO } = require('./encargadoSalon.model');
 const { TABLA_CLIENTE } = require('./cliente.model');
 const { TABLA_LOCAL } = require('./local.model');
 const { TABLA_TIPO_EVENTO } = require('./tipoEvento.model');
-const { RESERVADO, REALIZADO, EN_PROCESO, CANCELADO } = require('../../utils/enums/statusEvento.enum');
+const { TABLA_TIPO_BUFFET } = require('./tipoBuffet.model');
+const { RESERVADO, REALIZADO, EN_PROCESO, CANCELADO } = require('./../../utils/enums/statusEvento.enum');
 
 const TABLA_EVENTO = 'eventos';
 
@@ -28,12 +29,28 @@ const eventoSchema = {
   horaInicio: {
     field: 'hora_inicio',
     allowNull: false,
-    type: DataTypes.TIME,
+    type: DataTypes.DATE,
   },
   horaFin: {
     field: 'hora_fin',
     allowNull: false,
-    type: DataTypes.TIME,
+    type: DataTypes.DATE,
+  },
+  cantidadPersonas: {
+    field: 'cantidad_personas',
+    allowNull: false,
+    type: DataTypes.INTEGER
+  },
+  tipoBuffetId: {
+    field: 'id_tipo_buffet',
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: TABLA_TIPO_BUFFET,
+      key: 'id_tipo_buffet'
+    },
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
   },
   encargadoId: {
     field: 'id_encargado',
@@ -104,6 +121,9 @@ const eventoSchema = {
 class Evento extends Model{
 
   static associate(models){
+    this.belongsTo(models.TipoBuffet, {
+      as: 'tipoBuffet'
+    });
     this.belongsTo(models.EncargadoSalon, {
       as: 'encargado'
     });
@@ -140,6 +160,9 @@ class Evento extends Model{
           instance.updatedAt = Sequelize.literal('CURRENT_TIMESTAMP');
         }
       },
+      defaultScope: {
+        include: ['encargado', 'cliente', 'tipoEvento', 'local']
+      }
     }
   }
 }

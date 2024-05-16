@@ -76,8 +76,9 @@ class Usuario extends Model{
         }
       },
       defaultScope: {
+        include: ['rol'],
         attributes: {
-          exclude: ['contrasena', 'recoveryToken']
+          exclude: ['contrasena', 'recoveryToken'],
         }
       },
       scopes: {

@@ -29,6 +29,11 @@ const localSchema = {
     allowNull: false,
     type: DataTypes.SMALLINT,
   },
+  aforoMinimo: {
+    field: 'aforo_minimo',
+    allowNull: false,
+    type: DataTypes.SMALLINT,
+  },
   fechaInactivacion: {
     field: 'fecha_inactivacion',
     allowNull: true,
