@@ -16,8 +16,9 @@ const idLocal = id;
 const idInsumo = id;
 const cantidad = joi.number().positive().min(1).max(100);
 
-const idDia = id;
+const dias = joi.array().items(id);
 const precioLocal = joi.number().positive().min(1).max(10000);
+const precios = joi.array().items(precioLocal);
 
 const createLocalSchema = joi.object({
   nombre: nombre.required(),
@@ -55,8 +56,14 @@ const moveInsumoToLocalSchema = joi.object({
 
 const addPriceToLocalSchema = joi.object({
   idLocal: id.required(),
-  idDia: idDia.required(),
+  idDia: id.required(),
   precioLocal: precioLocal.required()
+});
+
+const addAllPricesToLocalSchema = joi.object({
+  dias: dias.required(),
+  idLocal: id.required(),
+  precios: precios.required()
 });
 
 module.exports = {
@@ -66,4 +73,5 @@ module.exports = {
   addInsumoToLocalSchema,
   moveInsumoToLocalSchema,
   addPriceToLocalSchema ,
+  addAllPricesToLocalSchema
 }

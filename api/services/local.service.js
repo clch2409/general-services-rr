@@ -63,9 +63,58 @@ class LocalService{
   }
 
   async addPriceToLocal(body){
-    return await models.LocalDia.create(body);
+    return models.LocalDia.create(body);
   }
 
+  async addPriceAllPricesToLocal(body){
+    const { dias, idLocal, precios } = body;
+
+    console.log(body);
+
+    dias.forEach(async (dia, index) => {
+      const localDia = {
+        idLocal,
+        idDia: dia,
+        precioLocal: precios[index]
+      }
+      await models.LocalDia.create(localDia);
+
+    });
+
+    const preciosByLocal = await this.findLocalById(idLocal);
+
+    return preciosByLocal;
+  }
+
+  async modifyPriceOfLocal(localId, diaId, price){
+    const localDia = await models.LocalDia.findOne({
+      where: {
+        idLocal: localId,
+        idDia: diaId
+      }
+    });
+
+    await localDia.update({
+      precio: price
+    });
+
+    return localDia;
+  }
+
+  async findPricePerDay(localId, dayId){
+    const foundPrice = await models.LocalDia.findOne({
+      where: {
+        idLocal: localId,
+        idDia: dayId
+      }
+    });
+
+    if (!foundPrice){
+      throw boom.notFound('El precio buscado no existe');
+    }
+
+    return foundPrice;
+  }
 
   //Se agrega el insumo por local y su cantidad, verifica si el insumo ya está en el local y le agrega la cantidad ingresada
   async addInsumoToLocal(localId, insumoId, cantidad){

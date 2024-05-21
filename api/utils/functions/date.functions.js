@@ -25,8 +25,15 @@ function getYesterdayDate(){
   return fechaAyer;
 }
 
+function getDayOfTheWeek(date){
+  const fecha = new Date(date);
+
+  return fecha.getDay();
+}
+
 module.exports = {
   addHoursToEventEndTime,
   getTodaysDate,
   getYesterdayDate,
+  getDayOfTheWeek,
 }

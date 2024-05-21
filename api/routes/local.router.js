@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 const localService = require('./../services/local.service');
 
-const { createLocalSchema, getLocalByIdSchema, updateLocalSchema, addInsumoToLocalSchema, moveInsumoToLocalSchema, addPriceToLocalSchema } = require('./../schema/local.schema');
+const { createLocalSchema, getLocalByIdSchema, updateLocalSchema, addInsumoToLocalSchema, moveInsumoToLocalSchema, addPriceToLocalSchema, addAllPricesToLocalSchema } = require('./../schema/local.schema');
 const validatorHandler = require('./../middlewares/validator.handler');
 const { authenticationByJwt } = require('../utils/auth/functions/passport.auth');
 const { validateRoles } = require('../middlewares/auth.handler');
@@ -46,6 +46,39 @@ localRouter.post('/add/prices',
 
       res.status(200).json({
         addedPrice
+      });
+    }
+    catch(e){
+      next(e);
+    }
+  }
+);
+
+localRouter.post('/add/all/prices',
+  validatorHandler(addAllPricesToLocalSchema, 'body'),
+  async (req, res, next) => {
+    try{
+      const { body } = req;
+      const addedPrices = await localService.addPriceAllPricesToLocal(body);
+
+      res.status(200).json({
+        addedPrices
+      });
+    }
+    catch(e){
+      next(e);
+    }
+  }
+);
+
+localRouter.post('/modify/prices',
+  async (req, res, next) => {
+    try{
+      const { localId, diaId, precio } = req.body;
+      const modifiedPrice = await localService.modifyPriceOfLocal(localId, diaId, precio);
+
+      res.status(200).json({
+        modifiedPrice
       });
     }
     catch(e){

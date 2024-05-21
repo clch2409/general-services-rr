@@ -1,6 +1,10 @@
 const boom = require('@hapi/boom');
 
-const { getTodaysDate, getYesterdayDate, addHoursToEventEndTime } = require('./../utils/functions/date.functions');
+const servicioService = require('./../services/servicio.service');
+const tipoBuffetService = require('./../services/tipoBuffet.service');
+const localService = require('./../services/local.service');
+
+const { getTodaysDate, getYesterdayDate, addHoursToEventEndTime, getDayOfTheWeek } = require('./../utils/functions/date.functions');
 const { RESERVADO, EN_PROCESO, CANCELADO } = require('./../utils/enums/statusEvento.enum');
 const { models } = require('./../libs/sequelize');
 const { TERMINADO } = require('../utils/enums/statusColaboradorEvento.enum');
@@ -10,21 +14,7 @@ class EventoService {
   async findAll(){
     return models.Evento.findAll()
   }
-  /*
-  // Verificar si ya el local se encuentra reservado hoy
-  // Verificar si la cantidad de personas sobrepasan el máximo de aforo
-  // Verificar si la encargada ya tiene un evento en el día
-  // No permitir al cliente reservar un evento si ya tiene un evento reservado
-  // Verificar si la fecha de reserva no es anterior a la fecha de hoy
-  // Hacer que los eventos del día de hoy estén en proceso
-  // Hacer que los eventos ya se encuentren realizados
-  // Hacer que el evento pase a cancelado
-  * Agregar colaboradores a evento
-  * Agregar servicios al evento
-  * Enviar mensaje a colaborador
-  * Realizar cotizaciones
-  * Contabilizar precio total del evento
-  */
+
   async createEvento(body){
     const { localId, fechaEvento, cantidadPersonas, encargadoId, clienteId, horaInicio } = body;
 
@@ -116,6 +106,15 @@ class EventoService {
     return fechaEventoMiliSecs > fechaHoyMiliSecs;
   }
 
+  async findEventoById(eventoId){
+    const eventoFound = await models.Evento.findByPk(eventoId);
+
+    if (!eventoFound){
+      throw boom.notFound('El evento buscado no existe');
+    }
+
+    return eventoFound;
+  }
 
   async changeEventoStatusToInProcess(){
     const fechaHoy = getTodaysDate();
@@ -167,6 +166,103 @@ class EventoService {
     return evento;
   }
 
+  async addColaboradoresToEvento(body){
+    const { colaboradores, eventoId } = body;
+
+    colaboradores.forEach(async (colaborador) => {
+      const colaboradorEvento = {
+        colaboradorId: colaborador,
+        eventoId: eventoId
+      }
+      await models.ColaboradorEvento.create(colaboradorEvento);
+    })
+
+    const evento = await this.findEventoById(eventoId);
+
+    return evento;
+  }
+
+  async addServiciosToEvento(body){
+    const { servicios, eventoId } = body;
+
+    servicios.forEach(async (servicio) => {
+      const servicioEvento = {
+        servicioId: servicio,
+        eventoId: eventoId
+      }
+      await models.ServicioEvento.create(servicioEvento);
+    })
+
+    const evento = await this.findEventoById(eventoId);
+
+    return evento;
+  }
+
+  async makeCotizacion(body){
+    const { servicios, localId, diaId, cantidadPersonas, tipoBuffetId } = body;
+
+    let precioTotal = 0;
+    const precioReservaLocal = 200;
+
+    const listadoServicios = [];
+    let totalServicios = 0;
+
+    servicios.forEach(async (servicio) => {
+      listadoServicios.push(await servicioService.findServicioById(servicio));
+    })
+
+    const localDia = await models.LocalDia.findOne({
+      where: {
+        idLocal: localId,
+        idDia: diaId
+      }
+    });
+    const precioLocal = localDia.precioLocal;
+
+    listadoServicios.forEach(servicio => {
+      totalServicios += servicio.precio;
+    })
+
+    const tipoBuffet = await tipoBuffetService.findTipoBuffetById(tipoBuffetId);
+    const precioTipoBuffet = cantidadPersonas * tipoBuffet.precioPorPlato;
+
+    precioTotal = totalServicios + precioReservaLocal + precioLocal + precioTipoBuffet;
+
+    return {
+      tipoBuffet,
+      precioTipoBuffet,
+      listadoServicios,
+      totalServicios,
+      precioReservaLocal,
+      precioLocal,
+      precioTotal
+    }
+  }
+
+  async getPrecioEvento(eventoId){
+    const evento = await this.findEventoById(eventoId);
+    const diaSemanaEvento = getDayOfTheWeek(evento.fechaEvento) + 1;
+    const priceFound = await localService.findPricePerDay(evento.local.id, diaSemanaEvento);
+
+    const COSTO_RESERVA_LOCAL = 200;
+    let precioTotalEvento = 0;
+
+    const precioLocal = priceFound.precioLocal;
+    const precioTotalBuffet = evento.tipoBuffet.precioPorPlato * evento.cantidadPersonas;
+    let precioServicios = 0;
+
+    evento.servicios.forEach(servicio => precioServicios += servicio.precio);
+
+    precioTotalEvento = COSTO_RESERVA_LOCAL + precioLocal +  precioTotalBuffet + precioServicios;
+
+    return {
+      COSTO_RESERVA_LOCAL,
+      precioLocal,
+      precioTotalBuffet,
+      precioServicios,
+      precioTotalEvento
+    }
+  }
 }
 
 module.exports = new EventoService();

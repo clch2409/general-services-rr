@@ -161,7 +161,7 @@ class Evento extends Model{
         }
       },
       defaultScope: {
-        include: ['encargado', 'cliente', 'tipoEvento', 'local']
+        include: ['tipoBuffet', 'encargado', 'cliente', 'tipoEvento', 'local', 'colaboradores', 'servicios']
       }
     }
   }

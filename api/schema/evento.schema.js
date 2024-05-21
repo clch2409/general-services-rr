@@ -10,14 +10,7 @@ const horaFin = joi.date();
 const cantidadPersonas = joi.number().integer().positive();
 const status = joi.string().valid(RESERVADO.name, REALIZADO.name, EN_PROCESO.name, CANCELADO.name);
 
-const encargadoId = id;
-const clienteId = id;
-const localId = id;
-const tipoEventoId = id;
-const tipoBuffetId = id;
-
-const colaboradorId = id;
-const servicioId = id;
+const listadoServicios = joi.array().items(joi.number().integer().positive());
 
 const createEventoSchema = joi.object({
   colorEvento: colorEvento.required(),
@@ -25,11 +18,11 @@ const createEventoSchema = joi.object({
   horaInicio: horaInicio.required(),
   horaFin: horaFin,
   cantidadPersonas: cantidadPersonas.required(),
-  encargadoId: encargadoId.required(),
-  clienteId: clienteId.required(),
-  localId: localId.required(),
-  tipoEventoId: tipoEventoId.required(),
-  tipoBuffetId: tipoBuffetId.required(),
+  encargadoId: id.required(),
+  clienteId: id.required(),
+  localId: id.required(),
+  tipoEventoId: id.required(),
+  tipoBuffetId: id.required(),
   status: status
 });
 
@@ -44,22 +37,30 @@ const updateEventoSchema = joi.object({
   horaInicio,
   horaFin,
   cantidadPersonas,
-  encargadoId,
-  clienteId,
-  localId,
-  tipoEventoId,
-  tipoBuffetId,
+  encargadoId: id,
+  clienteId: id,
+  localId: id,
+  tipoEventoId: id,
+  tipoBuffetId: id,
   status,
 });
 
 const addServicioToEventoSchema = joi.object({
   id: id.required(),
-  servicioId: servicioId.required()
+  servicioId: id.required()
 });
 
 const addColaboradorToEventoSchema = joi.object({
   id: id.required(),
-  colaboradorId: colaboradorId.required()
+  colaboradorId: id.required()
+});
+
+const cotizacionSchema = joi.object({
+  servicios: listadoServicios.required(),
+  localId: id.required(),
+  diaId: id.required(),
+  cantidadPersonas: cantidadPersonas.required(),
+  tipoBuffetId: id.required()
 });
 
 
@@ -69,4 +70,5 @@ module.exports = {
   updateEventoSchema,
   addServicioToEventoSchema,
   addColaboradorToEventoSchema,
+  cotizacionSchema
 }
