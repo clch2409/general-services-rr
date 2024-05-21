@@ -7,6 +7,7 @@ const colorEvento = joi.string().hex();
 const fechaEvento = joi.date();
 const horaInicio = joi.date();
 const horaFin = joi.date();
+const cantidadPersonas = joi.number().integer().positive();
 const status = joi.string().valid(RESERVADO.name, REALIZADO.name, EN_PROCESO.name, CANCELADO.name);
 
 const encargadoId = id;
@@ -22,7 +23,8 @@ const createEventoSchema = joi.object({
   colorEvento: colorEvento.required(),
   fechaEvento: fechaEvento.required(),
   horaInicio: horaInicio.required(),
-  horaFin: horaFin.required(),
+  horaFin: horaFin,
+  cantidadPersonas: cantidadPersonas.required(),
   encargadoId: encargadoId.required(),
   clienteId: clienteId.required(),
   localId: localId.required(),
@@ -37,16 +39,17 @@ const getEventoByIdSchema = joi.object({
 });
 
 const updateEventoSchema = joi.object({
-  colorEvento: colorEvento,
-  fechaEvento: fechaEvento,
-  horaInicio: horaInicio,
-  horaFin: horaFin,
-  encargadoId: encargadoId,
-  clienteId: clienteId,
-  localId: localId,
-  tipoEventoId: tipoEventoId,
-  tipoBuffetId: tipoBuffetId,
-  status: status,
+  colorEvento,
+  fechaEvento,
+  horaInicio,
+  horaFin,
+  cantidadPersonas,
+  encargadoId,
+  clienteId,
+  localId,
+  tipoEventoId,
+  tipoBuffetId,
+  status,
 });
 
 const addServicioToEventoSchema = joi.object({

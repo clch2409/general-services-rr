@@ -63,7 +63,7 @@ class LocalService{
   }
 
   async addPriceToLocal(body){
-
+    return await models.LocalDia.create(body);
   }
 
 

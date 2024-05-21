@@ -100,7 +100,7 @@ class Local extends Model{
       tableName: TABLA_LOCAL,
       modelName: 'Local',
       defaultScope: {
-        include: ['insumos'],
+        include: ['insumos', 'precios'],
       },
       hooks:{
         beforeUpdate: (instance) =>{

@@ -22,6 +22,8 @@ eventoRouter.get('',
   }
 );
 
+
+
 eventoRouter.post('',
   validatorHandler(createEventoSchema, 'body'),
   async (req, res, next) => {
@@ -38,5 +40,51 @@ eventoRouter.post('',
     }
   }
 );
+
+eventoRouter.post('/today',
+  async (req, res, next) => {
+    try{
+      const eventosHoy = await eventoService.changeEventoStatusToInProcess();
+
+      res.status(200).json({
+        eventosHoy
+      });
+    }
+    catch(e){
+      next(e)
+    }
+  }
+);
+
+eventoRouter.post('/yesterday',
+  async (req, res, next) => {
+    try{
+      const eventosAyer = await eventoService.changeEventoStatusToFinished();
+
+      res.status(200).json({
+        eventosAyer
+      });
+    }
+    catch(e){
+      next(e)
+    }
+  }
+);
+
+eventoRouter.post('/cancel/:id',
+  async (req, res, next) => {
+    try{
+      const { id } = req.params;
+      const eventoCanceled = await eventoService.cancelEvento(id);
+
+      res.status(200).json({
+        eventoCanceled
+      })
+    }
+    catch(e){
+      next(e);
+    }
+  }
+)
 
 module.exports = { eventoRouter }

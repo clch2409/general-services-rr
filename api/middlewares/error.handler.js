@@ -22,7 +22,7 @@ function isBoomHandler(err, req, res, next){
   }
   else if (err instanceof ValidationError){
     const { message } = err
-    if (err.original.sqlMessage){
+    if (err.original){
       const { sqlMessage } = err.original
       res.status(406).json({
         message,

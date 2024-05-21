@@ -35,6 +35,11 @@ const localDiaSchema = {
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
   },
+  precioLocal: {
+    field: 'precio_local',
+    allowNull: false,
+    type: DataTypes.FLOAT(6,2),
+  },
   createdAt: {
     field: 'created_at',
     allowNull: false,

@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 const localService = require('./../services/local.service');
 
-const { createLocalSchema, getLocalByIdSchema, updateLocalSchema, addInsumoToLocalSchema, moveInsumoToLocalSchema } = require('./../schema/local.schema');
+const { createLocalSchema, getLocalByIdSchema, updateLocalSchema, addInsumoToLocalSchema, moveInsumoToLocalSchema, addPriceToLocalSchema } = require('./../schema/local.schema');
 const validatorHandler = require('./../middlewares/validator.handler');
 const { authenticationByJwt } = require('../utils/auth/functions/passport.auth');
 const { validateRoles } = require('../middlewares/auth.handler');
@@ -12,8 +12,8 @@ const localRouter = Router();
 
 //****************** Rutas *************************
 localRouter.get('',
-  authenticationByJwt(),
-  validateRoles(ADMIN.name, ENCARGADO.name),
+  // authenticationByJwt(),
+  // validateRoles(ADMIN.name, ENCARGADO.name),
   findAll
 );
 
@@ -35,6 +35,23 @@ localRouter.post('/add/insumos',
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(addInsumoToLocalSchema, 'body'),
   addInsumosToLocal
+);
+
+localRouter.post('/add/prices',
+  validatorHandler(addPriceToLocalSchema, 'body'),
+  async (req, res, next) => {
+    try{
+      const { body } = req;
+      const addedPrice = await localService.addPriceToLocal(body);
+
+      res.status(200).json({
+        addedPrice
+      });
+    }
+    catch(e){
+      next(e);
+    }
+  }
 );
 
 localRouter.post('/retire/insumos',
@@ -72,6 +89,8 @@ localRouter.delete('/:id',
   validatorHandler(getLocalByIdSchema, 'params'),
   deleteLocal
 );
+
+
 //****************** Rutas *************************
 
 
