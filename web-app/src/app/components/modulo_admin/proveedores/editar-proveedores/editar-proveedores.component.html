@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card my-5">
+        <div class="card-header">
+          <h5 class="card-title text-center">Editar Proveedor</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="proveedorForm" (ngSubmit)="validarFormulario()">
+            <label for="nombre" class="form-label">
+              <span>Nombre</span>
+              <input type="text" formControlName="nombre" class="form-control" id="nombre" name="nombre" required>
+            </label>
+            <div class="agrupaciones">
+              <label for="email" class="form-label">
+                <span>Email</span>
+                <input type="text" formControlName="email" class="form-control" id="email" name="email" required>
+              </label>
+              <label for="telefono" class="form-label">
+                <span>Telefono</span>
+                <input type="text" formControlName="telefono" class="form-control" id="telefono" name="telefono" required>
+              </label>
+            </div>
+            <div class="agrupaciones">
+              <label for="direccion" class="form-label">
+                <span>Direccion</span>
+                <input type="text" formControlName="direccion" class="form-control" id="direccion" name="direccion"
+                required>
+              </label>
+              <label for="fechaContrato" class="form-label">
+                <span>Telefono</span>
+                <input type="date" formControlName="fechaContrato" class="form-control" id="fechaContrato"
+                name="fechaContrato" required>
+              </label>
+            </div>
+            <div class="botones">
+              <button type="submit" class="btn btn-primary">Actualizar</button>
+              <button class="btn btn-danger" (click)="regresarListadoProveedores()">Regresar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

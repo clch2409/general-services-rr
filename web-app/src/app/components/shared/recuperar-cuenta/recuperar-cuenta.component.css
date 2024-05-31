@@ -1,0 +1,17 @@
+.btn-cont {
+    color: #fff;
+    background: linear-gradient(to bottom right, #2d9bff, #4c5ef7);
+}
+
+
+.btn-atras,
+.btn-atras:focus {
+  border: 2px solid #2d9bff;
+  color: #2d9bff;
+}
+
+.btn-atras:hover,
+.btn-atras:hover {
+  color: #fff;
+  background: linear-gradient(to bottom right, #2d9bff, #4c5ef7);
+}

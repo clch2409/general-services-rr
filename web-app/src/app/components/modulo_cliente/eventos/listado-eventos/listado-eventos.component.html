@@ -1,0 +1,45 @@
+<div class="container">
+  <h1>Listado de Eventos</h1>
+  <div class="row">
+    <div class="col-md-4">
+      <input type="text" class="form-control" [(ngModel)]="searchId" placeholder="Buscar por ID">
+      <button class="btn btn-primary" (click)="buscarEventoPorId()">Buscar</button>
+      <button (click)="resetearFiltros()">Resetear</button>
+      <button [routerLink]="['/dashboard/make-cotizacion']" class="btn btn-outline-success">make-cotizacion</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Color de Evento</th>
+            <th>Fecha de Evento</th>
+            <th>Hora de Início</th>
+            <th>Hora de Término</th>
+            <th>Cantidad de Personas</th>
+            <th>Encargado ID</th>
+            <th>Cliente ID</th>
+            <th>Local ID</th>
+            <th>Tipo de Evento ID</th>
+            <th>Tipo de Buffet ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let evento of eventos">
+            <td>{{ evento.colorEvento }}</td>
+            <td>{{ evento.fechaEvento | date: 'yyyy-MM-dd' }}</td>
+            <td>{{ evento.horaInicio | date: 'HH:mm:ss' }}</td>
+            <td>{{ evento.horaFin | date: 'HH:mm:ss' }}</td>
+            <td>{{ evento.cantidadPersonas }}</td>
+            <td>{{ evento.encargadoId }}</td>
+            <td>{{ evento.clienteId }}</td>
+            <td>{{ evento.localId }}</td>
+            <td>{{ evento.tipoEventoId }}</td>
+            <td>{{ evento.tipoBuffetId }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

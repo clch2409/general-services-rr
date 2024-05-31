@@ -1,0 +1,81 @@
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="card my-5">
+          <div class="card-header bg-warning-subtle">
+            <h5 class="card-title text-center">Editar Salon</h5>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="validarFormulario()">
+              <div [formGroup]="salonForm">
+                <div class="mb-3">
+                  <label for="nombre" class="form-label">Nombre</label>
+                  <input type="text" formControlName="nombre" class="form-control" id="nombre" name="nombre"required>
+                </div>
+                <div class="mb-3">
+                  <label for="descripcion" class="form-label">Descripcion</label>
+                  <textarea name="descripcion" id="descripcion" formControlName="descripcion" class="form-control" required></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="direccion">Direccion</label>
+                  <input type="text" id="direccion" formControlName="direccion" class="form-control">
+                </div>
+                <div class="agrupaciones">
+                  <label for="aforoMinimo">
+                    <span>Aforo Mínimo</span>
+                    <input type="number" id="aforoMinimo" formControlName="aforoMinimo" class="form-control" required>
+                  </label>
+                  <label for="aforoMaximo">
+                    <span>Aforo Máximo</span>
+                    <input type="number" id="aforoMaximo" formControlName="aforoMaximo" class="form-control" required>
+                  </label>
+                </div>
+                <div class="mb-3">
+                  <label for="fechaInactivacion" class="form-label">Fecha Inactivacion</label>
+                  <input type="date" formControlName="fechaInactivacion" class="form-control" id="fechaInactivacion" name="fechaInactivacion"required>
+                </div>
+              </div>
+              <div [formGroup]="pricesForm">
+                <div class="agrupaciones">
+                  <label for="aforoMinimo">
+                    <span>Precio Lunes</span>
+                    <input type="number" id="lunes" formControlName="lunes" class="form-control" required>
+                  </label>
+                  <label for="aforoMaximo">
+                    <span>Precio Martes</span>
+                    <input type="number" id="martes" formControlName="martes" class="form-control" required>
+                  </label>
+                  <label for="aforoMinimo">
+                    <span>Precio Miércoles</span>
+                    <input type="number" id="miercoles" formControlName="miercoles" class="form-control" required>
+                  </label>
+                  <label for="aforoMaximo">
+                    <span>Precio Jueves</span>
+                    <input type="number" id="aforoMaximo" formControlName="jueves" class="form-control" required>
+                  </label>
+                </div>
+                <div class="agrupaciones">
+                  <label for="aforoMaximo">
+                    <span>Precio Viernes</span>
+                    <input type="number" id="viernes" formControlName="viernes" class="form-control" required>
+                  </label>
+                  <label for="aforoMinimo">
+                    <span>Precio Sábado</span>
+                    <input type="number" id="sabado" formControlName="sabado" class="form-control" required>
+                  </label>
+                  <label for="aforoMaximo">
+                    <span>Precio Domingo</span>
+                    <input type="number" id="domingo" formControlName="domingo" class="form-control" required>
+                  </label>
+                </div>
+              </div>
+              <div class="botones">
+                <button type="submit" class="btn btn-warning">Actualizar</button>
+                <button type="submit" class="btn btn-danger" (click)="regresarListadoLocales()">Regresar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

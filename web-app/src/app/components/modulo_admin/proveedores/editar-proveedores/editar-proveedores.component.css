@@ -1,0 +1,41 @@
+label{
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+}
+
+label select{
+  width: 100%;
+}
+
+button{
+  margin-top: 16px;
+}
+
+input, select{
+  border: 2px solid gray;
+}
+
+.agrupaciones{
+  display: flex;
+  gap: 12px;
+}
+
+.botones{
+  display: flex;
+  justify-content: center;
+  gap: 12px
+}
+
+.proveedores{
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.proveedores button{
+  padding: 0;
+  margin: 0;
+}

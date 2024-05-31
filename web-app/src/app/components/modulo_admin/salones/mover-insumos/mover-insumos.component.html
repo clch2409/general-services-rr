@@ -1,0 +1,115 @@
+<div class="container container-fluid mt-3">
+  <div class="card border-danger-subtle">
+      <div class="card-header text-center fw-bold bg-warning-subtle text-dark">
+          <h2>Mover Insumo a Locales</h2>
+      </div>
+      <div class="card-body">
+          <div class="container row">
+            <div class="container col-6">
+              <label for="nombreLocal ">
+                <span>Local</span>
+                <select class="form-select fw-medium" id="nombreLocal" #nombreLocal [(ngModel)]="localSeleccionadoIdEnviador" (change)="obtenerLocalEnviadorSeleccionado()">
+                  @for(local of localesEnviadores; track local){
+                    <option class="fw-medium" [value]="local.id">{{local.nombre}}</option>
+                  }
+                </select>
+              </label>
+              <!-- <div class="separacion">
+                <label for="nombreInsumo">
+                  <span>Insumos</span>
+                  @if(localSeleccionadoEnviador){
+                    <select class="form-select" id="nombreInsumo" [(ngModel)]="insumoSeleccionadoIdEnviador" (change)="obtenerInsumoSeleccionado()">
+                      @for(insumo of localSeleccionadoEnviador.insumos; track insumo){
+                        <option class="fw-medium" [value]="insumo.id">{{insumo.nombre}}</option>
+                      }
+                    </select>
+                  }
+                  @else {
+                    <input type="text" list="listaInsumos" class="form-control" id="nombreInsumo" [disabled]="true" [placeholder]="'No hay insumos en el local'">
+                  }
+                </label>
+                <label for="cantidadInsumo">
+                  <span>Cantidad</span>
+                  <input type="number" name="cantidadInsumos" id="cantidadInsumos" class="form-control" min="1" max="10" [(ngModel)]="cantidadAMover" [defaultValue]="1">
+                </label>
+              </div> -->
+              <h3>Insumos en Local</h3>
+              @if(localSeleccionadoEnviador.insumos?.length != 0){
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Insumo</th>
+                      <th>Cantidad</th>
+                      <th>¿Enviar?</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for(insumo of localSeleccionadoEnviador.insumos; track insumo){
+                      <tr>
+                        <td>
+                          <span [id]="'sender-'+insumo.id">{{insumo.nombre}}</span>
+                        </td>
+                        <td>
+                          {{insumo.InsumoLocal?.cantidad}}
+                        </td>
+                        <td>
+                          <button class="btn btn-primary boton-mover" (click)="validarEnvio(insumo.id!)"><mat-icon>arrow_forward</mat-icon></button>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              }
+              @else {
+                  <h4>No hay Insumos en el Local</h4>
+              }
+            </div>
+            <div class="container col-6" id="listadoInsumos">
+              <label for="nombreLocal ">
+                <span>Enviar a</span>
+                <select class="form-select fw-medium" id="nombreLocal" #nombreLocal [(ngModel)]="localSeleccionadoIdRecibidor" (change)="obtenerLocalRecibidorSeleccionado()">
+                  @for(local of localesRecibidores; track local){
+                    <option class="fw-medium" [value]="local.id">{{local.nombre}}</option>
+                  }
+                </select>
+              </label>
+              <h3>Insumos en Local</h3>
+              @if(localSeleccionadoRecibidor.insumos?.length != 0){
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Insumo</th>
+                      <th>Cantidad</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for(insumo of localSeleccionadoRecibidor.insumos; track insumo){
+                      <tr>
+                        <td>
+                          {{insumo.nombre}}
+                        </td>
+                        <td>
+                          {{insumo.InsumoLocal?.cantidad}}
+                        </td>
+
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              }
+              @else {
+                  <h4>No hay Insumos en el Local</h4>
+              }
+
+            </div>
+            <div class="agrupacion-botones-confirmacion">
+              <div class="botones-confirmacion">
+                <button class="btn btn-primary fw-bold" id="asignarTemas" (click)="irAgregarIsumos()">Ir a Agregar Insumos</button>
+                <button class="btn btn-danger fw-bold" id="asignarTemas" (click)="irListadoLocales()">Ir al Listado de Locales</button>
+              </div>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+

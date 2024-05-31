@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card my-5">
+        <div class="card-header bg-primary-subtle">
+          <h5 class="card-title text-center">Crear Proveedor</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="proveedorForm" (ngSubmit)="validarConfirmacion()">
+            <div class="form-group">
+              <label for="nombre">
+                <span>Nombre</span>
+                <input type="text" id="nombre" formControlName="nombre" class="form-control" required>
+              </label>
+              <div class="agrupaciones">
+                <label for="email">
+                  <span>Email</span>
+                  <input type="email" id="email" formControlName="email" class="form-control" required>
+                </label>
+                <label for="telefono">
+                  <span>Telefono</span>
+                  <input type="tel" id="telefono" formControlName="telefono" class="form-control" required pattern>
+                </label>
+              </div>
+              <div class="agrupaciones">
+                <label for="direccion">
+                  <span>Direccion</span>
+                  <input type="text" id="direccion" formControlName="direccion" class="form-control" required>
+                </label>
+                <label for="fechaContrato">
+                  <span>Fecha de Contrato</span>
+                  <input type="date" id="fechaContrato" formControlName="fechaContrato" class="form-control" required>
+                </label>
+              </div>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Crear</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

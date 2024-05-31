@@ -1,0 +1,28 @@
+.container {
+    margin-top: 50px;
+}
+
+.card-img-left {
+    width: 45%;
+    background: scroll center url('../../../../assets/img/login.png');
+    background-size: cover;
+}
+
+
+.btn-login {
+    color: #fff;
+    background: linear-gradient(to bottom right, #2d9bff, #4c5ef7);
+}
+
+
+.btn-regist,
+.btn-regist:focus {
+  border: 2px solid #2d9bff;
+  color: #2d9bff;
+}
+
+.btn-regist:hover,
+.btn-regist:focus:hover {
+  color: #fff;
+  background: linear-gradient(to bottom right, #2d9bff, #4c5ef7);
+}

@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card my-5 border-3 border-dark-subtle">
+        <div class="card-header bg-warning-subtle border-3 border-dark-subtle">
+          <h5 class="card-title text-center">Crear Usuario</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="usuarioForm" (ngSubmit)="validarContrasenas()">
+            <div class="form-group">
+                <label for="email" class="form-label">
+                  <span>Email</span>
+                  <input type="email" id="email" formControlName="email" class="form-control" required>
+                </label>
+                <div class="agrupaciones">
+                  <label for="contrasena">
+                    <span>Contraseña</span>
+                    <input type="password" id="contrasena" formControlName="contrasena" class="form-control" required>
+                  </label>
+                  <label for="repetirContra">
+                    <span>Repita la Contraseña</span>
+                    <input type="password" id="repetirContra" formControlName="repetirContra" class="form-control" required>
+                  </label>
+                </div>
+                <label for="rol">
+                  <span>Rol de Usuario</span>
+                  <select name="" id="rol" class="form-select" formControlName="rol" required>
+                    @for(rol of roles; track rol){
+                      <option [value]="rol.nombre">{{convertirPrimeraLetraEnMayuscula(rol.nombre!)}}</option>
+                    }
+                  </select>
+                </label>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

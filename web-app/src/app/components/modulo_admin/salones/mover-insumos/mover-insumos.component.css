@@ -1,0 +1,58 @@
+#contenedorInsumosVacio, #contenedorInsumos{
+  list-style: none;
+  margin-top: 24px;
+}
+
+#insumoSeleccionado{
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+}
+
+#insumoSeleccionado > span{
+  margin-right: 16px;
+}
+
+#agregarTema{
+  margin-top: 16px;
+  place-self: center;
+}
+
+#asignarTemas{
+  margin-top: 20px;
+  width: 250px;
+}
+
+.boton-mover{
+  padding: 2px;
+  font-size: 12px;
+}
+
+.quitar{
+  padding: 0;
+}
+
+h3{
+  margin-top: 16px;
+}
+
+label{
+  width: 80%;
+}
+
+.separacion{
+  display: flex;
+  gap: 16px
+}
+
+.agrupacion-botones-confirmacion{
+  display: flex;
+  margin-top: 20px;
+}
+
+.botones-confirmacion{
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}

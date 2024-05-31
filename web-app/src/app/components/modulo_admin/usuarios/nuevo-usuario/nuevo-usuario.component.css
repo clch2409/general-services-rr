@@ -1,0 +1,32 @@
+h4{
+  margin: 20px 0 12px 0;
+}
+
+textarea{
+  height: 150px;
+}
+
+label{
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+}
+
+button{
+  margin-top: 16px;
+}
+
+input, textarea{
+  border: 2px solid gray;
+}
+
+.agrupaciones{
+  display: flex;
+  gap: 12px;
+}
+
+/* .agrupaciones label{
+  display: block;
+  width: 100%;
+} */
+

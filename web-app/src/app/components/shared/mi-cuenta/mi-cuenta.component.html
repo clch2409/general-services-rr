@@ -1,0 +1,54 @@
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-xl-9 mx-auto">
+                <div class="card flex-row my-5 border-0 shadow rounded-3">
+                    <div class="card-img-left d-none d-md-flex flex-column justify-content-center align-items-center">
+                        <form class="card-form-left">
+                            <h5 class="card-title text-center mb-4" style="color: rgb(109, 109, 109);">REGISTRO</h5>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="nombreUsuario"
+                                    placeholder="Email" disabled [value]="usuario.email">
+                                <label for="floatingInputNombreUsuario">Correo</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="rol" placeholder="Rol" [value]="usuario.rol?.nombre?.toUpperCase()" disabled>
+                                <label for="floatingInputRol">Rol</label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body p-4 p-sm-5">
+                        <h5 class="card-title text-center mb-5">ACTUALIZAR CREDENCIALES</h5>
+                        <hr>
+                        <p class="text-center mb-4">Una vez completado el formulario, será redirigido <br>
+                            al inicio del sistema donde deberá <br>iniciar sesión con las nuevas credenciales.
+                        </p>
+                        <form [formGroup]="credencialesForm" (ngSubmit)="verificarContrasenas()">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" name="nuevaContraseña"
+                                    placeholder="Nueva Contraseña" id="contrasenaNueva" formControlName="contrasenaNueva" required>
+                                <label for="floatingInputNuevaContraseña">Nueva Contraseña</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" name="repetirNuevaContraseña"
+                                    placeholder="Repetir Nueva Contraseña" id="repetirContrasena" formControlName="repetirContrasena" required>
+                                <label for="floatingInputRepetirNuevaContraseña">Repetir Nueva Contraseña</label>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" name="nuevoEmail"
+                                    placeholder="Nuevo Correo Electrónico" formControlName="nuevoEmail">
+                                <label for="floatingInputNuevoEmail">Nuevo Correo Electrónico (Opcional)</label>
+                            </div>
+                            <div class="d-grid mb-2">
+                                <button class="btn btn-lg btn-update" type="submit">Actualizar Credenciales</button>
+                            </div>
+                            <div class="d-grid mb-2">
+                                <button class="btn btn-lg btn-cancel" type="button" [routerLink]="['/']">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

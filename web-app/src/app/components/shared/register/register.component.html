@@ -1,0 +1,88 @@
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-xl-9 mx-auto">
+                <div class="card flex-row my-5 border-0 shadow rounded-3">
+                    <div class="card-img-left d-none d-md-flex">
+                    </div>
+                    <div class="card-body p-4 p-sm-5">
+                        <h5 class="card-title text-center mb-5">REGISTRO</h5>
+                        <form (ngSubmit)="registrarUsuario()">
+
+                            <div [formGroup]="clienteForm">
+                              <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="nombres" formControlName="nombres" placeholder="Nombres">
+                                <label for="floatingInputNombres">Nombres</label>
+                              </div>
+
+                              <div class="row mb-3">
+                                  <div class="col">
+                                      <div class="form-floating">
+                                          <input type="text" class="form-control" name="apPaterno" formControlName="apPaterno" placeholder="Apellido Paterno">
+                                          <label for="floatingInputApellidoPaterno">Apellido Paterno</label>
+                                      </div>
+                                  </div>
+                                  <div class="col">
+                                      <div class="form-floating">
+                                          <input type="text" class="form-control" name="apMaterno" formControlName="apMaterno" placeholder="Apellido Materno">
+                                          <label for="floatingInputApellidoMaterno">Apellido Materno</label>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div class="row mb-3">
+                                  <div class="col">
+                                      <div class="form-floating">
+                                          <input type="tel" class="form-control" name="telefono" formControlName="telefono" placeholder="Teléfono">
+                                          <label for="floatingInputTelefono">Teléfono</label>
+                                      </div>
+                                  </div>
+                                  <div class="col">
+                                      <div class="form-floating">
+                                          <input type="text" class="form-control" name="dni" formControlName="dni" placeholder="DNI">
+                                          <label for="floatingInputDNI">DNI</label>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div class="form-floating mb-3">
+                                <input type="text" class="form-control" name="direccion" formControlName="direccion" placeholder="Direccion">
+                                <label for="floatingInputDireccion">Dirección</label>
+                              </div>
+                            </div>
+
+                            <div [formGroup]="usuarioForm">
+                              <div class="form-floating mb-3">
+                                <input type="email" class="form-control" name="email" formControlName="email" placeholder="Correo electrónico">
+                                <label for="floatingInputEmail">Correo electrónico</label>
+                              </div>
+
+                              <div class="row mb-3">
+                                  <div class="col">
+                                      <div class="form-floating">
+                                          <input type="password" class="form-control" name="contrasena" formControlName="contrasena" placeholder="Contraseña">
+                                          <label for="floatingInputContrasena">Contraseña</label>
+                                      </div>
+                                  </div>
+                                  <div class="col">
+                                      <div class="form-floating">
+                                          <input type="password" class="form-control" name="verificarContrasena" formControlName="verificarContrasena" placeholder="Verificar contraseña">
+                                          <label for="floatingInputVerificarContrasena">Verificar contraseña</label>
+                                      </div>
+                                  </div>
+                              </div>
+                            </div>
+
+                            <div class="d-grid mb-2">
+                                <button class="btn btn-lg btn-register" type="submit">Registrarse</button>
+                            </div>
+                            <hr>
+                            <a class="d-block text-center mt-2 small problems" [routerLink]="['/login']">¿Ya tienes una cuenta? Click aquí</a>
+                            <a class="d-block text-center mt-2 small problems" style="color: rgb(255, 0, 0);" [routerLink]="['/login']">Regresar</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

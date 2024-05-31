@@ -1,0 +1,43 @@
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-xl-6 mx-auto">
+                <div class="card flex-row my-5 border-0 shadow rounded-3 overflow-hidden">
+                    <div class="card-body p-4 p-sm-5">
+                        <div class="container text-center">
+                            <img src="../../../../assets/img/logo-blue.png" style="width: 400px; margin-top: -30px; margin-bottom: -20px;">
+                        </div>
+                        <h5 class="card-title text-center mb-3 fs-5 mt-3">RECUPERACIÓN DE CUENTA</h5>
+                        <hr>
+                        <div class="container text-center mb-4">
+                            <p class="fw-light">
+                                Complete el formulario y, si el correo electrónico es válido, recibirá instrucciones de
+                                recuperación de cuenta en su bandeja de entrada o spam. <br>
+                                <u>Espere hasta 5 minutos para recibir el correo.</u>
+                            </p>
+                        </div>
+                        <form  [formGroup]="recuperarForm" (ngSubmit)="recuperarCuenta()">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control"
+                                name="email" autofocus placeholder="E-Mail" formControlName="email">
+                                <label for="floatingInputEmail">E-Mail</label>
+                            </div>
+                            <div class="d-grid mb-2">
+                                <button class="btn btn-cont" type="submit">CONTINUAR</button>
+                            </div>
+                            <div class="d-grid mb-2">
+                                <a class="btn btn-atras" type="button"
+                                    [routerLink]="['/login']">REGRESAR</a>
+                            </div>
+                        </form>
+                        <hr>
+                        <div class="container text-center">
+                            <a class="fw-light">¿Problemas para recuperar su
+                                cuenta? Click aquí para comunicarse con administración.</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

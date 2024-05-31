@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card my-5">
+        <div class="card-header">
+          <h5 class="card-title text-center">Editar Cliente</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="validarFormulario()">
+            <div class="form-group" [formGroup]="clienteForm">
+              <label for="nombres">
+                <span>Nombres</span>
+                <input type="text" id="nombres" formControlName="nombres" class="form-control" required [pattern]="namePattern">
+              </label>
+              <div class="agrupaciones">
+                <label for="apPaterno">
+                  <span>Apellido Paterno</span>
+                  <input type="text" id="apPaterno" formControlName="apPaterno" class="form-control" required [pattern]="namePattern">
+                </label>
+                <label for="apMaterno">
+                  <span>Apellido Materno</span>
+                  <input type="text" id="apMaterno" formControlName="apMaterno" class="form-control" required [pattern]="namePattern">
+                </label>
+              </div>
+              <div class="agrupaciones">
+                <label for="telefono">
+                  <span>Telefono</span>
+                  <input type="text" id="telefono" formControlName="telefono" class="form-control" required [pattern]="phonePattern">
+                </label>
+                <label for="dni">
+                  <span>DNI</span>
+                  <input type="text" id="dni" formControlName="dni" class="form-control" required [pattern]="dniPattern">
+                </label>
+              </div>
+              <label for="direccion">
+                <span>Direccion</span>
+                <input type="text" id="direccion" formControlName="direccion" class="form-control" required>
+              </label>
+            </div>
+            <div class="botones">
+              <button type="submit" class="btn btn-primary">Actualizar</button>
+              <button type="" class="btn btn-danger" (click)="regresarListadoClientes()">Regresar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

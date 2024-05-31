@@ -1,0 +1,25 @@
+<form [formGroup]="eventoForm">
+  <div class="form-group">
+    <label for="servicios">Servicios</label>
+    <input type="text" id="servicios" formControlName="servicios" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="localId">Local ID</label>
+    <input type="text" id="localId" formControlName="localId" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="diaId">Día ID</label>
+    <input type="text" id="diaId" formControlName="diaId" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="cantidadPersonas">Cantidad de Personas</label>
+    <input type="text" id="cantidadPersonas" formControlName="cantidadPersonas" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="tipoBuffetId">Tipo de Buffet ID</label>
+    <input type="text" id="tipoBuffetId" formControlName="tipoBuffetId" class="form-control">
+  </div>
+  <button type="button" class="btn btn-primary" (click)="hacerCotizacion()" [disabled]="!eventoForm.valid">Hacer Cotización</button>
+  <button type="button" class="btn btn-primary" (click)="agregarServicios()" [disabled]="!eventoForm.valid">Agregar Servicios</button>
+  <button type="button" class="btn btn-primary" (click)="buscarEventoPorId()" [disabled]="!eventoForm.get('eventoId')?.valid">Buscar Evento por ID</button>
+</form>

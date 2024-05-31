@@ -1,0 +1,25 @@
+.titulo{
+  margin-top: 16px;
+}
+
+.buscadores{
+  margin: 16px 0 8px 0;
+  display: flex;
+  gap: 8px
+}
+
+.botones-buscadores{
+  margin-bottom: 16px;
+}
+
+.buscadores input:hover{
+  cursor: text;
+}
+
+.botones{
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}

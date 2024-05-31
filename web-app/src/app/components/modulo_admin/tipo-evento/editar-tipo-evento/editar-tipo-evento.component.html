@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card my-5 border-3 border-dark-subtle">
+        <div class="card-header bg-warning-subtle border-3 border-dark-subtle">
+          <h5 class="card-title text-center">Editar Tipo Evento</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="validarFormulario()">
+            <div class="form-group">
+              <div [formGroup]="tipoEventoForm">
+                <div class="agrupaciones">
+                  <label for="nombre">
+                    <span>Nombre</span>
+                    <input type="text" id="nombre" formControlName="nombre" class="form-control" required>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="botones">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button  class="btn btn-danger" (click)="regresarListadoTiposEvento()">Regresar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,592 @@
+<!--<body *ngIf="rol == 'ADMINISTRADOR';">-->
+<body>
+    <!-- ======= Header ======= -->
+    <!-- <header id="header" class="d-flex align-items-center fixed-top">
+        <div class="container d-flex justify-content-between">
+
+            <div class="logo">
+                <img src="../../../../assets/img/logo.png" alt="">
+            </div>
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link scrollto active">Inicio</a></li>
+                    <li><a class="nav-link scrollto">Nosotros</a></li>
+                    <li class="dropdown"><a><span>Salones</span> <i class="bi bi-chevron-down"></i></a>
+                        <ul>
+                            <li><a>Manhattan</a></li>
+                            <li><a>Babilonia</a></li>
+                            <li><a>Venezia Vip</a></li>
+                            <li><a>Manhattan VIP</a></li>
+                        </ul>
+                    </li>
+                    <li><a class="nav-link scrollto">Servicios</a></li>
+                    <li><a class="nav-link scrollto">Catering</a></li>
+                    <li><a class="h-button scrollto" routerLink="/login" (click)="cerrarSesion">Usuario</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </header> -->
+
+    <!-- <nav class="navbar navbar-expand-lg bg-primary" *ngIf="rol == 'ADMIN';">
+      <div class="container-fluid d-flex justify-content-between">
+          <div style="flex-basis: 0;" class="d-flex flex-grow-1">
+              <a class="navbar-brand" [routerLink]="'/dashboard'">
+                  <img src="../../../../assets/img/white.png" alt="Logo" width="100" height="auto" class="">
+              </a>
+          </div>
+          <div class="d-flex justify-content-center" id="navbarNav">
+              <ul class="navbar-nav">
+                  <li class="nav-item">
+                      <a class="nav-link text-white active fs-5 fw-medium" [routerLink]="['/dashboard']">Inicio</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link text-white active fs-5 fw-medium" [routerLink]="['/dashboard', 'inscripciones']">Inscripciones</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link text-white active fs-5 fw-medium" [routerLink]="['/dashboard', 'alumnos']">Alumnos</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link text-white active fs-5 fw-medium" [routerLink]="['/dashboard', 'cursos']">Cursos</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link text-white active fs-5 fw-medium" [routerLink]="['/dashboard', 'docentes']">Docentes</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="text-dark fs-5 fw-medium">{{rol}}</a>
+                  </li>
+              </ul>
+          </div>
+
+          <div style="flex-basis: 0;" class="d-flex flex-grow-1 justify-content-end">
+              <button class="btn btn-danger fw-bold" (click)="cerrarSesion">Cerrar Sesión</button>
+          </div>
+      </div>
+  </nav> -->
+
+    <!-- End Header -->
+
+    <!-- ======= Sidebar ======= -->
+    <!-- <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+            <li class="nav-item">
+                <a class="nav-link ">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-menu-button-wide"></i><span>Clientes</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a [routerLink]="['/dashboard', 'clientes']">
+                            <i class="bi bi-circle"></i><span>Listar Clientes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/dashboard', 'nuevo-cliente']">
+                            <i class="bi bi-circle"></i><span>Crear Cliente</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="components-badges.html">
+                            <i class="bi bi-circle"></i><span>Apartado 3</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </aside>
+    <div class="example-sidenav-content">
+      <router-outlet></router-outlet>
+    </div> -->
+
+    @if(rol==='admin'){
+      <mat-toolbar color="primary" class="example-toolbar justify-content-between">
+        <div class="agregado">
+          <button [routerLink]="['/dashboard']" mat-icon-button color="secondary"><mat-icon>ac_units</mat-icon></button>
+          <p class="example-app-name ">General Services</p>
+        </div>
+        <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar Sesión</button>
+      </mat-toolbar>
+    }
+    @else if(rol==='cliente'){
+      <mat-toolbar color="secondary" class="example-toolbar justify-content-between">
+        <div class="agregado">
+          <button [routerLink]="['/cli']" mat-icon-button color="secondary"><mat-icon>ac_units</mat-icon></button>
+          <p class="example-app-name ">General Services</p>
+        </div>
+        <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar Sesión</button>
+      </mat-toolbar>
+    }
+    @else {
+      <mat-toolbar color="accent" class="example-toolbar justify-content-between">
+        <div class="agregado">
+          <button [routerLink]="['/col']" mat-icon-button color="secondary"><mat-icon>ac_units</mat-icon></button>
+          <p class="example-app-name ">General Services</p>
+        </div>
+        <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar Sesión</button>
+      </mat-toolbar>
+    }
+    <mat-sidenav-container class="example-container" autosize>
+      <mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true">
+        <!------------------------------INICIO DE BARRA LATERAL ADMINISTRATIVA--------------------------------->
+        <mat-nav-list>
+
+          @if(rol === 'admin'){
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header >
+                <div class="icono">
+                  <mat-icon>cake</mat-icon>
+                  <span>Eventos</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'evento']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-evento']">
+                  <span>Nuevo Evento</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header >
+                <div class="icono">
+                  <mat-icon>groups</mat-icon>
+                  <span>Clientes</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'clientes']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-cliente']">
+                  <span>Nuevo Cliente</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>face</mat-icon>
+                  <span>Encargados</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'encargados']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-encargado']">
+                  <span>Nuevo Encargado</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>home</mat-icon>
+                  <span>Locales</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'salones']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-salon']">
+                  <span>Nuevo Local</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'add-insumos']">
+                  <span>Agregar Insumos</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'move-insumos']">
+                  <span>Mover Insumos</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>construction</mat-icon>
+                  <span>Colaboradores</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'colaboradores']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-colaborador']">
+                  <span>Nuevo Colaborador</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>liquor</mat-icon>
+                  <span>Insumos</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'insumos']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-insumo']">
+                  <span>Nuevo Insumo</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>local_shipping</mat-icon>
+                  <span>Proveedores</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'proveedores']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-proveedor']">
+                  <span>Nuevo Proveedor</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>account_circle</mat-icon>
+                  <span>Usuarios</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'usuarios']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-usuario']">
+                  <span>Nuevo Usuario</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>supervisor_account</mat-icon>
+                  <span>Roles</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'roles']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>local_bar</mat-icon>
+                  <span>Servicios</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'servicios']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-servicio']">
+                  <span>Nuevo Servicio</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>local_pizza</mat-icon>
+                  <span>Tipo Buffet</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'tipo-buffet']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-tipo-buffet']">
+                  <span>Nuevo Tipo Buffet</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>celebration</mat-icon>
+                  <span>Tipo Evento</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'tipo-evento']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-tipo-evento']">
+                  <span>Nuevo Tipo Evento</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+          }
+          @else if(rol === 'cliente'){
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header >
+                <div class="icono">
+                  <mat-icon>cake</mat-icon>
+                  <span>Eventos</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/cli', 'eventos']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/cli', 'nuevo-evento']">
+                  <span>Nuevo Evento</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+          }
+          @else {
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header >
+                <div class="icono">
+                  <mat-icon>cake</mat-icon>
+                  <span>Eventos</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'eventos']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'nuevo-evento']">
+                  <span>Nuevo Evento</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header >
+                <div class="icono">
+                  <mat-icon>groups</mat-icon>
+                  <span>Clientes</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'clientes']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'nuevo-cliente']">
+                  <span>Nuevo Cliente</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>home</mat-icon>
+                  <span>Locales</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'salones']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'nuevo-salon']">
+                  <span>Nuevo Local</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'add-insumos']">
+                  <span>Agregar Insumos</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'move-insumos']">
+                  <span>Mover Insumos</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>construction</mat-icon>
+                  <span>Colaboradores</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'colaboradores']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'nuevo-colaborador']">
+                  <span>Nuevo Colaborador</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>liquor</mat-icon>
+                  <span>Insumos</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'insumos']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'nuevo-insumo']">
+                  <span>Nuevo Insumo</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>local_shipping</mat-icon>
+                  <span>Proveedores</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'proveedores']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'nuevo-proveedor']">
+                  <span>Nuevo Proveedor</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>local_bar</mat-icon>
+                  <span>Servicios</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'servicios']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'nuevo-servicio']">
+                  <span>Nuevo Servicio</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>local_pizza</mat-icon>
+                  <span>Tipo Buffet</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'tipo-buffet']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'nuevo-tipo-buffet']">
+                  <span>Nuevo Tipo Buffet</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>celebration</mat-icon>
+                  <span>Tipo Evento</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'tipo-evento']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/col', 'nuevo-tipo-evento']">
+                  <span>Nuevo Tipo Evento</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+          }
+
+        </mat-nav-list>
+        <!------------------------------FIN DE BARRA LATERAL ADMINISTRATIVA--------------------------------->
+
+      </mat-sidenav>
+
+      <div class="example-sidenav-content">
+        <router-outlet></router-outlet> <!----Saludos de parte del router outlet.-->
+      </div>
+
+    </mat-sidenav-container>
+</body>
+

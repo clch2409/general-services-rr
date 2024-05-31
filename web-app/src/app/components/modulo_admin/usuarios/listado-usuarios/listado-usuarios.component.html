@@ -1,0 +1,52 @@
+<div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="titulo">
+          <h2>Listado de Usuarios</h2>
+          <div class="input-group buscador">
+            <input [(ngModel)]="searchId" class="form-control" placeholder="Buscar por ID" (keyup)="buscarUsuario()">
+          </div>
+          <div class="botones">
+            <div class="btn-group botones-buscadores">
+              <button (click)="mostrarTodos()" class="btn btn-primary">Todos</button>
+              <button (click)="mostrarActivos()" class="btn btn-warning">Activos</button>
+              <button (click)="resetearFiltros()" class="btn btn-danger">Resetear Buscadores</button>
+              <button [routerLink]="['/dashboard', 'nuevo-usuario']" class="btn btn-success">Nuevo Usuario</button>
+            </div>
+            <div class="botones-exportadores">
+              <button class="btn btn-danger"><mat-icon>picture_as_pdf</mat-icon></button>
+              <button class="btn btn-success"><mat-icon>text_snippet</mat-icon></button>
+            </div>
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Status</th>
+              <th>Creado en</th>
+              <!-- <th>Accion</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usuario of filteredUsuarios">
+              <td>{{ usuario.id }}</td>
+              <td>{{ usuario.email }}</td>
+              <td>{{ convertirPrimeraLetraEnMayuscula(usuario.rol?.nombre!) }}</td>
+              <td>{{convertirPrimeraLetraEnMayuscula(usuario.status!)}}</td>
+              <td>{{ usuario.createdAt}}</td>
+              <!-- <td><button class="btn btn-danger btn-sm" (click)="validarEliminacion(usuario)"><mat-icon>delete_forever</mat-icon></button></td> -->
+            </tr>
+          </tbody>
+        </table>
+        <div class="botones">
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
+            <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card my-5 border-3 border-dark-subtle">
+        <div class="card-header bg-primary-subtle border-3 border-dark-subtle">
+          <h5 class="card-title text-center">Crear Cliente</h5>
+        </div>
+        <div class="card-body">
+          <form  (ngSubmit)="validarFormulario()">
+            <div class="form-group" [formGroup]="clienteForm">
+              <label for="nombres">
+                <span>Nombres</span>
+                <input type="text" id="nombres" formControlName="nombres" class="form-control" required [pattern]="namePattern">
+              </label>
+              <div class="agrupaciones">
+                <label for="apPaterno">
+                  <span>Apellido Paterno</span>
+                  <input type="text" id="apPaterno" formControlName="apPaterno" class="form-control" required [pattern]="namePattern">
+                </label>
+                <label for="apMaterno">
+                  <span>Apellido Materno</span>
+                  <input type="text" id="apMaterno" formControlName="apMaterno" class="form-control" required [pattern]="namePattern">
+                </label>
+              </div>
+              <div class="agrupaciones">
+                <label for="telefono">
+                  <span>Telefono</span>
+                  <input type="text" id="telefono" formControlName="telefono" class="form-control" required [pattern]="phonePattern">
+                </label>
+                <label for="dni">
+                  <span>DNI</span>
+                  <input type="text" id="dni" formControlName="dni" class="form-control" required [pattern]="dniPattern">
+                </label>
+              </div>
+              <label for="direccion">
+                <span>Direccion</span>
+                <input type="text" id="direccion" formControlName="direccion" class="form-control" required>
+              </label>
+            </div>
+            <div class="form-group" [formGroup]="usuarioForm">
+              <label for="email">
+                <span>Correo Electrónico</span>
+                <input type="email" id="email" formControlName="email" class="form-control" required>
+              </label>
+              <div class="agrupaciones">
+                <label for="contrasena">
+                  <span>Contraseña</span>
+                  <input type="password" id="contrasena" formControlName="contrasena" class="form-control" required [pattern]="passwordPattern">
+                </label>
+                <label for="repetir-contrasena">
+                  <span>Repita Contraseña</span>
+                  <input type="password" id="repetir-contrasena" formControlName="repetir_contrasena" class="form-control" required [pattern]="passwordPattern">
+                </label>
+              </div>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

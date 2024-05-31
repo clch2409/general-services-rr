@@ -1,0 +1,32 @@
+.card-img-left {
+    width: 45%;
+    background: scroll center url('../../../../assets/img/actualizar.png');
+    background-size: cover;
+}
+
+.card-form-left {
+    background: rgba(255, 255, 255, 0.738);
+    padding: 30px;
+}
+
+.form-control[disabled] {
+    background-color: #ffffff;
+}
+
+.btn-update {
+    color: #fff;
+    background: linear-gradient(to bottom right, #2d9bff, #4c5ef7);
+}
+
+
+.btn-cancel,
+.btn-cancel:focus {
+  border: 2px solid #2d9bff;
+  color: #2d9bff;
+}
+
+.btn-cancel:hover,
+.btn-cancel:focus:hover {
+  color: #fff;
+  background: linear-gradient(to bottom right, #2d9bff, #4c5ef7);
+}

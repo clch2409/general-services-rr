@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row">
+      <div class="col">
+          <div class="titulo">
+            <h2>Listado de Buffets</h2>
+            <div class="input-group buscador">
+              <input [(ngModel)]="searchId" class="form-control" placeholder="Buscar por ID" (keyup)="buscarTipoBuffet()">
+              <input [(ngModel)]="searchName" class="form-control" placeholder="Buscar por Nombre" (keyup)="buscarTipoBuffet()">
+            </div>
+            <div class="botones">
+              <div class="btn-group botones-buscadores">
+                <button (click)="resetearFiltros()" class="btn btn-danger">Resetear Buscadores</button>
+                <button [routerLink]="['/dashboard', 'nuevo-tipo-buffet']" class="btn btn-success">Nuevo Buffets</button>
+              </div>
+              <div class="btn-group botones-exportadores">
+                <button class="btn btn-danger"><mat-icon>picture_as_pdf</mat-icon></button>
+                <button class="btn btn-success"><mat-icon>text_snippet</mat-icon></button>
+              </div>
+            </div>
+          </div>
+          <table class="table table-striped">
+              <thead>
+                  <tr>
+                      <th>ID</th>
+                      <th>Nombre</th>
+                      <th>Precio por Plato</th>
+                      <th>Creado en</th>
+                      <th>Actualizado en</th>
+                      <th>Acciones</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  @for(buffet of filteredTiposBuffet; track buffet){
+                    <tr>
+                      <td>{{ buffet.id }}</td>
+                      <td>{{ buffet.nombre }}</td>
+                      <td>{{ buffet.precioPorPlato }}</td>
+                      <td>{{ buffet.createdAt }}</td>
+                      <td>{{ buffet.updatedAt }}</td>
+                      <td class="align-content-center">
+                        <div class="btn-group">
+                          <button class="btn btn-success btn-sm" [routerLink]="['/dashboard', 'editar-tipo-buffet', buffet.id]"><mat-icon>edit</mat-icon></button>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+              </tbody>
+          </table>
+          <div class="botones">
+            <div class="btn-group">
+              <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
+              <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>

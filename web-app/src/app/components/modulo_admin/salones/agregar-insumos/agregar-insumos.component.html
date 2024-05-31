@@ -1,0 +1,111 @@
+<div class="container container-fluid mt-3">
+  <div class="card border-info-subtle">
+      <div class="card-header text-center fw-bold bg-info-subtle text-dark">
+          <h2>Agregar Insumo a Locales</h2>
+      </div>
+      <div class="card-body">
+          <div class="container row">
+            <div class="container col-6" id="listadoInsumos">
+              <div class="separacion">
+                <label for="nombreInsumo">
+                  <span>Insumo</span>
+                  <input type="text" list="listaInsumos" class="form-control" id="nombreInsumo" [(ngModel)]="insumoSeleccionado">
+                  <datalist id="listaInsumos">
+                      <option class="fw-medium" *ngFor="let insumo of insumos" [value] ="insumo.nombre"></option>
+                  </datalist>
+                </label>
+                <label for="cantidadInsumo">
+                  <span>Cantidad</span>
+                  <input type="number" name="cantidadInsumos" id="cantidadInsumos" class="form-control" min="1" max="10" [(ngModel)]="cantidadSeleccionada">
+                </label>
+              </div>
+              <h3>Insumos a Agregar</h3>
+              <table class="table" id="contenedorInsumos">
+                @if(insumosSeleccionados.length > 0){
+                  <thead>
+                    <tr>
+                      <th>Insumo</th>
+                      <th>Cantidad</th>
+                      <th>No enviar</th>
+                    </tr>
+                  </thead>
+                }
+                <tbody>
+                  @for(insumo of insumosSeleccionados; track insumo){
+                    <tr id="">
+                      <td>
+                        <span [id]="'selected-'+insumo.insumo.id">{{insumo.insumo.nombre}}</span>
+                      </td>
+                      <td id="">
+                        <span>{{insumo.cantidad}}</span>
+                      </td>
+                      <td id="">
+                        <button class="btn btn-danger quitar" (click)="quitarInsumo(insumo.insumo.id)"><mat-icon>close</mat-icon></button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+              @if(insumosSeleccionados.length === 0) {
+                <tr class="container" id="contenedorInsumosVacio">
+                  <td>
+                    <h4>No hay Insumos Seleccionados</h4>
+                  </td>
+                </tr>
+              }
+              <div class="agrupacion-botones-seleccionar">
+                <div class="botones-seleccionar">
+                  <button class="btn btn-primary fw-bold" id="" (click)="verificarSeleccionInsumo()">Seleccionar</button>
+                  <button class="btn btn-primary fw-bold" id="" (click)="otroInsumo()"><mat-icon>restart_alt</mat-icon></button>
+                </div>
+              </div>
+          </div>
+          <div class="container col-6">
+            <label for="nombreLocal ">
+              <span>Local</span>
+              <select class="form-select fw-medium" id="nombreLocal" #nombreLocal [(ngModel)]="localSeleccionadoId" (change)="obtenerLocalSeleccionado()">
+                <option class="fw-medium" *ngFor="let local of locales" [value] ="local.id">{{local.nombre}}</option>
+              </select>
+            </label>
+            <h3>Insumo en Local</h3>
+            <table class="table" id="contenedorInsumos">
+              @if(localSeleccionado.insumos?.length != 0){
+                <thead>
+                  <tr>
+                    <th>Insumo</th>
+                    <th>Cantidad</th>
+                    <th>Retirar de Local</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for(insumo of localSeleccionado.insumos; track insumo){
+                    <tr id="">
+                      <td>
+                        <span [id]="'insumoLocalSelected-'+insumo.id">{{insumo.nombre}}</span>
+                      </td>
+                      <td>
+                        <span>{{insumo.InsumoLocal?.cantidad}}</span>
+                      </td>
+                      <td>
+                        <button class="btn btn-danger quitar" (click)="confirmarRetiro(insumo.id!)"><mat-icon>logout</mat-icon></button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              }
+              @else {
+                  <h4>No hay Insumos en el Local</h4>
+              }
+            </table>
+          </div>
+          <div class="agrupacion-botones-confirmacion">
+            <div class="botones-confirmacion">
+              <button class="btn btn-primary fw-bold" id="asignarTemas" (click)="validarAsignacion()">Asignar Insumos</button>
+              <button class="btn btn-success fw-bold" id="asignarTemas" (click)="irMoverInsumo()">Ir a Mover Insumos</button>
+              <button class="btn btn-danger fw-bold" id="asignarTemas" (click)="irListadoLocales()">Ir al Listado de Locales</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+.btn-register {
+    color: #fff;
+    background: linear-gradient(to bottom right, #2d9bff, #4c5ef7);
+}
+
+.card-img-left {
+    width: 45%;
+    background: scroll center url('../../../../assets/img/login.png');
+    background-size: cover;
+}
