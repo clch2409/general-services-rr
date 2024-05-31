@@ -59,6 +59,12 @@ class Insumo extends Model{
     this.belongsTo(models.Proveedor, {
       as: 'proveedor'
     });
+    this.belongsToMany(models.Local, {
+      as: 'locales',
+      through: models.InsumoLocal,
+      foreignKey: 'idInsumo',
+      otherKey: 'idLocal',
+    });
   }
 
   static config(sequelize){

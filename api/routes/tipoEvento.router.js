@@ -46,9 +46,7 @@ async function findAll(req, res, next) {
   try{
     const tiposEventos = await tipoEventoService.findAll();
 
-    res.status(200).json({
-      tiposEventos
-    })
+    res.status(200).json(tiposEventos)
   }
   catch(e){
     next(e)
@@ -60,9 +58,7 @@ async function createTipoEvento(req, res, next) {
     const { body } = req
     const newTipoEvento = await tipoEventoService.createTipoEvento(body);
 
-    res.status(200).json({
-      newTipoEvento
-    })
+    res.status(200).json(newTipoEvento)
   }
   catch(e){
     next(e)
@@ -74,9 +70,7 @@ async function findTipoEventoById(req, res, next) {
     const { id } = req.params;
     const foundTipoEvento = await tipoEventoService.findTipoEventoById(id);
 
-    res.status(200).json({
-      foundTipoEvento
-    })
+    res.status(200).json(foundTipoEvento)
   }
   catch(e){
     next(e)
@@ -88,9 +82,7 @@ async function updateTipoEvento(req, res, next) {
     const { params, body } = req
     const updatedTipoEvento = await tipoEventoService.updateTipoEvento(params.id, body);
 
-    res.status(200).json({
-      updatedTipoEvento
-    })
+    res.status(200).json(updatedTipoEvento)
   }
   catch(e){
     next(e)

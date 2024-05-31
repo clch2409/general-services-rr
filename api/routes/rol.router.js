@@ -17,6 +17,11 @@ rolRouter.get('',
   findAll
 );
 
+rolRouter.get('/:id',
+  authenticationByJwt(),
+  validateRoles(ADMIN.name, ENCARGADO.name),
+  findRoleById
+)
 rolRouter.post('',
   authenticationByJwt(),
   validateRoles(ADMIN.name),
@@ -37,12 +42,22 @@ rolRouter.patch('/:id',
 async function findAll(req, res, next){
   try{
     const roles = await rolService.findAll()
-    res.status(200).json({
-      roles
-    })
+    res.status(200).json(roles)
   }
   catch(e){
     next(e)
+  }
+}
+
+async function findRoleById(req, res, next) {
+  try{
+    const { id } = req.params;
+    const rolFound = await rolService.findRoleById(id);
+
+    res.status(200).json(rolFound)
+  }
+  catch(e){
+    next()
   }
 }
 
@@ -65,9 +80,7 @@ async function updateRol (req, res, next){
     const { params, body } = req;
     const updatedRol = await rolService.updateRol(params.id, body);
 
-    res.status(200).json({
-      updatedRol
-    });
+    res.status(200).json(updatedRol);
   }
   catch(e){
     next(e);

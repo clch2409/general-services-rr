@@ -18,6 +18,20 @@ encargadoRouter.get('',
   findAll
 );
 
+encargadoRouter.get('/check',
+  // authenticationByJwt(),
+  // validateRoles(ADMIN.name),
+  async (req, res, next) => {
+    try{
+      const { fechaEvento } = req.body;
+      const eventos = encargadoService.checkEncargadoAvalible(fechaEvento)
+    }
+    catch(e){
+      next(e);
+    }
+  }
+);
+
 encargadoRouter.get('/activos',
   authenticationByJwt(),
   validateRoles(ADMIN.name),
@@ -53,7 +67,8 @@ encargadoRouter.get('/email/:email',
 );
 
 encargadoRouter.patch('/:id',
-  validateRoles(ADMIN.name, ENCARGADO.name),
+  authenticationByJwt(),
+  validateRoles(ADMIN.name),
   validatorHandler(getEncargadoByIdSchema, 'params'),
   validatorHandler(updateEncargadoSchema, 'body'),
   updateEncargado
@@ -71,9 +86,7 @@ async function findAll(req, res, next){
   try{
     const encargados = await encargadoService.findAll();
 
-    res.status(202).json({
-      encargados
-    })
+    res.status(202).json(encargados)
   }
   catch(e){
     next(e)
@@ -84,9 +97,7 @@ async function findAllActivos(req, res, next) {
   try{
     const encargadoActivos = await encargadoService.findAllActiveEncargados();
 
-    res.status(200).json({
-      encargadoActivos
-    })
+    res.status(200).json(encargadoActivos)
   }
   catch(e){
     next(e);
@@ -97,9 +108,7 @@ async function createEncargado(req, res, next){
   try{
     const { body } = req;
     const newEncargado = await encargadoService.createEncargado(body);
-    res.status(201).json({
-      newEncargado
-    });
+    res.status(201).json(newEncargado);
   }
   catch(e){
     next(e);
@@ -111,7 +120,8 @@ async function findEncargadoById(req, res, next){
     const { id } = req.params
     const foundEncargado = await encargadoService.findEncargadoById(id);
     res.status(201).json({
-      foundEncargado
+      encargado: foundEncargado,
+      fechaContratacion: foundEncargado.fechaContratacion.toDateString(),
     })
   }
   catch(e){
@@ -123,9 +133,7 @@ async function findEncargadoByDni(req, res, next){
   try{
     const { dni } = req.params;
     const foundCliente = await encargadoService.findEncargadoByDni(dni);
-    res.status(201).json({
-      foundCliente
-    })
+    res.status(201).json(foundCliente)
   }
   catch(e){
     next(e);
@@ -136,9 +144,7 @@ async function findEncargadoByEmail(req, res, next) {
   try{
     const { email } = req.params;
     const foundCliente = await encargadoService.findEncargadoByEmail(email);
-    res.status(201).json({
-      foundCliente
-    })
+    res.status(201).json(foundCliente)
   }
   catch(e){
     next(e);
@@ -152,9 +158,7 @@ async function updateEncargado(req, res, next) {
 
     console.log(updatedCliente)
 
-    res.status(200).json({
-      updatedCliente
-    });
+    res.status(200).json(updatedCliente);
   }
   catch(e){
     next(e)
@@ -166,9 +170,7 @@ async function deleteEncargado (req, res, next) {
     const { id } = req.params;
     const deleteEncargado = await encargadoService.deleteEncargado(id);
 
-    res.status(200).json({
-      deleteEncargado
-    });
+    res.status(200).json(deleteEncargado);
   }
   catch(e){
     next(e)

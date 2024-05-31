@@ -3,7 +3,7 @@ const passport = require('passport');
 
 const validatorHandler = require('../middlewares/validator.handler');
 const authService = require('../services/auth.service');
-const { loginSchema } = require('../schema/usuario.schema');
+const { loginSchema, changePasswordSchema } = require('../schema/usuario.schema');
 
 const authRouter = express.Router();
 
@@ -15,11 +15,12 @@ authRouter.post('/login',
 );
 
 authRouter.post('/recovery',
-  passport.authenticate('jwt', {session: false}),
+  // passport.authenticate('jwt', {session: false}),
   sendRecoveryEmail
 );
 
 authRouter.post('/change/password',
+  validatorHandler(changePasswordSchema, 'body'),
   changePassword
 );
 //***************** Rutas ******************
@@ -42,8 +43,8 @@ async function loginUser(req, res, next){
 
 async function sendRecoveryEmail(req, res, next){
   try{
-    const payload = req.user;
-    const rta = await authService.getMailInfo(payload.sub);
+    const { body } = req;
+    const rta = await authService.getMailInfo(body.email);
 
     res.status(200).json({
       rta
@@ -56,8 +57,11 @@ async function sendRecoveryEmail(req, res, next){
 
 async function changePassword(req, res, next){
   try{
-    const {token, contrasena} = req.body;
-    const rta = await authService.changePassword(token, contrasena);
+    console.log({
+      body: req.body
+    })
+    const {token, newPassword} = req.body;
+    const rta = await authService.changePassword(token, newPassword);
 
     res.status(200).json({
       rta

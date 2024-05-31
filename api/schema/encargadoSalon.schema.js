@@ -1,18 +1,16 @@
 const joi = require('joi');
+const patterns = require('./../utils/enums/patterns.enum');
 
 const { createUsuarioSchema, getUsuarioByEmailSchema } = require('./usuario.schema');
 const { ACTIVO, INACTIVO } = require('./../utils/enums/status.enum');
 
-const regexNameRule = RegExp(/^[A-Za-z\sñ]+$/)
-const regexDniRule = RegExp(/^\d{8,9}$/);
-const regexNumberRule = RegExp(/^9\d{8}$/);
 
 const id = joi.number().integer().positive();
-const nombres = joi.string().min(3).max(50).regex(regexNameRule);
-const apPaterno = joi.string().min(3).max(25).regex(regexNameRule);
-const apMaterno = joi.string().min(3).max(25).regex(regexNameRule);
-const dni = joi.string().min(8).max(9).regex(regexDniRule);
-const telefono = joi.string().min(9).max(9).regex(regexNumberRule);
+const nombres = joi.string().min(3).max(50).regex(patterns.NAME_PATTERN.pattern);
+const apPaterno = joi.string().min(3).max(25).regex(patterns.NAME_PATTERN.pattern);
+const apMaterno = joi.string().min(3).max(25).regex(patterns.NAME_PATTERN.pattern);
+const dni = joi.string().min(8).max(9).regex(patterns.DNI_PATTERN.pattern);
+const telefono = joi.string().min(9).max(9).regex(patterns.PHONE_PATTERN.pattern);
 const fechaContratacion = joi.date();
 const status = joi.string().valid(ACTIVO.name, INACTIVO.name);
 // const usuario = createUsuarioSchema;
@@ -27,7 +25,7 @@ const createEncargadoSchema = joi.object({
   telefono: telefono.required(),
   fechaContratacion: fechaContratacion.required(),
   usuario: createUsuarioSchema.required(),
-  status: status.required(),
+  status: status,
 });
 
 const getEncargadoByIdSchema = joi.object({

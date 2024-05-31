@@ -15,6 +15,25 @@ class EventoService {
     return models.Evento.findAll()
   }
 
+  /*
+  // Verificar si ya el local se encuentra reservado hoy
+  // Verificar si la cantidad de personas sobrepasan el máximo de aforo
+  // Verificar si la encargada ya tiene un evento en el día
+  // No permitir al cliente reservar un evento si ya tiene un evento reservado
+  // Verificar si la fecha de reserva no es anterior a la fecha de hoy
+  // Hacer que los eventos del día de hoy estén en proceso
+  // Hacer que los eventos ya se encuentren realizados
+  // Hacer que el evento pase a cancelado
+  // * Agregar colaboradores a evento
+  // * Agregar servicios al evento
+  * Enviar mensaje a colaborador
+  * Enviar mensaje a encargado
+  // * Colocar automáticamente un encargado
+  // * Realizar cotizaciones
+  // * Contabilizar precio total del evento
+  // * Hacer schema de cotizacion
+  */
+
   async createEvento(body){
     const { localId, fechaEvento, cantidadPersonas, encargadoId, clienteId, horaInicio } = body;
 
@@ -169,17 +188,72 @@ class EventoService {
   async addColaboradoresToEvento(body){
     const { colaboradores, eventoId } = body;
 
-    colaboradores.forEach(async (colaborador) => {
+    const evento = await models.Evento.findByPk(eventoId);
+    const colaboradoresAssignedToOtherEvents = ''
+
+    colaboradores.forEach(async (colabId) => {
+      const colabAssigned = await this.checkIfColaboradorIsAlreadyAssigned(colabId, evento.fechaEvento);
+      if (colabAssigned){
+        colaboradoresAssignedToOtherEvents += `-${colabAssigned.nombre} ${colabAssigned.apPaterno}\n`;
+      }
+    });
+
+    if(colaboradoresAssignedToOtherEvents.length){
+      throw boom.illegal('Los siguientes colaboradores ya se encuentran asignados a otros eventos: \n' + colaboradoresAssignedToOtherEvents + '\nRegistre a otros colaboradores.');
+    }
+
+    const colaboradoresToAssing = await this.checkIfColaboradorIsAssignedToEvent(eventoId, colaboradores);
+
+    if (!colaboradoresToAssing.length){
+      throw boom.notAcceptable('Ya estos colaboradores han sido agregados, ingrese nuevos colaboradores');
+    }
+
+    colaboradoresToAssing.forEach(async (colaborador) => {
       const colaboradorEvento = {
         colaboradorId: colaborador,
-        eventoId: eventoId
+        eventoId: eventoId,
       }
       await models.ColaboradorEvento.create(colaboradorEvento);
-    })
+    });
 
-    const evento = await this.findEventoById(eventoId);
+    return colaboradoresToAssing;
+  }
 
-    return evento;
+  async checkIfColaboradorIsAssignedToEvent(eventoId, colaboradoresToAssing){
+    const colaboradoresEvent = await models.ColaboradorEvento.findAll({
+      where: {
+        eventoId: eventoId
+      }
+    });
+
+    const colabToAssing = [];
+
+    colaboradoresToAssing.forEach(id => {
+      const isColabAssigned = colaboradoresEvent.some(colab => colab.colaboradorId === id);
+      if (!isColabAssigned){
+        colabToAssing.push(id);
+      }
+    });
+
+    return colabToAssing;
+  }
+
+  async checkIfColaboradorIsAlreadyAssigned(colaboradorId, fechaEvento){
+    let colabsAssigned = undefined;
+    const eventos = await models.Evento.findAll({
+      where: {
+        fechaEvento: fechaEvento
+      }
+    });
+
+    eventos.forEach(evento => {
+      const colabIsInEvento = evento.colaboradores.find(colab => colab.id === colaboradorId);
+      if (colabIsInEvento){
+        colabsAssigned = colabIsInEvento;
+      }
+    });
+
+    return colabsAssigned;
   }
 
   async addServiciosToEvento(body){

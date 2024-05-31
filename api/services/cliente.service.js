@@ -22,7 +22,7 @@ class ClienteService{
 
   //Permite crear el cliente con el usuario en el mismo cuerpo de la solicitud
   async createCliente(body){
-    const clienteFound = this.checkClienteExistenceByDni(body.dni);
+    const clienteFound = await this.checkClienteExistenceByDni(body.dni);
 
     if (clienteFound){
       throw boom.notAcceptable('El dni ingresado ya se encuentra registrado');

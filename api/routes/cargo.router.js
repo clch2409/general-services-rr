@@ -45,9 +45,7 @@ async function findAll(req, res, next){
   try{
     const cargos = await cargoService.findAll();
 
-    res.status(200).json({
-      cargos
-    });
+    res.status(200).json(cargos);
   }
   catch(e){
     next(e)
@@ -59,9 +57,7 @@ async function createCargo(req, res, next){
     const { body } = req;
     const newCargo = await cargoService.createCargo(body);
 
-    res.status(200).json({
-      newCargo
-    });
+    res.status(200).json(newCargo);
   }
   catch(e){
     next(e)
@@ -73,9 +69,7 @@ async function findCargoById(req, res, next) {
     const { id } = req.params;
     const cargoFound = await cargoService.findCargoById(id)
 
-    res.status(302).json({
-      cargoFound
-    });
+    res.status(302).json(cargoFound);
   }
   catch(e){
     next(e)
@@ -87,9 +81,7 @@ async function updateCargo(req, res, next) {
     const { params, body } = req;
     const updatedCargo = await cargoService.updateCargo(params.id, body);
 
-    res.status(200).json({
-      updatedCargo
-    });
+    res.status(200).json(updatedCargo);
   }
   catch(e){
     next(e)

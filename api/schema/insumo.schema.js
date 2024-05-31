@@ -1,11 +1,12 @@
 const joi = require('joi');
+const patterns = require('./../utils/enums/patterns.enum');
 
 const { ACTIVO, INACTIVO } = require('./../utils/enums/status.enum');
 
-const regexNameRule = RegExp(/^[A-Za-z\sñ]+$/)
+
 
 const id = joi.number().integer().positive();
-const nombre = joi.string().min(5).max(50).regex(regexNameRule);
+const nombre = joi.string().min(5).max(50).regex(patterns.NAME_PATTERN.pattern);
 const precio = joi.number().precision(6,2);
 const status = joi.string().valid(ACTIVO.name, INACTIVO.name);
 

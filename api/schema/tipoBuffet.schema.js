@@ -1,9 +1,8 @@
 const joi = require('joi');
-
-const regexNameRule = RegExp(/^[A-Za-z\sñ]+$/);
+const patterns = require('./../utils/enums/patterns.enum');
 
 const id = joi.number().integer().positive();
-const nombre = joi.string().min(3).max(25).regex(regexNameRule);
+const nombre = joi.string().min(3).max(25).regex(patterns.NAME_PATTERN.pattern);
 const precioPorPlato = joi.number().precision(6,2).positive().min(30).max(150);
 
 const createTipoBuffetSchema = joi.object({

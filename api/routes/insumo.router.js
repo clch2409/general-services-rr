@@ -12,28 +12,28 @@ const insumoRouter = Router();
 
 //****************** Rutas *************************
 insumoRouter.get('',
-  // authenticationByJwt(),
-  // validateRoles(ADMIN.name, ENCARGADO.name),
+  authenticationByJwt(),
+  validateRoles(ADMIN.name, ENCARGADO.name),
   findAll
 );
 
 insumoRouter.post('',
-  // authenticationByJwt(),
-  // validateRoles(ADMIN.name, ENCARGADO.name),
+  authenticationByJwt(),
+  validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(createInsumoSchema, 'body'),
   createInsumo
 );
 
 insumoRouter.get('/:id',
-  // authenticationByJwt(),
-  // validateRoles(ADMIN.name, ENCARGADO.name),
+  authenticationByJwt(),
+  validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getInsumoByIdSchema, 'params'),
   findInsumoById
 );
 
 insumoRouter.patch('/:id',
-  // authenticationByJwt(),
-  // validateRoles(ADMIN.name, ENCARGADO.name),
+  authenticationByJwt(),
+  validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getInsumoByIdSchema, 'params'),
   validatorHandler(updatedInsumoSchema, 'body'),
   updateInsumo
@@ -53,9 +53,7 @@ async function findAll (req, res, next){
   try{
     const insumos = await insumoService.findAll();
 
-    res.status(200).json({
-      insumos
-    })
+    res.status(200).json(insumos)
   }
   catch(e){
     next(e)
@@ -68,9 +66,7 @@ async function createInsumo(req, res, next) {
 
     const newInsumo = await insumoService.createInsumo(body);
 
-    res.status(200).json({
-      newInsumo
-    })
+    res.status(200).json(newInsumo)
   }
   catch(e){
     next(e)
@@ -83,9 +79,7 @@ async function findInsumoById(req, res, next){
 
     const foundInsumo = await insumoService.findInsumoById(id);
 
-    res.status(200).json({
-      foundInsumo
-    })
+    res.status(200).json(foundInsumo)
   }
   catch(e){
     next(e)
@@ -97,9 +91,7 @@ async function updateInsumo(req, res, next) {
     const { params, body } = req;
 
     const updatedInsumo = await insumoService.updateInsumo(params.id, body);
-    res.json({
-      updatedInsumo
-    })
+    res.json(updatedInsumo)
   }
   catch(e){
     next(e);
@@ -112,9 +104,7 @@ async function deleteInsumo(req, res, next){
 
     const deletedInsumo = await insumoService.deleteInsumo(id);
 
-    res.status(200).json({
-      deletedInsumo
-    })
+    res.status(200).json(deletedInsumo)
   }
   catch(e){
     next(e)

@@ -1,7 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { TABLA_COLABORADOR } = require('./colaborador.model');
 const { TABLA_EVENTO } = require('./evento.model');
-const { TRABAJANDO, CONFIRMADO, TERMINADO, SIN_CONFIRMAR } = require('./../../utils/enums/statusColaboradorEvento.enum');
+// const { TERMINADO, ASIGNADO } = require('./../../utils/enums/statusColaboradorEvento.enum');
 
 const TABLA_COLABORADOR_EVENTO = 'colaborador_evento';
 
@@ -47,14 +47,14 @@ const colaboradorEventoSchema = {
     type: DataTypes.DATE,
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
   },
-  status: {
-    allowNUll: false,
-    type: DataTypes.STRING,
-    defualtValue: SIN_CONFIRMAR.name,
-    validate: {
-      isIn: [[CONFIRMADO.name, SIN_CONFIRMAR.name, TRABAJANDO, TERMINADO]]
-    }
-  }
+  // status: {
+  //   allowNUll: false,
+  //   type: DataTypes.STRING,
+  //   defaultValue: ASIGNADO.name,
+  //   validate: {
+  //     isIn: [[ASIGNADO.name, TERMINADO.name]]
+  //   }
+  // }
 }
 
 class ColaboradorEvento extends Model{

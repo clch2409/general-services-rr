@@ -55,9 +55,7 @@ async function findAll(req, res, next){
   try{
     const clientes = await clienteService.findAll();
 
-    res.status(202).json({
-      clientes
-    })
+    res.status(202).json(clientes)
   }
   catch(e){
     next(e)
@@ -80,9 +78,7 @@ async function findClienteById(req, res, next){
   try{
 
     const foundCliente = await clienteService.findClienteById(req.params.id);
-    res.status(201).json({
-      foundCliente
-    })
+    res.status(201).json(foundCliente)
   }
   catch(e){
     next(e);
@@ -92,9 +88,7 @@ async function findClienteById(req, res, next){
 async function findClienteByDni(req, res, next){
   try{
     const foundCliente = await clienteService.findClienteByDni(req.params.dni);
-    res.status(201).json({
-      foundCliente
-    })
+    res.status(201).json(foundCliente)
   }
   catch(e){
     next(e);
@@ -104,9 +98,7 @@ async function findClienteByDni(req, res, next){
 async function findClienteByEmail(req, res, next) {
   try{
     const foundCliente = await clienteService.findClienteByEmail(req.params.email);
-    res.status(201).json({
-      foundCliente
-    })
+    res.status(201).json(foundCliente)
   }
   catch(e){
     next(e);
@@ -118,12 +110,8 @@ async function updateCliente(req, res, next) {
     const { params, body } = req
     const updatedCliente = await clienteService.updateCliente(params.id, body);
 
-    const clientes = await clienteService.findAll();
 
-    res.status(200).json({
-      updatedCliente,
-      clientes
-    });
+    res.status(200).json(updatedCliente);
   }
   catch(e){
     next(e)

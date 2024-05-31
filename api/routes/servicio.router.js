@@ -46,9 +46,7 @@ async function findAll(req, res, next) {
   try{
     const servicios = await servicioService.findAll();
 
-    res.status(200).json({
-      servicios
-    })
+    res.status(200).json(servicios)
   }
   catch(e){
     next(e)
@@ -61,9 +59,7 @@ async function createServicio(req, res, next) {
     const { body } = req;
     const newServicio = await servicioService.createServicio(body);
 
-    res.status(201).json({
-      newServicio
-    })
+    res.status(201).json(newServicio)
   }
   catch(e){
     next(e)
@@ -75,9 +71,7 @@ async function findServicioById(req, res, next){
     const { id } = req.params;
     const foundServicio = await servicioService.findServicioById(id);
 
-    res.status(200).json({
-      foundServicio
-    })
+    res.status(200).json(foundServicio)
   }
   catch(e){
     next(e)
@@ -89,9 +83,7 @@ async function updateServicio(req, res, next)  {
     const { params, body } = req;
     const updatedServicio = await servicioService.updateServicio(params.id, body);
 
-    res.status(200).json({
-      updatedServicio
-    })
+    res.status(200).json(updatedServicio)
   }
   catch(e){
     next(e)

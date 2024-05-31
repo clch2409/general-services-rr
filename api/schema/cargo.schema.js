@@ -1,9 +1,9 @@
 const joi = require('joi');
+const patterns = require('./../utils/enums/patterns.enum');
 
-const regexNameRule = RegExp(/^[A-Za-z\sñ]+$/)
 
 const id = joi.number().positive().integer();
-const nombre = joi.string().min(5).max(50).regex(regexNameRule);
+const nombre = joi.string().min(5).max(50).regex(patterns.NAME_PATTERN.pattern);
 
 const createCargoSchema = joi.object({
   nombre: nombre.required(),

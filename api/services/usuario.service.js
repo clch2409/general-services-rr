@@ -68,10 +68,13 @@ class UsuarioService{
     if (foundUser.status === INACTIVO.name){
       throw boom.notAcceptable('El usuario ya se encuentra inactivo')
     }
+    foundUser.update({
+      status: INACTIVO.name
+    })
 
     return {
       message: 'El usuario ha sido eliminado',
-      deletedUser
+      foundUser
     }
   }
 }

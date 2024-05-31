@@ -31,9 +31,33 @@ function getDayOfTheWeek(date){
   return fecha.getDay();
 }
 
+// function getHoursToString(horario){
+//   const horarioDate = new Date(horario);
+//   const horarioHoras = horarioDate.getHours();
+//   const horarioMinutos = horarioDate.getMinutes();
+
+//   let horarioString = '';
+
+//   if (horarioHoras < 10 && horarioMinutos < 10){
+//     horarioString += `0${horarioHoras}:0${horarioMinutos}`;
+//   }
+//   else if (horarioHoras < 10){
+//     horarioString += `0${horarioHoras}:${horarioMinutos}`
+//   }
+//   else if(horarioMinutos < 10){
+//     horarioString += `${horarioHoras}:0${horarioMinutos}`
+//   }
+//   else {
+//     horarioString += `${horarioHoras}:${horarioMinutos}`
+//   }
+
+//   return horarioString;
+// }
+
 module.exports = {
   addHoursToEventEndTime,
   getTodaysDate,
   getYesterdayDate,
   getDayOfTheWeek,
+  // getHoursToString,
 }

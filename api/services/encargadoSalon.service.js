@@ -33,7 +33,9 @@ class EncargadoService{
   }
 
   async findEncargadoById(encargadoId){
-    const foundEncargado = await models.EncargadoSalon.findByPk(encargadoId);
+    const foundEncargado = await models.EncargadoSalon.findByPk(encargadoId, {
+      include: ['eventos']
+    });
 
     if (!foundEncargado){
       throw boom.notFound('El encargado buscado no existe');
@@ -98,7 +100,7 @@ class EncargadoService{
 
   async checkDniAndHiringDate(body){
     const encargadoFound = await this.checkExistenceByDni(body.dni);
-    const checkFechaContrato = this.validateHiringDate(body.fechaContratacion)
+    const checkFechaContrato = this.validateHiringDate(body.fechaContratacion);
 
     if (encargadoFound){
       throw boom.notAcceptable('El dni ya se encuentra registrado en el sistema');

@@ -139,8 +139,8 @@ class Evento extends Model{
     this.belongsToMany(models.Servicio, {
       as: 'servicios',
       through: models.ServicioEvento,
-      foreignKey: 'eventoId',
-      otherKey: 'servicioId',
+      foreignKey: 'idEvento',
+      otherKey: 'idServicio',
     });
     this.belongsToMany(models.Colaborador, {
       as: 'colaboradores',

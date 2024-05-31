@@ -4,6 +4,7 @@ const validatorHandler = require('./../middlewares/validator.handler');
 const eventoService = require('./../services/evento.service');
 
 const { createEventoSchema, getEventoByIdSchema, updateEventoSchema, cotizacionSchema } = require('./../schema/evento.schema');
+const colaboradorService = require('../services/colaborador.service');
 
 const eventoRouter = Router();
 
@@ -12,9 +13,7 @@ eventoRouter.get('',
     try{
       const eventos = await eventoService.findAll();
 
-      res.status(200).json({
-        eventos
-      });
+      res.status(200).json(eventos);
     }
     catch(e){
       next(e);
@@ -28,9 +27,7 @@ eventoRouter.get('/:id',
       const { id } = req.params;
       const eventoFound = await eventoService.findEventoById(id);
 
-      res.status(200).json({
-        eventoFound
-      });
+      res.status(200).json(eventoFound);
     }
     catch(e){
       next(e);
@@ -44,9 +41,7 @@ eventoRouter.get('/price/event/:id',
       const { id } = req.params;
       const priceEvent = await eventoService.getPrecioEvento(id);
 
-      res.status(200).json({
-        priceEvent
-      });
+      res.status(200).json(priceEvent);
     }
     catch(e){
       next(e);
@@ -62,9 +57,7 @@ eventoRouter.post('',
       const { body } = req;
       const newEvento = await eventoService.createEvento(body);
 
-      res.status(201).json({
-        newEvento
-      });
+      res.status(201).json(newEvento);
     }
     catch(e){
       next(e);
@@ -79,9 +72,7 @@ eventoRouter.post('/cotizacion',
       const { body } = req;
       const cotizacion = await eventoService.makeCotizacion(body);
 
-      res.status(201).json({
-        cotizacion
-      });
+      res.status(201).json(cotizacion);
     }
     catch(e){
       next(e);
@@ -93,11 +84,10 @@ eventoRouter.post('/add/colaborador',
   async (req, res, next) => {
     try{
       const { body } = req;
-      const colaboradoresAdded = await eventoService.addColaboradoresToEvento(body);
+      const colaboradoresToAdd = await eventoService.addColaboradoresToEvento(body);
+      const colaboradoresAdded = await colaboradorService.sendEmailToColaborador(body.eventoId, colaboradoresToAdd);
 
-      res.status(201).json({
-        colaboradoresAdded
-      })
+      res.status(201).json(colaboradoresAdded)
     }
     catch(e){
       next(e)
@@ -111,9 +101,7 @@ eventoRouter.post('/add/servicio',
       const { body } = req;
       const serviciosAdded = await eventoService.addServiciosToEvento(body);
 
-      res.status(201).json({
-        serviciosAdded
-      })
+      res.status(201).json(serviciosAdded)
     }
     catch(e){
       next(e)
@@ -126,9 +114,7 @@ eventoRouter.post('/today',
     try{
       const eventosHoy = await eventoService.changeEventoStatusToInProcess();
 
-      res.status(200).json({
-        eventosHoy
-      });
+      res.status(200).json(eventosHoy);
     }
     catch(e){
       next(e)

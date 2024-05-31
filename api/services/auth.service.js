@@ -50,7 +50,7 @@ class AuthService{
   }
 
   async changePassword(recoveryToken, newPassword){
-
+    console.log({newPassword})
     const payload = jwt.verify(recoveryToken, config.jwtSecretRecovery);
     const foundUser = await usuarioService.findUserByIdWithRecovery(payload.sub);
 
@@ -69,7 +69,7 @@ class AuthService{
   }
 
   async getMailInfo(userId){
-    const foundUser = await usuarioService.findUserById(userId);
+    const foundUser = await usuarioService.findUserByEmail(userId);
 
     if(!foundUser){
       boom.unauthorized('Usuario no encontrado');
@@ -89,14 +89,18 @@ class AuthService{
       recoveryToken
     });
 
+    const mensaje = 'Ingrese al siguiente link para la recuperación de sus credenciales. '
+
     const mail = {
       from: config.senderEmail,
       to: foundUser.email,
       subject: 'Recuperación de Contraseña',
-      html: `<b> ${recoveryToken} </b>`
+      html: mensaje + `<a href="http://localhost:4200/mi-cuenta/${recoveryToken}">Haga click aquí</a>`
     }
 
     const rta = await this.sendEmail(mail);
+
+    rta.user = foundUser;
 
     return rta;
   }

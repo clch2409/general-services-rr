@@ -48,9 +48,7 @@ usuarioRouter.delete('/:id',
 async function findAll(req, res, next) {
   try{
     const users = await usuarioService.findAll();
-    res.status(200).json({
-      users
-    })
+    res.status(200).json(users)
   }
   catch(e){
     next(e);
@@ -60,9 +58,7 @@ async function findAll(req, res, next) {
 async function createUser(req, res, next){
   try{
     const newUser = await usuarioService.createUser(req.body);
-    res.status(201).json({
-      newUser
-    })
+    res.status(201).json(newUser)
   }
   catch(e){
     next(e)
@@ -102,9 +98,7 @@ async function deleteUsuario(req, res, next) {
     const usuarioId = req.params.id;
     const deletedUser = await usuarioService.deleteUser(usuarioId);
 
-    res.status().json({
-      deletedUser
-    });
+    res.status(200).json(deletedUser);
   }
   catch(e){
     next(e);

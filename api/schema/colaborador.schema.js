@@ -1,18 +1,15 @@
 const joi = require('joi');
+const patterns = require('./../utils/enums/patterns.enum');
 
 const { ACTIVO, INACTIVO } = require('./../utils/enums/status.enum');
 
-const regexNameRule = RegExp(/^[A-Za-z\sñ]+$/);
-const regexDniRule = RegExp(/^\d{8,9}$/);
-const regexNumberRule = RegExp(/^\d{9}$/);
-
 const id = joi.number().integer().positive();
-const nombres = joi.string().min(3).max(50).regex(regexNameRule);
-const apPaterno = joi.string().min(3).max(25).regex(regexNameRule);
-const apMaterno = joi.string().min(3).max(25).regex(regexNameRule);
+const nombres = joi.string().min(3).max(50).regex(patterns.NAME_PATTERN.pattern);
+const apPaterno = joi.string().min(3).max(25).regex(patterns.NAME_PATTERN.pattern);
+const apMaterno = joi.string().min(3).max(25).regex(patterns.NAME_PATTERN.pattern);
 const email = joi.string().email();
-const telefono = joi.string().regex(regexNumberRule);
-const dni = joi.string().regex(regexDniRule);
+const telefono = joi.string().regex(patterns.PHONE_PATTERN.pattern);
+const dni = joi.string().regex(patterns.DNI_PATTERN.pattern);
 const fechaContratacion = joi.date();
 const status = joi.string().valid(ACTIVO.name, INACTIVO.name);
 

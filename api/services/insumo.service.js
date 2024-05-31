@@ -6,7 +6,9 @@ const { INACTIVO } = require('../utils/enums/status.enum');
 class InsumoService {
 
   async findAll(){
-    return await models.Insumo.findAll();
+    return await models.Insumo.findAll({
+      include: ['proveedor']
+    });
   }
 
   async createInsumo(body){
@@ -14,7 +16,9 @@ class InsumoService {
   }
 
   async findInsumoById(insumoId){
-    const foundInsumo = await models.Insumo.findByPk(insumoId)
+    const foundInsumo = await models.Insumo.findByPk(insumoId, {
+      include: ['proveedor']
+    });
 
     if (!foundInsumo){
       throw boom.notFound('El insumo buscado no existe');

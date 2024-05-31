@@ -60,9 +60,7 @@ async function findAll(req, res, next) {
   try {
     const colaboradores = await colaboradorService.findAll();
 
-    res.status(200).json({
-      colaboradores
-    });
+    res.status(200).json(colaboradores);
   } catch (e) {
     next(e)
   }
@@ -73,9 +71,7 @@ async function createColaborador(req, res, next) {
     const { body } = req;
     const newColaborador = await colaboradorService.createColaborador(body);
 
-    res.status(201).json({
-      newColaborador
-    });
+    res.status(201).json(newColaborador);
   } catch (e) {
     next(e)
   }
@@ -86,9 +82,10 @@ async function findColaboradorById(req, res, next) {
     const { id } = req.params;
     const foundColaborador = await colaboradorService.findColaboradorById(id);
 
-    res.status(302).json({
-      foundColaborador
-    });
+    res.status(201).json({
+      colaborador: foundColaborador,
+      fechaContratacion: foundColaborador.fechaContratacion.toDateString(),
+    })
   }
   catch(e){
     next(e)
@@ -100,9 +97,7 @@ async function findColaboradorByDni(req, res, next) {
     const { dni } = req.params;
     const foundColaborador = await colaboradorService.findColaboradorByDni(dni);
 
-    res.status(302).json({
-      foundColaborador
-    });
+    res.status(200).json(foundColaborador);
   }
   catch(e){
     next(e)
@@ -114,9 +109,7 @@ async function updateColaborador(req, res, next) {
     const { params, body } = req;
     const updatedColaborador = await colaboradorService.updateColaborador(params.id, body);
 
-    res.status(200).json({
-      updatedColaborador
-    });
+    res.status(200).json(updatedColaborador);
   }
   catch(e){
     next(e)
@@ -128,9 +121,7 @@ async function deleteColaborador(req, res, next) {
     const { id } = req.params;
     const deletedColaborador = await colaboradorService.deleteColaborador(id);
 
-    res.status(200).json({
-      deletedColaborador
-    });
+    res.status(200).json(deletedColaborador);
   }
   catch(e){
     next(e)

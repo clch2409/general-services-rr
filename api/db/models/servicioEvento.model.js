@@ -12,7 +12,7 @@ const servicioEventoSchema = {
     type: DataTypes.INTEGER,
     autoIncrement: true,
   },
-  servicioId: {
+  idServicio: {
     field: 'id_servicio',
     allowNull: false,
     type: DataTypes.INTEGER,
@@ -23,7 +23,7 @@ const servicioEventoSchema = {
     onUpdate: 'CASCADE',
     onDelete: 'RESTRICT',
   },
-  eventoId: {
+  idEvento: {
     field: 'id_evento',
     allowNull: false,
     type: DataTypes.INTEGER,

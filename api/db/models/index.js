@@ -45,6 +45,7 @@ function setupModels(sequelize){
   Cliente.associate(sequelize.models);
   EncargadoSalon.associate(sequelize.models);
   Local.associate(sequelize.models);
+  Insumo.associate(sequelize.models);
   Proveedor.associate(sequelize.models);
   Cargo.associate(sequelize.models);
   TipoEvento.associate(sequelize.models);

@@ -1,9 +1,8 @@
 const joi = require('joi');
-
-const regexNameRule = RegExp(/^[A-Za-z\sñ]+$/)
+const patterns = require('./../utils/enums/patterns.enum');
 
 const id = joi.number().integer().positive();
-const nombre = joi.string().min(5).regex(regexNameRule);
+const nombre = joi.string().min(5).regex(patterns.NAME_PATTERN.pattern);
 
 const createRolSchema = joi.object({
   nombre: nombre.required(),

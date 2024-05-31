@@ -12,15 +12,13 @@ const { validateRoles } = require('./../middlewares/auth.handler');
 const tipoBuffetRouter = Router();
 
 tipoBuffetRouter.get('',
-  passport.authenticate('jwt', { session: false }),
-  validateRoles(CLIENTE.name, ADMIN.name, ENCARGADO.name),
+  // passport.authenticate('jwt', { session: false }),
+  // validateRoles(CLIENTE.name, ADMIN.name, ENCARGADO.name),
   async (req, res, next) => {
     try{
       const tiposBuffet = await tipoBuffetService.findAll();
 
-      res.status(200).json({
-        tiposBuffet
-      })
+      res.status(200).json(tiposBuffet)
     }
     catch(e){
       next(e);
@@ -37,9 +35,7 @@ tipoBuffetRouter.post('',
       const { body } = req
       const newTipoBuffet = await tipoBuffetService.createTipoBuffet(body);
 
-      res.status(200).json({
-        newTipoBuffet
-      })
+      res.status(200).json(newTipoBuffet)
     }
     catch(e){
       next(e);
@@ -56,9 +52,7 @@ tipoBuffetRouter.get('/:id',
       const { id } = req.params
       const foundBuffet = await tipoBuffetService.findTipoBuffetById(id);
 
-      res.status(200).json({
-        foundBuffet
-      })
+      res.status(200).json(foundBuffet)
     }
     catch(e){
       next(e);
@@ -76,9 +70,7 @@ tipoBuffetRouter.patch('/:id',
       const { params, body } = req
       const updatedBuffet = await tipoBuffetService.updateTipoBuffet(params.id,body);
 
-      res.status(200).json({
-        updatedBuffet
-      })
+      res.status(200).json(updatedBuffet)
     }
     catch(e){
       next(e);

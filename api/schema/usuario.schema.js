@@ -1,14 +1,16 @@
 const joi = require('joi');
+const patterns = require('./../utils/enums/patterns.enum');
 
 const { ACTIVO, INACTIVO } = require('../utils/enums/status.enum');
 
-const patronContrasena = RegExp(/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/)
 
 const id = joi.number().integer().positive();
 const email = joi.string().email();
-const contrasena = joi.string().regex(patronContrasena);
+const contrasena = joi.string().regex(patterns.PASSWORD_PATTERN.pattern);
 const rolId = joi.number().integer().min(1);
 const status = joi.string().valid(ACTIVO.name, INACTIVO.name);
+
+const token = joi.string();
 
 const createUsuarioSchema = joi.object({
   email: email.required(),
@@ -35,4 +37,9 @@ const loginSchema = joi.object({
   contrasena: contrasena.required(),
 })
 
-module.exports = { createUsuarioSchema, getUsuarioSchema, updateUsuarioSchema, loginSchema, getUsuarioByEmailSchema }
+const changePasswordSchema = joi.object({
+  token: token.required(),
+  newPassword: contrasena.required()
+})
+
+module.exports = { createUsuarioSchema, getUsuarioSchema, updateUsuarioSchema, loginSchema, getUsuarioByEmailSchema, changePasswordSchema }

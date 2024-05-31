@@ -63,23 +63,36 @@ class LocalService{
   }
 
   async addPriceToLocal(body){
+    const { idDia, idLocal } = body;
+
+    const localHasPrice = await this.getPricePerDay(idDia, idLocal);
+    if (localHasPrice){
+      throw boom.notAcceptable('Este local ya cuenta con un precio');
+    }
+
     return models.LocalDia.create(body);
   }
 
   async addPriceAllPricesToLocal(body){
     const { dias, idLocal, precios } = body;
 
-    console.log(body);
-
-    dias.forEach(async (dia, index) => {
-      const localDia = {
-        idLocal,
-        idDia: dia,
-        precioLocal: precios[index]
+    for(let i = 0; i < dias.length; i++){
+      const dia = dias[i];
+      const localHasPrice = await this.getPricePerDay(dia, idLocal);
+      if (localHasPrice){
+        throw boom.notAcceptable('Uno de los locales ya cuenta con precio, por favor modifíquelo');
       }
-      await models.LocalDia.create(localDia);
+    }
 
-    });
+    dias.forEach(async (diaId, index) => {
+      const localDia = {
+        idLocal: idLocal,
+        idDia: diaId,
+        precioLocal: precios[index],
+      }
+
+      await models.LocalDia.create(localDia);
+    })
 
     const preciosByLocal = await this.findLocalById(idLocal);
 
@@ -101,6 +114,15 @@ class LocalService{
     return localDia;
   }
 
+  async getPricePerDay(diaId, localId){
+    return await models.LocalDia.findOne({
+      where: {
+        idLocal: localId,
+        idDia: diaId
+      }
+    })
+  }
+
   async findPricePerDay(localId, dayId){
     const foundPrice = await models.LocalDia.findOne({
       where: {
@@ -117,9 +139,9 @@ class LocalService{
   }
 
   //Se agrega el insumo por local y su cantidad, verifica si el insumo ya está en el local y le agrega la cantidad ingresada
-  async addInsumoToLocal(localId, insumoId, cantidad){
+  async addInsumoToLocal(idLocal, idInsumo, cantidad){
 
-    const localAndInsumoExist = await this.checkInsumoAndLocalExistence(localId, insumoId);
+    const localAndInsumoExist = await this.checkInsumoAndLocalExistence(idLocal, idInsumo);
 
     if (!localAndInsumoExist.bothExist){
       throw boom.notFound('El local o el insumo no se encuentran registrados en el sistema, regístrelos para poder continuar.');
@@ -131,7 +153,7 @@ class LocalService{
       throw boom.notFound('No puede agregar un insumo que se encuentra inactivo');
     }
 
-    const insumosFound = await this.findInsumosByLocal(localId, insumoId);
+    const insumosFound = await this.findInsumosByLocal(idLocal, idInsumo);
 
     if (!insumosFound){
       const insumoFound = localAndInsumoExist.insumoExists;

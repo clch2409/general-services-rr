@@ -57,9 +57,7 @@ async function findAll (req, res, next) {
   try{
     const proveedores = await proveedorService.findAll();
 
-    res.status(200).json({
-      proveedores
-    });
+    res.status(200).json(proveedores);
   }
   catch(e){
     next(e);
@@ -71,9 +69,7 @@ async function createProveedor(req, res, next) {
     const { body } = req;
     const proveedorCreated = await proveedorService.createProveedor(body);
 
-    res.status(201).json({
-      proveedorCreated
-    });
+    res.status(201).json(proveedorCreated);
   }
   catch(e){
     next(e);
@@ -86,9 +82,11 @@ async function findProveedorById(req, res, next) {
     const { id } = req.params
     const foundProveedor = await proveedorService.findProveedorById(id);
 
-    res.status(302).json({
-      foundProveedor
-    })
+    res.status(200).json({
+      proveedor: foundProveedor,
+      fechaContrato: foundProveedor.fechaContrato.toDateString()
+    });
+
   }
   catch(e){
     next(e)
@@ -100,9 +98,7 @@ async function updatedProveedor (req, res, next) {
     const { body, params } = req;
     const updatedProveedor = await proveedorService.updateProveedor(params.id, body);
 
-    res.status(200).json({
-      updatedProveedor
-    });
+    res.status(200).json(updatedProveedor);
   }
   catch(e){
     next(e)
@@ -114,9 +110,7 @@ async function deleteProveedor(req, res, next){
     const { id } = req.params;
     const deletedProveedor = await proveedorService.deleteProveedor(id);
 
-    res.status(200).json({
-      deletedProveedor
-    });
+    res.status(200).json(deletedProveedor);
   }
   catch(e){
     next(e);
