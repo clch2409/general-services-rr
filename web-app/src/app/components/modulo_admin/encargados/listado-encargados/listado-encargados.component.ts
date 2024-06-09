@@ -3,6 +3,8 @@ import { EncargadoSalonService } from '../../../../services/encargadoSalon.servi
 import { EncargadoSalon } from '../../../../models/encargadoSalon.model';
 import { StorageService } from '../../../../services/storage.service';
 import Swal from 'sweetalert2';
+import { ExportPdfService } from '../../../../services/export-pdf.service';
+import { ExportExcelService } from '../../../../services/export-excel.service';
 
 @Component({
   selector: 'app-listado-encargados',
@@ -20,7 +22,12 @@ export class ListadoEncargadosComponent implements OnInit {
   searchDni = '';
   searchEmail = '';
 
-  constructor(private encargadosService: EncargadoSalonService, private storageService: StorageService) { }
+  constructor(
+    private encargadosService: EncargadoSalonService,
+    private storageService: StorageService,
+    private exportPdf: ExportPdfService,
+    private exportExcel: ExportExcelService,
+  ) { }
 
   ngOnInit(): void {
     this.obtenerEncargados();
@@ -183,5 +190,13 @@ export class ListadoEncargadosComponent implements OnInit {
       return '';
     }
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  exportarAPdf(){
+    this.exportPdf.exportarEncargados();
+  }
+
+  exportarAExcel(){
+    this.exportExcel.exportarEncargados();
   }
 }

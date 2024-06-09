@@ -8,17 +8,22 @@ import Swal from 'sweetalert2';
 import { Cargo } from '../../../../models/cargo.model';
 import { CargoService } from '../../../../services/cargo.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-editar-colaborador',
   templateUrl: './editar-colaborador.component.html',
-  styleUrl: './editar-colaborador.component.css'
+  styleUrls: ['./editar-colaborador.component.css']
 })
 export class EditarColaboradorComponent implements OnInit{
   colaboradorForm: FormGroup;
   colaboradorId: number;
   colaborador!: Colaborador;
   cargos!: Cargo[];
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  dniPattern: RegExp = Patterns.DNI_PATTERN.getPattern();
+  phonePattern: RegExp = Patterns.PHONE_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
 
   constructor(
     private route: ActivatedRoute,
@@ -72,13 +77,12 @@ export class EditarColaboradorComponent implements OnInit{
 
   inicializarFormulario() {
     this.colaboradorForm = this.fb.group({
-      nombres: ['', Validators.required],
-      apPaterno: ['', Validators.required],
-      apMaterno: ['', Validators.required],
-      telefono: ['', Validators.required],
-      dni: ['', Validators.required],
-      email: ['', Validators.required],
-      cargo: ['', Validators.required],
+      nombres: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      apPaterno: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      apMaterno: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      telefono: ['', [Validators.required, Validators.pattern(this.phonePattern)]],
+      dni: ['', [Validators.required, Validators.pattern(this.dniPattern)]],
+      email: ['', [Validators.required, Validators.email]],
       fechaContratacion: ['', Validators.required]
     });
   }

@@ -4,6 +4,8 @@ import { TipoEventoService } from '../../../../services/tipoEvento.service';
 import { StorageService } from '../../../../services/storage.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { ExportExcelService } from '../../../../services/export-excel.service';
+import { ExportPdfService } from '../../../../services/export-pdf.service';
 
 @Component({
   selector: 'app-listar-tipo-evento',
@@ -20,8 +22,11 @@ export class ListarTipoEventoComponent implements OnInit{
   totalTiposEvento: number = 0;
   typeFilter: String = 'todos'
 
-  constructor(private tipoEventoService: TipoEventoService,
-    private storageService: StorageService
+  constructor(
+    private tipoEventoService: TipoEventoService,
+    private storageService: StorageService,
+    private exportPdf: ExportPdfService,
+    private exportExcel: ExportExcelService,
   ) {}
 
   ngOnInit(): void {
@@ -132,4 +137,11 @@ export class ListarTipoEventoComponent implements OnInit{
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  exportarAPdf(){
+    this.exportPdf.exportarTiposEventos();
+  }
+
+  exportarAExcel(){
+    this.exportExcel.exportarTiposEventos();
+  }
 }

@@ -17,9 +17,10 @@ export class EditarClientesComponent implements OnInit {
   clienteId: number;
   cliente: Cliente = new Cliente();
   passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
   dniPattern: RegExp = Patterns.DNI_PATTERN.getPattern();
   phonePattern: RegExp = Patterns.PHONE_PATTERN.getPattern();
-  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
+  directionPattern: RegExp = Patterns.DIRECTION_PATTERN.getPattern();
 
   constructor(
     private route: ActivatedRoute,
@@ -35,12 +36,12 @@ export class EditarClientesComponent implements OnInit {
 
   inicializarFormulario() {
     this.clienteForm = this.fb.group({
-      nombres: ['', Validators.required],
-      apPaterno: ['', Validators.required],
-      apMaterno: ['', Validators.required],
-      telefono: ['', Validators.required],
-      dni: ['', Validators.required],
-      direccion: ['', Validators.required]
+      nombres: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      apPaterno: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      apMaterno: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      telefono: ['', [Validators.required, Validators.pattern(this.phonePattern)]],
+      dni: ['', [Validators.required, Validators.pattern(this.dniPattern)]],
+      direccion: ['', [Validators.required, Validators.pattern(this.directionPattern)]]
     });
   }
 

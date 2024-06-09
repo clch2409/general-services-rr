@@ -5,6 +5,7 @@ import { InsumoService } from '../../../../services/insumo.service';
 import { Insumo } from '../../../../models/insumo.model';
 import Swal from 'sweetalert2';
 import { StorageService } from '../../../../services/storage.service';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-editar-insumos',
@@ -15,6 +16,8 @@ export class EditarInsumosComponent implements OnInit {
   insumoForm: FormGroup;
   insumoId: number;
   insumo: Insumo = new Insumo();
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
 
   constructor(
     private route: ActivatedRoute,
@@ -62,7 +65,7 @@ export class EditarInsumosComponent implements OnInit {
 
   inicializarFormulario() {
     this.insumoForm = this.fb.group({
-      nombre: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       precio: ['', Validators.required],
       proveedor: ['', Validators.required],
     });

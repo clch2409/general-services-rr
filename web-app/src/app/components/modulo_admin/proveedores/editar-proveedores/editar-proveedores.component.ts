@@ -5,6 +5,7 @@ import { ProveedorService } from '../../../../services/proveedor.service';
 import { Proveedor } from '../../../../models/proveedor.model';
 import { StorageService } from '../../../../services/storage.service';
 import Swal from 'sweetalert2';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-editar-proveedores',
@@ -15,6 +16,11 @@ export class EditarProveedoresComponent implements OnInit {
   proveedorForm: FormGroup;
   proveedorId: number;
   proveedor: Proveedor = new Proveedor();
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  phonePattern: RegExp = Patterns.PHONE_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
+  directionPattern: RegExp = Patterns.DIRECTION_PATTERN.getPattern();
+
 
   constructor(
     private route: ActivatedRoute,
@@ -59,10 +65,10 @@ export class EditarProveedoresComponent implements OnInit {
 
   inicializarFormulario() {
     this.proveedorForm = this.fb.group({
-      nombre: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       email: ['', [Validators.required, Validators.email]],
-      telefono: ['', Validators.required],
-      direccion: ['', Validators.required],
+      telefono: ['', [Validators.required, Validators.pattern(this.phonePattern)]],
+      direccion: ['', [Validators.required, Validators.pattern(this.directionPattern)]],
       fechaContrato: ['', Validators.required]
     });
   }

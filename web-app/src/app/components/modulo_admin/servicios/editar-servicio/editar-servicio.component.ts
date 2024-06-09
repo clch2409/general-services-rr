@@ -6,6 +6,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ServicioService } from '../../../../services/servicio.service';
 import { StorageService } from '../../../../services/storage.service';
+import { Patterns } from '../../../../utils/patterns';
+import { Proveedor } from '../../../../models/proveedor.model';
+import { ProveedorService } from '../../../../services/proveedor.service';
 
 @Component({
   selector: 'app-editar-servicio',
@@ -16,13 +19,17 @@ export class EditarServicioComponent implements OnInit{
   servicioForm: FormGroup;
   servicioId: number;
   servicio!: Servicio;
+  proveedores!: Proveedor[];
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private servicioService: ServicioService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private proveedorService: ProveedorService
   ) {
     this.servicioId = 0;
     this.servicioForm = this.fb.group({});
@@ -31,7 +38,8 @@ export class EditarServicioComponent implements OnInit{
 
   ngOnInit(): void {
     this.servicioId = this.route.snapshot.params['serid'];
-    this.obtenerSalon();
+    this.obtenerServicio();
+    this.obtenerProveedores();
   }
 
   ngAfterViewInit(): void{
@@ -46,13 +54,13 @@ export class EditarServicioComponent implements OnInit{
     this.router.navigate(['/dashboard', 'servicios']);
   }
 
-  obtenerSalon() {
+  obtenerServicio() {
     this.servicioService.obtenerServicioPorId(this.servicioId).subscribe({
       next: (data: Servicio) => {
-
         this.servicio = data;
         this.servicioForm.patchValue({
-          ...data
+          ...data,
+          proveedor: data.proveedorId,
         })
       },
       error: (err: HttpErrorResponse) => {
@@ -66,9 +74,46 @@ export class EditarServicioComponent implements OnInit{
 
   inicializarFormulario() {
     this.servicioForm = this.fb.group({
-      nombre: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       precio: ['', Validators.required],
+      proveedor: ['', Validators.required]
     });
+  }
+
+  obtenerProveedores(){
+    this.proveedorService.obtenerProveedores().subscribe(
+      (response: Proveedor[]) => {
+        this.proveedores = response;
+        console.log(this.proveedores)
+      },
+      (error) => {
+        console.error('Error al obtener proveedor:', error);
+        if (error.status === 401){
+          Swal.fire('Sesión Caducada', 'Su sesión ha cadicado. Inicie sesión de nuevo, por favor.', 'info').then(data => this.cerrarSesion());
+        }
+      }
+    )
+  }
+
+  confirmarAgregarProvedor(){
+    Swal.fire({
+      title: 'Agregar Proveedor!',
+      html: '¿Desea Agregar un nuevo Proveedor?<br>Los datos ingresados se perderán',
+      icon: 'info',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí'
+    })
+    .then((response) => {
+      if(response.isConfirmed){
+        this.irNuevoProveedor()
+      }
+    });
+  }
+
+
+  irNuevoProveedor(){
+    this.router.navigate(['/dashboard', 'nuevo-proveedor'])
   }
 
   validarFormulario(){
@@ -81,11 +126,13 @@ export class EditarServicioComponent implements OnInit{
   }
 
   solicitarConfirmacion(): void{
+    const proveedorSeleccionado = this.proveedores.find(proveedor => proveedor.id == this.servicioForm.value.proveedor);
     const servicioActualizado: Servicio = this.servicioForm.value;
     let mensaje = `<b>Nombre</b>: ${servicioActualizado.nombre}<br>`;
      mensaje += `<b>Precio</b>: S/.${servicioActualizado.precio}<br>`;
+     mensaje += `<b>Proveedor</b>: S/.${proveedorSeleccionado?.nombre}<br>`;
     Swal.fire({
-      title: 'Confirmar Registro',
+      title: 'Confirmar Actualización',
       html: '¿Desea registrar el servicio con los siguientes datos?<br>' + mensaje,
       showCancelButton: true,
       cancelButtonText: 'No',
@@ -93,6 +140,8 @@ export class EditarServicioComponent implements OnInit{
       icon: 'question'
     }).then((result) => {
       if(result.isConfirmed){
+        delete servicioActualizado.proveedor;
+        servicioActualizado.proveedorId = proveedorSeleccionado?.id;
         this.guardarCambios(servicioActualizado);
       }
     })

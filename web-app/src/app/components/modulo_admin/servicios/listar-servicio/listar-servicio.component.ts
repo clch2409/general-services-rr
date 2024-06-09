@@ -3,6 +3,8 @@ import { Servicio } from '../../../../models/servicio.model';
 import { ServicioService } from '../../../../services/servicio.service';
 import { StorageService } from '../../../../services/storage.service';
 import Swal from 'sweetalert2';
+import { ExportExcelService } from '../../../../services/export-excel.service';
+import { ExportPdfService } from '../../../../services/export-pdf.service';
 
 @Component({
   selector: 'app-listar-servicio',
@@ -20,7 +22,9 @@ export class ListarServicioComponent implements OnInit{
   typeFilter: String = 'todos'
 
   constructor(private servicioService: ServicioService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private exportPdf: ExportPdfService,
+    private exportExcel: ExportExcelService,
   ) {}
 
   ngOnInit(): void {
@@ -131,4 +135,11 @@ export class ListarServicioComponent implements OnInit{
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  exportarAPdf(){
+    this.exportPdf.exportarServicios();
+  }
+
+  exportarAExcel(){
+    this.exportExcel.exportarServicios();
+  }
 }

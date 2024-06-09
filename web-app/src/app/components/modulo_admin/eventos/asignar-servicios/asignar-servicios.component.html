@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card my-5">
+        <div class="card-header bg-info-subtle">
+          <h5 class="card-title text-center">Asignar Servicios a Evento</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="validarConfirmacion()">
+            <div class="servicios">
+              @for (servicio of servicios; track servicio) {
+                <label [for]="servicio.nombre">
+                  <span>{{convertirPrimeraLetraEnMayuscula(servicio.nombre!)}}</span>
+                  <input type="checkbox" class="form-check-input" [checked]="seleccionarServicio(servicio.id!)">
+                </label>
+              }
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Asignar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

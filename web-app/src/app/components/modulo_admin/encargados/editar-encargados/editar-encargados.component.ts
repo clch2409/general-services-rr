@@ -6,6 +6,7 @@ import { EncargadoSalonService } from '../../../../services/encargadoSalon.servi
 import { StorageService } from '../../../../services/storage.service';
 import Swal from 'sweetalert2';
 import { Usuario } from '../../../../models/usuario.model';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-editar-encargados',
@@ -17,6 +18,10 @@ export class EditarEncargadosComponent implements OnInit {
   usuarioForm!: FormGroup;
   encargadoId: number;
   encargado!: EncargadoSalon;
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  dniPattern: RegExp = Patterns.DNI_PATTERN.getPattern();
+  phonePattern: RegExp = Patterns.PHONE_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
 
   constructor(
     private route: ActivatedRoute,
@@ -69,11 +74,11 @@ export class EditarEncargadosComponent implements OnInit {
 
   inicializarFormulario() {
     this.encargadoForm = this.fb.group({
-      nombres: ['', Validators.required],
-      apPaterno: ['', Validators.required],
-      apMaterno: ['', Validators.required],
-      telefono: ['', Validators.required],
-      dni: ['', Validators.required],
+      nombres: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      apPaterno: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      apMaterno: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      telefono: ['', [Validators.required, Validators.pattern(this.phonePattern)]],
+      dni: ['', [Validators.required, Validators.pattern(this.dniPattern)]],
       fechaContratacion: ['', Validators.required]
     });
     this.usuarioForm= this.fb.group({

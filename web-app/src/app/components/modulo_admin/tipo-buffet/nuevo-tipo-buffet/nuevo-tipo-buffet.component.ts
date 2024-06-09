@@ -5,6 +5,7 @@ import { StorageService } from '../../../../services/storage.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { TipoBuffet } from '../../../../models/tipoBuffet.model';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-nuevo-tipo-buffet',
@@ -13,6 +14,8 @@ import { TipoBuffet } from '../../../../models/tipoBuffet.model';
 })
 export class NuevoTipoBuffetComponent implements OnInit{
   tipoBuffetForm!: FormGroup;
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
 
   constructor(private fb: FormBuilder,
     private tipoBuffetService: TipoBuffetService,
@@ -37,7 +40,7 @@ export class NuevoTipoBuffetComponent implements OnInit{
 
   inicializarFormulario() {
     this.tipoBuffetForm = this.fb.group({
-      nombre: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       precioPorPlato: ['', Validators.required],
     });
   }

@@ -14,8 +14,10 @@ import { Router } from '@angular/router';
 })
 export class NuevoProveedorComponent implements OnInit {
   proveedorForm!: FormGroup;
-  phonePattern = new RegExp(Patterns.PHONE_PATTERN.getPattern());
-  namePattern = new RegExp(Patterns.NAME_PATTERN.getPattern());
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  phonePattern: RegExp = Patterns.PHONE_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
+  directionPattern: RegExp = Patterns.DIRECTION_PATTERN.getPattern();
 
   constructor(
     private fb: FormBuilder,
@@ -33,8 +35,8 @@ export class NuevoProveedorComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       email: ['', [Validators.required, Validators.email]],
       telefono: ['', [Validators.required, Validators.pattern(this.phonePattern)]],
-      direccion: ['', [Validators.required, Validators.pattern(this.namePattern)]],
-      fechaContrato: ['', Validators.required],
+      direccion: ['', [Validators.required, Validators.pattern(this.directionPattern)]],
+      fechaContrato: ['', Validators.required]
     });
   }
 

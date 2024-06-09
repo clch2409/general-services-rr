@@ -1,5 +1,6 @@
 import { Deserializable } from "./deserializable.model";
 import { Insumo } from "./insumo.model";
+import { Servicio } from "./servicio.model";
 
 export class Proveedor implements Deserializable {
   id?: number;
@@ -12,6 +13,7 @@ export class Proveedor implements Deserializable {
   updatedAt?: Date;
   status?: string;
   insumos?: Insumo[];
+  servicios?: Servicio[];
 
   deserializable(input: any): this {
     Object.assign(this, input);

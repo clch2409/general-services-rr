@@ -4,6 +4,8 @@ import { Cliente } from '../../../../models/cliente.model';
 import { StorageService } from '../../../../services/storage.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { ExportPdfService } from '../../../../services/export-pdf.service';
+import { ExportExcelService } from '../../../../services/export-excel.service';
 
 @Component({
   selector: 'app-listado-clientes',
@@ -21,7 +23,11 @@ export class ListadoClientesComponent implements OnInit {
   searchDni = '';
   searchEmail = '';
 
-  constructor(private clienteService: ClienteService, private storageService: StorageService) {}
+  constructor(private clienteService: ClienteService,
+    private storageService: StorageService,
+    private exportPdf: ExportPdfService,
+    private exportExcel: ExportExcelService,
+  ) {}
 
   ngOnInit(): void {
     this.obtenerClientes();
@@ -131,6 +137,11 @@ export class ListadoClientesComponent implements OnInit {
     }
   }
 
-  eliminarCliente(id: number) {
+  exportarAPdf(){
+    this.exportPdf.exportarClientes();
+  }
+
+  exportarAExcel(){
+    this.exportExcel.exportarClientes();
   }
 }

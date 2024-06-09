@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { Colaborador } from '../../../../models/colaborador.model';
 import { Cargo } from '../../../../models/cargo.model';
 import { CargoService } from '../../../../services/cargo.service';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-nuevo-colaborador',
@@ -15,11 +16,11 @@ import { CargoService } from '../../../../services/cargo.service';
 })
 export class NuevoColaboradorComponent {
   colaboradorForm: FormGroup;
-  passwordPattern: RegExp = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,16}$/);
-  dniPattern: RegExp = new RegExp(/^\d{8,9}$/);
-  phonePattern: RegExp = new RegExp(/^\d{9}$/);
-  namePattern: RegExp = new RegExp(/^[A-Za-z\sñ]+$/);
-  cargos!: Cargo[]
+  cargos!: Cargo[];
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  dniPattern: RegExp = Patterns.DNI_PATTERN.getPattern();
+  phonePattern: RegExp = Patterns.PHONE_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
 
   constructor(private router: Router,
     private fb: FormBuilder,
@@ -28,14 +29,13 @@ export class NuevoColaboradorComponent {
     private cargoService: CargoService,
   ) {
     this.colaboradorForm = this.fb.group({
-      nombres: ['', Validators.required],
-      apPaterno: ['', Validators.required],
-      apMaterno: ['', Validators.required],
-      telefono: ['', Validators.required],
+      nombres: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      apPaterno: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      apMaterno: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      telefono: ['', [Validators.required, Validators.pattern(this.phonePattern)]],
+      dni: ['', [Validators.required, Validators.pattern(this.dniPattern)]],
       email: ['', [Validators.required, Validators.email]],
-      dni: ['', Validators.required],
-      cargo: ['', Validators.required],
-      fechaContratacion: ['', Validators.required],
+      fechaContratacion: ['', Validators.required]
     });
   }
 

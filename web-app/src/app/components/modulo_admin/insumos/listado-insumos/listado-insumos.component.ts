@@ -3,6 +3,8 @@ import { InsumoService } from '../../../../services/insumo.service';
 import { Insumo } from '../../../../models/insumo.model';
 import { StorageService } from '../../../../services/storage.service';
 import Swal from 'sweetalert2';
+import { ExportPdfService } from '../../../../services/export-pdf.service';
+import { ExportExcelService } from '../../../../services/export-excel.service';
 
 @Component({
   selector: 'app-listado-insumos',
@@ -18,7 +20,12 @@ export class ListadoInsumosComponent implements OnInit {
   typeFilter: String = 'todos';
   searchId = '';
 
-  constructor(private insumoService: InsumoService, private storageService: StorageService) {}
+  constructor(
+    private insumoService: InsumoService,
+    private storageService: StorageService,
+    private exportPdf: ExportPdfService,
+    private exportExcel: ExportExcelService,
+  ) {}
 
   ngOnInit(): void {
     this.obtenerInsumos();
@@ -174,5 +181,13 @@ export class ListadoInsumosComponent implements OnInit {
       return '';
     }
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  exportarAPdf(){
+    this.exportPdf.exportarInsumos();
+  }
+
+  exportarAExcel(){
+    this.exportExcel.exportarInsumos();
   }
 }

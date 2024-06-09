@@ -1,45 +1,66 @@
 <div class="container">
-  <h1>Listado de Eventos</h1>
   <div class="row">
-    <div class="col-md-4">
-      <input type="text" class="form-control" [(ngModel)]="searchId" placeholder="Buscar por ID">
-      <button class="btn btn-primary" (click)="buscarEventoPorId()">Buscar</button>
-      <button (click)="resetearFiltros()">Resetear</button>
-      <button [routerLink]="['/dashboard/make-cotizacion']" class="btn btn-outline-success">make-cotizacion</button>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
+    <div class="col">
+      <div class="titulo">
+        <h2>Listado de Eventos</h2>
+        <div class="input-group buscadores">
+          <input type="tel" [(ngModel)]="searchId" class="form-control" placeholder="Buscar por ID" (keyup)="buscarEventos()">
+        </div>
+        <div class="botones">
+          <div class="btn-group botones-buscadores">
+            <button (click)="mostrarTodos()" class="btn btn-primary">Todos</button>
+            <button (click)="mostrarActivos()" class="btn btn-warning">Activos</button>
+            <button (click)="resetearFiltros()" class="btn btn-danger">Resetear Buscadores</button>
+            <button [routerLink]="['/dashboard', 'nuevo-evento']" class="btn btn-success">Nuevo Evento</button>
+          </div>
+          <div class="btn-group botones-exportadores">
+            <button class="btn btn-danger"><mat-icon>picture_as_pdf</mat-icon></button>
+            <button class="btn btn-success"><mat-icon>text_snippet</mat-icon></button>
+          </div>
+        </div>
+      </div>
+
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Color de Evento</th>
-            <th>Fecha de Evento</th>
-            <th>Hora de Início</th>
-            <th>Hora de Término</th>
-            <th>Cantidad de Personas</th>
-            <th>Encargado ID</th>
-            <th>Cliente ID</th>
-            <th>Local ID</th>
-            <th>Tipo de Evento ID</th>
-            <th>Tipo de Buffet ID</th>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Hora Inicio</th>
+            <th>Hora Fin</th>
+            <th>Cantidad Personas</th>
+            <th>Tipo Buffet</th>
+            <th>Encargado</th>
+            <th>Local</th>
+            <th>Estado</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let evento of eventos">
-            <td>{{ evento.colorEvento }}</td>
-            <td>{{ evento.fechaEvento | date: 'yyyy-MM-dd' }}</td>
-            <td>{{ evento.horaInicio | date: 'HH:mm:ss' }}</td>
-            <td>{{ evento.horaFin | date: 'HH:mm:ss' }}</td>
+          <tr *ngFor="let evento of filteredEventos">
+            <td>{{ evento.id }}</td>
+            <td>{{ evento.fechaEvento }}</td>
+            <td>{{ evento.horaInicio }}</td>
+            <td>{{ evento.horaFin }}</td>
             <td>{{ evento.cantidadPersonas }}</td>
-            <td>{{ evento.encargadoId }}</td>
-            <td>{{ evento.clienteId }}</td>
-            <td>{{ evento.localId }}</td>
-            <td>{{ evento.tipoEventoId }}</td>
-            <td>{{ evento.tipoBuffetId }}</td>
+            <td>{{ evento.tipoBuffet?.nombre }}</td>
+            <td>{{ evento.encargado?.nombres }}</td>
+            <td>{{ evento.local?.nombre }}</td>
+            <td>{{ convertirPrimeraLetraEnMayuscula(evento.status!) }}</td>
+            <td class="d-flex align-content-center">
+              <div class="btn-group">
+                <button class="btn btn-danger btn-sm" (click)="validarEliminacion(evento)"><mat-icon>delete_forever</mat-icon></button>
+                <button class="btn btn-success btn-sm" [routerLink]="['/dashboard', 'editar-evento', evento.id]"><mat-icon>edit</mat-icon></button>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
+      <div class="botones">
+        <div class="btn-group">
+          <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
+          <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

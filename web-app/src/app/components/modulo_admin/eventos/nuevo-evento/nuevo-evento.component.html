@@ -1,25 +1,40 @@
-<form [formGroup]="eventoForm">
-  <div class="form-group">
-    <label for="servicios">Servicios</label>
-    <input type="text" id="servicios" formControlName="servicios" class="form-control">
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card my-5">
+        <div class="card-header bg-info-subtle">
+          <h5 class="card-title text-center">Crear Evento</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="eventoForm" (ngSubmit)="validarConfirmacion()">
+            <label for="localId">
+              <span>Local</span>
+              <select class="form-select" formControlName="localId" required>
+                <option *ngFor="let local of locales" [value]="local.id">{{ local.nombre }}</option>
+              </select>
+              <button type="button" class="btn btn-primary" (click)="confirmarAgregarBuffet()"><mat-icon>add</mat-icon></button>
+            </label>
+            <label for="diaId">
+              <span>Día</span>
+              <input type="date" formControlName="diaId" class="form-control" required>
+            </label>
+            <label for="cantidadPersonas">
+              <span>Cantidad de Personas</span>
+              <input type="number" formControlName="cantidadPersonas" class="form-control" required>
+            </label>
+            <label for="tipoBuffetId">
+              <span>Tipo de Buffet</span>
+              <select class="form-select" formControlName="tipoBuffetId" required>
+                <option *ngFor="let tipoBuffet of tipoBuffets" [value]="tipoBuffet.id">{{ tipoBuffet.nombre }}</option>
+              </select>
+              <button type="button" class="btn btn-primary" (click)="irNuevoBuffet()">Agregar Tipo de Buffet</button>
+            </label>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Crear</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="form-group">
-    <label for="localId">Local ID</label>
-    <input type="text" id="localId" formControlName="localId" class="form-control">
-  </div>
-  <div class="form-group">
-    <label for="diaId">Día ID</label>
-    <input type="text" id="diaId" formControlName="diaId" class="form-control">
-  </div>
-  <div class="form-group">
-    <label for="cantidadPersonas">Cantidad de Personas</label>
-    <input type="text" id="cantidadPersonas" formControlName="cantidadPersonas" class="form-control">
-  </div>
-  <div class="form-group">
-    <label for="tipoBuffetId">Tipo de Buffet ID</label>
-    <input type="text" id="tipoBuffetId" formControlName="tipoBuffetId" class="form-control">
-  </div>
-  <button type="button" class="btn btn-primary" (click)="hacerCotizacion()" [disabled]="!eventoForm.valid">Hacer Cotización</button>
-  <button type="button" class="btn btn-primary" (click)="agregarServicios()" [disabled]="!eventoForm.valid">Agregar Servicios</button>
-  <button type="button" class="btn btn-primary" (click)="buscarEventoPorId()" [disabled]="!eventoForm.get('eventoId')?.valid">Buscar Evento por ID</button>
-</form>
+</div>

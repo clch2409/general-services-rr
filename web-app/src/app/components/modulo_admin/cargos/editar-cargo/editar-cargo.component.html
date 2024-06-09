@@ -1,1 +1,29 @@
-<p>editar-cargo works!</p>
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="card my-5">
+          <div class="card-header">
+            <h5 class="card-title text-center">Editar Cargo</h5>
+          </div>
+          <div class="card-body">
+            <form [formGroup]="cargoForm" (ngSubmit)="validarFormulario()">
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" formControlName="nombre" class="form-control" id="nombre" name="nombre"required>
+              </div>
+              <div class="botones">
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+                <button class="btn btn-danger" (click)="regresarListadoCargos()">Regresar</button>
+              </div>
+            </form>
+            <div class="mb-3">
+              <label for="colaboradores" class="form-label">Colaboradores</label>
+              <select class="form-control" id="colaboradores" name="colaboradores" multiple>
+                <option *ngFor="let colaborador of cargo.colaboradores" [value]="colaborador.id">{{ colaborador.nombres }} {{colaborador.apPaterno}}  {{colaborador.apMaterno}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

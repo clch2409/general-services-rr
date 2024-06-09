@@ -10,26 +10,31 @@
             <div class="form-group" [formGroup]="clienteForm">
               <label for="nombres">
                 <span>Nombres</span>
-                <input type="text" id="nombres" formControlName="nombres" class="form-control" required [pattern]="namePattern">
+                <input type="text" id="nombres" formControlName="nombres" class="form-control" required
+                  [pattern]="namePattern">
               </label>
               <div class="agrupaciones">
                 <label for="apPaterno">
                   <span>Apellido Paterno</span>
-                  <input type="text" id="apPaterno" formControlName="apPaterno" class="form-control" required [pattern]="namePattern">
+                  <input type="text" id="apPaterno" formControlName="apPaterno" class="form-control" required
+                    [pattern]="namePattern">
                 </label>
                 <label for="apMaterno">
                   <span>Apellido Materno</span>
-                  <input type="text" id="apMaterno" formControlName="apMaterno" class="form-control" required [pattern]="namePattern">
+                  <input type="text" id="apMaterno" formControlName="apMaterno" class="form-control" required
+                    [pattern]="namePattern">
                 </label>
               </div>
               <div class="agrupaciones">
                 <label for="telefono">
                   <span>Telefono</span>
-                  <input type="text" id="telefono" formControlName="telefono" class="form-control" required [pattern]="phonePattern">
+                  <input type="text" id="telefono" formControlName="telefono" class="form-control" required
+                    [pattern]="phonePattern">
                 </label>
                 <label for="dni">
                   <span>DNI</span>
-                  <input type="text" id="dni" formControlName="dni" class="form-control" required [pattern]="dniPattern">
+                  <input type="text" id="dni" formControlName="dni" class="form-control" required
+                    [pattern]="dniPattern">
                 </label>
               </div>
               <label for="direccion">

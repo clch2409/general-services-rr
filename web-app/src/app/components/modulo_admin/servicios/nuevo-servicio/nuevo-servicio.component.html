@@ -1,25 +1,32 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-8 mx-auto">
-      <div class="card my-5 border-3 border-dark-subtle">
-        <div class="card-header bg-warning-subtle border-3 border-dark-subtle">
+      <div class="card my-5">
+        <div class="card-header bg-info-subtle">
           <h5 class="card-title text-center">Crear Servicio</h5>
         </div>
         <div class="card-body">
-          <form  (ngSubmit)="validarFormulario()">
-            <div class="form-group">
-              <div [formGroup]="serviceForm">
-                <div class="agrupaciones">
-                  <label for="nombre">
-                    <span>Nombre</span>
-                    <input type="text" id="nombre" formControlName="nombre" class="form-control" required>
-                  </label>
-                  <label for="precio">
-                    <span>Precio</span>
-                    <input type="number" name="precio" id="precio" formControlName="precio" class="form-control" required>
-                  </label>
+          <form [formGroup]="serviceForm" (ngSubmit)="validarFormulario()">
+            <label for="nombre">
+              <span>Nombre</span>
+              <input autocomplete="off" type="text" id="nombre" formControlName="nombre" class="form-control" required>
+            </label>
+            <div class="agrupaciones">
+              <label for="precio">
+                <span>Precio</span>
+                <input autocomplete="off" type="number" name="precio" id="precio" formControlName="precio" class="form-control" required>
+              </label>
+              <label for="proveedor">
+                <span>Proveedor</span>
+                <div class="proveedores">
+                  <select class="form-select" formControlName="proveedor">
+                    @for (proveedor of proveedores; track proveedor) {
+                      <option [value]="proveedor.nombre">{{proveedor.nombre}}</option>
+                    }
+                  </select>
+                  <button type="button" class="btn btn-primary" (click)="confirmarAgregarProvedor()"><mat-icon>add</mat-icon></button>
                 </div>
-              </div>
+              </label>
             </div>
             <div class="text-center">
               <button type="submit" class="btn btn-primary">Guardar</button>

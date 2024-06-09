@@ -21,6 +21,7 @@ export class NuevoClienteComponent implements OnInit {
   dniPattern: RegExp = Patterns.DNI_PATTERN.getPattern();
   phonePattern: RegExp = Patterns.PHONE_PATTERN.getPattern();
   namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
+  directionPattern: RegExp = Patterns.DIRECTION_PATTERN.getPattern();
 
   constructor(private fb: FormBuilder, private clienteService: ClienteService, private storageService: StorageService, private router: Router) { }
 
@@ -43,7 +44,7 @@ export class NuevoClienteComponent implements OnInit {
       apMaterno: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       telefono: ['', [Validators.required, Validators.pattern(this.phonePattern)]],
       dni: ['', [Validators.required, Validators.pattern(this.dniPattern)]],
-      direccion: ['', Validators.required],
+      direccion: ['', [Validators.required, Validators.pattern(this.directionPattern)]]
     });
     this.usuarioForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],

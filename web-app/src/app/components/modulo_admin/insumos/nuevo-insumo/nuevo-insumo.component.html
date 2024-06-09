@@ -6,15 +6,15 @@
           <h5 class="card-title text-center">Crear Insumo</h5>
         </div>
         <div class="card-body">
-          <form [formGroup]="insumoForm" (ngSubmit)="validarConfirmacion()">
+          <form [formGroup]="insumoForm" (submit)="validarConfirmacion()">
             <label for="nombre">
               <span>Nombre</span>
-              <input type="text" formControlName="nombre" class="form-control" id="nombre" name="nombre"required>
+              <input autocomplete="off" type="text" formControlName="nombre" class="form-control" id="nombre" name="nombre"required>
             </label>
             <div class="agrupaciones">
               <label for="precio">
                 <span>Precio</span>
-                <input type="number" step="0.5" id="precio" formControlName="precio" class="form-control" min="0" max="500">
+                <input autocomplete="off" type="number" step="0.5" id="precio" formControlName="precio" class="form-control" min="0" max="500">
               </label>
               <label for="proveedor">
                 <span>Proveedor</span>

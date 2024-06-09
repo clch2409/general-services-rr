@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RolService } from '../../../../services/rol.service';
 import { Rol } from '../../../../models/rol.model';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-nuevo-rol',
@@ -10,6 +11,8 @@ import { Rol } from '../../../../models/rol.model';
 })
 export class NuevoRolComponent implements OnInit {
   rolForm!: FormGroup;
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
   
   constructor(private fb: FormBuilder, private rolService: RolService) {}
 
@@ -19,7 +22,7 @@ export class NuevoRolComponent implements OnInit {
 
   inicializarFormulario() {
     this.rolForm = this.fb.group({
-      nombre: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
     });
   }
 

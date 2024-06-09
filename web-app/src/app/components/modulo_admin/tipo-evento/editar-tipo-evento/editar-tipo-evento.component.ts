@@ -6,6 +6,7 @@ import { StorageService } from '../../../../services/storage.service';
 import { TipoEvento } from '../../../../models/tipoEvento.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-editar-tipo-evento',
@@ -16,6 +17,9 @@ export class EditarTipoEventoComponent implements OnInit{
   tipoEventoForm: FormGroup;
   tipoEventoId: number;
   tipoEvento!: TipoEvento;
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
+
 
   constructor(
     private route: ActivatedRoute,
@@ -65,7 +69,7 @@ export class EditarTipoEventoComponent implements OnInit{
 
   inicializarFormulario() {
     this.tipoEventoForm = this.fb.group({
-      nombre: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
     });
   }
 

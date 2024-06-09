@@ -1,1 +1,41 @@
-<p>editar-evento works!</p>
+<div class="container">
+  <div class="row">
+      <div class="col-lg-8 mx-auto">
+          <div class="card my-5">
+              <div class="card-header bg-info-subtle">
+                  <h5 class="card-title text-center">Editar Evento</h5>
+              </div>
+              <div class="card-body">
+                  <form [formGroup]="eventoForm" (ngSubmit)="validarFormulario()">
+                      <div class="agrupaciones">
+                          <label for="local">
+                              <span>Local</span>
+                              <input type="text" [value]="evento?.local?.nombre" class="form-control" id="local">
+                          </label>
+                          <label for="fechaEvento">
+                            <span>Fecha del Evento</span>
+                            <input type="date" formControlName="fechaEvento" class="form-control" id="fechaEvento"
+                                required>
+                        </label>
+                      </div>
+                      <div class="agrupaciones">
+                          <label for="cantidadPersonas">
+                              <span>Cantidad de Personas</span>
+                              <input type="number" formControlName="cantidadPersonas" class="form-control"
+                                  id="cantidadPersonas" required>
+                          </label>
+                          <label for="tipoBuffet">
+                              <span>Tipo de Buffet</span>
+                              <input type="text" [value]="evento?.tipoBuffet!.nombre" class="form-control" id="tipoBuffet">
+                          </label>
+                      </div>
+                      <div class="botones">
+                          <button type="submit" class="btn btn-primary">Actualizar</button>
+                          <button type="" class="btn btn-danger" (click)="regresarListaEventos()">Regresar</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

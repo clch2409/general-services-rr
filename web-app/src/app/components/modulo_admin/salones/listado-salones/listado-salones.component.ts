@@ -3,6 +3,8 @@ import { Local } from '../../../../models/local.model';
 import { LocalService } from '../../../../services/local.service';
 import Swal from 'sweetalert2';
 import { StorageService } from '../../../../services/storage.service';
+import { ExportExcelService } from '../../../../services/export-excel.service';
+import { ExportPdfService } from '../../../../services/export-pdf.service';
 
 @Component({
   selector: 'app-listado-salones',
@@ -19,7 +21,12 @@ export class ListadoSalonesComponent implements OnInit {
   totalLocales: number = 0;
   typeFilter: String = 'todos'
 
-  constructor(private localService: LocalService, private storageService: StorageService) {}
+  constructor(
+    private localService: LocalService,
+    private storageService: StorageService,
+    private exportPdf: ExportPdfService,
+    private exportExcel: ExportExcelService,
+  ) {}
 
   ngOnInit(): void {
     this.obtenerLocal();
@@ -218,5 +225,13 @@ export class ListadoSalonesComponent implements OnInit {
       return '';
     }
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  exportarAPdf(){
+    this.exportPdf.exportarLocales();
+  }
+
+  exportarAExcel(){
+    this.exportExcel.exportarLocales();
   }
 }

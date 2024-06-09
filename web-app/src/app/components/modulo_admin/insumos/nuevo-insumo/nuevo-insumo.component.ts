@@ -8,6 +8,7 @@ import { ProveedorService } from '../../../../services/proveedor.service';
 import Swal from 'sweetalert2';
 import { StorageService } from '../../../../services/storage.service';
 import { Router } from '@angular/router';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-nuevo-insumo',
@@ -16,7 +17,9 @@ import { Router } from '@angular/router';
 })
 export class NuevoInsumoComponent implements OnInit {
   insumoForm!: FormGroup;
-  proveedores!: Proveedor[]
+  proveedores!: Proveedor[];
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
 
   constructor(private fb: FormBuilder,
     private insumoService: InsumoService,
@@ -32,7 +35,7 @@ export class NuevoInsumoComponent implements OnInit {
 
   inicializarFormulario() {
     this.insumoForm = this.fb.group({
-      nombre: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       precio: ['', Validators.required],
       proveedor: ['', Validators.required],
     });

@@ -44,6 +44,10 @@ import { EditarColaboradorComponent } from './components/modulo_admin/colaborado
 import { ListadoEventosComponent } from './components/modulo_admin/eventos/listado-eventos/listado-eventos.component';
 import { NuevoEventoComponent } from './components/modulo_admin/eventos/nuevo-evento/nuevo-evento.component';
 import { EditarEventoComponent } from './components/modulo_admin/eventos/editar-evento/editar-evento.component';
+import { AsignarServiciosComponent } from './components/modulo_admin/eventos/asignar-servicios/asignar-servicios.component';
+import { ListarCargosComponent } from './components/modulo_admin/cargos/listar-cargos/listar-cargos.component';
+import { NuevoCargoComponent } from './components/modulo_admin/cargos/nuevo-cargo/nuevo-cargo.component';
+import { EditarCargoComponent } from './components/modulo_admin/cargos/editar-cargo/editar-cargo.component';
 
 
 const routes: Routes = [
@@ -93,7 +97,11 @@ const routes: Routes = [
           { path: 'editar-colaborador/:colid', component: EditarColaboradorComponent, title: 'Editar Colaborador' },
           { path: 'eventos', component: ListadoEventosComponent, title: 'Listado Eventos' },
           { path: 'nuevo-evento', component: NuevoEventoComponent, title: 'Registrar Evento' },
-          { path: 'editar-evento/:colid', component: EditarEventoComponent, title: 'Editar Evento' },
+          { path: 'editar-evento/:evenid', component: EditarEventoComponent, title: 'Editar Evento' },
+          { path: 'asignar-servicios/:evenid', component: AsignarServiciosComponent, title: 'Asignar Servicios' },
+          { path: 'cargos', component: ListarCargosComponent, title: 'Listado Cargos' },
+          { path: 'nuevo-cargo', component: NuevoCargoComponent, title: 'Registrar Cargo' },
+          { path: 'editar-cargo/:carid', component: EditarCargoComponent, title: 'Editar Cargo' },
       ]
     },
     {

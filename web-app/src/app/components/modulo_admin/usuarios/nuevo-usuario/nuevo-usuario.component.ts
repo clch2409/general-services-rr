@@ -7,6 +7,7 @@ import { RolService } from '../../../../services/rol.service';
 import Swal from 'sweetalert2';
 import { StorageService } from '../../../../services/storage.service';
 import { Router } from '@angular/router';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-nuevo-usuario',
@@ -16,6 +17,8 @@ import { Router } from '@angular/router';
 export class NuevoUsuarioComponent implements OnInit {
   usuarioForm!: FormGroup;
   roles!: Rol[]
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+
 
   constructor(private fb: FormBuilder,
     private usuarioService: UsuarioService,

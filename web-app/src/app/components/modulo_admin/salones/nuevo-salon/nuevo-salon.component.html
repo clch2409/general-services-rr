@@ -11,24 +11,24 @@
               <div [formGroup]="localForm">
                 <label for="nombre">
                   <span>Nombre</span>
-                  <input type="text" id="nombre" formControlName="nombre" class="form-control" required>
+                  <input autocomplete="off" type="text" id="nombre" formControlName="nombre" class="form-control" required>
                 </label>
                 <label for="descripcion">
                   <span>Descripcion</span>
-                  <textarea name="descripcion" id="descripcion" formControlName="descripcion" class="form-control" required></textarea>
+                  <textarea autocomplete="off" name="descripcion" id="descripcion" formControlName="descripcion" class="form-control" required></textarea>
                 </label>
                 <label for="direccion">
                   <span>Direccion</span>
-                  <input type="text" name="direccion" id="direccion" formControlName="direccion" class="form-control" required>
+                  <input autocomplete="off" type="text" name="direccion" id="direccion" formControlName="direccion" class="form-control" required>
                 </label>
                 <div class="agrupaciones">
                   <label for="aforoMinimo">
                     <span>Aforo Mínimo</span>
-                    <input type="number" id="aforoMinimo" formControlName="aforoMinimo" class="form-control" required>
+                    <input autocomplete="off" type="number" id="aforoMinimo" formControlName="aforoMinimo" class="form-control" required>
                   </label>
                   <label for="aforoMaximo">
                     <span>Aforo Máximo</span>
-                    <input type="number" id="aforoMaximo" formControlName="aforoMaximo" class="form-control" required>
+                    <input autocomplete="off" type="number" id="aforoMaximo" formControlName="aforoMaximo" class="form-control" required>
                   </label>
                 </div>
               </div>
@@ -37,33 +37,33 @@
                 <div class="agrupaciones">
                   <label for="lunes">
                     <span>Precio Lunes</span>
-                    <input type="number" id="lunes" [(ngModel)]="precioLunes" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="lunes" [(ngModel)]="precioLunes" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
                   </label>
                   <label for="martes">
                     <span>Precio Martes</span>
-                    <input type="number" id="martes" [(ngModel)]="precioMartes" [ngModelOptions]="{standalone: true}"  class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="martes" [(ngModel)]="precioMartes" [ngModelOptions]="{standalone: true}"  class="form-control precio" required>
                   </label>
                   <label for="miercoles">
                     <span>Precio Miércoles</span>
-                    <input type="number" id="miercoles" [(ngModel)]="precioMiercoles" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="miercoles" [(ngModel)]="precioMiercoles" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
                   </label>
                   <label for="jueves">
                     <span>Precio Jueves</span>
-                    <input type="number" id="jueves" [(ngModel)]="precioJueves" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="jueves" [(ngModel)]="precioJueves" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
                   </label>
                 </div>
                 <div class="agrupaciones">
                   <label for="viernes">
                     <span>Precio Viernes</span>
-                    <input type="number" id="viernes" [(ngModel)]="precioViernes" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="viernes" [(ngModel)]="precioViernes" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
                   </label>
                   <label for="sabado">
                     <span>Precio Sábado</span>
-                    <input type="number" id="sabado" [(ngModel)]="precioSabado" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="sabado" [(ngModel)]="precioSabado" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
                   </label>
                   <label for="domingo">
                     <span>Precio Domingo</span>
-                    <input type="number" id="domingo" [(ngModel)]="precioDomingo" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="domingo" [(ngModel)]="precioDomingo" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
                   </label>
                 </div>
               </div>

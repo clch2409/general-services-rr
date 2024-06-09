@@ -142,24 +142,6 @@
         <mat-nav-list>
 
           @if(rol === 'admin'){
-            <mat-expansion-panel [class.mat-elevation-z0]="true">
-              <mat-expansion-panel-header >
-                <div class="icono">
-                  <mat-icon>cake</mat-icon>
-                  <span>Eventos</span>
-                </div>
-              </mat-expansion-panel-header>
-              <mat-nav-list>
-                <a mat-list-item [routerLink]="['/dashboard', 'evento']">
-                  <span>Listado</span>
-                </a>
-              </mat-nav-list>
-              <mat-nav-list>
-                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-evento']">
-                  <span>Nuevo Evento</span>
-                </a>
-              </mat-nav-list>
-            </mat-expansion-panel>
 
             <mat-expansion-panel [class.mat-elevation-z0]="true">
               <mat-expansion-panel-header >
@@ -202,6 +184,44 @@
             <mat-expansion-panel [class.mat-elevation-z0]="true">
               <mat-expansion-panel-header>
                 <div class="icono">
+                  <mat-icon>construction</mat-icon>
+                  <span>Colaboradores</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'colaboradores']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-colaborador']">
+                  <span>Nuevo Colaborador</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>badge</mat-icon>
+                  <span>Cargos</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'cargos']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-cargo']">
+                  <span>Nuevo Cargo</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
                   <mat-icon>home</mat-icon>
                   <span>Locales</span>
                 </div>
@@ -231,18 +251,18 @@
             <mat-expansion-panel [class.mat-elevation-z0]="true">
               <mat-expansion-panel-header>
                 <div class="icono">
-                  <mat-icon>construction</mat-icon>
-                  <span>Colaboradores</span>
+                  <mat-icon>local_shipping</mat-icon>
+                  <span>Proveedores</span>
                 </div>
               </mat-expansion-panel-header>
               <mat-nav-list>
-                <a mat-list-item [routerLink]="['/dashboard', 'colaboradores']">
+                <a mat-list-item [routerLink]="['/dashboard', 'proveedores']">
                   <span>Listado</span>
                 </a>
               </mat-nav-list>
               <mat-nav-list>
-                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-colaborador']">
-                  <span>Nuevo Colaborador</span>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-proveedor']">
+                  <span>Nuevo Proveedor</span>
                 </a>
               </mat-nav-list>
             </mat-expansion-panel>
@@ -269,58 +289,6 @@
             <mat-expansion-panel [class.mat-elevation-z0]="true">
               <mat-expansion-panel-header>
                 <div class="icono">
-                  <mat-icon>local_shipping</mat-icon>
-                  <span>Proveedores</span>
-                </div>
-              </mat-expansion-panel-header>
-              <mat-nav-list>
-                <a mat-list-item [routerLink]="['/dashboard', 'proveedores']">
-                  <span>Listado</span>
-                </a>
-              </mat-nav-list>
-              <mat-nav-list>
-                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-proveedor']">
-                  <span>Nuevo Proveedor</span>
-                </a>
-              </mat-nav-list>
-            </mat-expansion-panel>
-
-            <mat-expansion-panel [class.mat-elevation-z0]="true">
-              <mat-expansion-panel-header>
-                <div class="icono">
-                  <mat-icon>account_circle</mat-icon>
-                  <span>Usuarios</span>
-                </div>
-              </mat-expansion-panel-header>
-              <mat-nav-list>
-                <a mat-list-item [routerLink]="['/dashboard', 'usuarios']">
-                  <span>Listado</span>
-                </a>
-              </mat-nav-list>
-              <mat-nav-list>
-                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-usuario']">
-                  <span>Nuevo Usuario</span>
-                </a>
-              </mat-nav-list>
-            </mat-expansion-panel>
-
-            <mat-expansion-panel [class.mat-elevation-z0]="true">
-              <mat-expansion-panel-header>
-                <div class="icono">
-                  <mat-icon>supervisor_account</mat-icon>
-                  <span>Roles</span>
-                </div>
-              </mat-expansion-panel-header>
-              <mat-nav-list>
-                <a mat-list-item [routerLink]="['/dashboard', 'roles']">
-                  <span>Listado</span>
-                </a>
-              </mat-nav-list>
-            </mat-expansion-panel>
-
-            <mat-expansion-panel [class.mat-elevation-z0]="true">
-              <mat-expansion-panel-header>
-                <div class="icono">
                   <mat-icon>local_bar</mat-icon>
                   <span>Servicios</span>
                 </div>
@@ -333,6 +301,25 @@
               <mat-nav-list>
                 <a mat-list-item [routerLink]="['/dashboard', 'nuevo-servicio']">
                   <span>Nuevo Servicio</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header >
+                <div class="icono">
+                  <mat-icon>cake</mat-icon>
+                  <span>Eventos</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'eventos']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-evento']">
+                  <span>Nuevo Evento</span>
                 </a>
               </mat-nav-list>
             </mat-expansion-panel>
@@ -371,6 +358,39 @@
               <mat-nav-list>
                 <a mat-list-item [routerLink]="['/dashboard', 'nuevo-tipo-evento']">
                   <span>Nuevo Tipo Evento</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>account_circle</mat-icon>
+                  <span>Usuarios</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'usuarios']">
+                  <span>Listado</span>
+                </a>
+              </mat-nav-list>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'nuevo-usuario']">
+                  <span>Nuevo Usuario</span>
+                </a>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true">
+              <mat-expansion-panel-header>
+                <div class="icono">
+                  <mat-icon>supervisor_account</mat-icon>
+                  <span>Roles</span>
+                </div>
+              </mat-expansion-panel-header>
+              <mat-nav-list>
+                <a mat-list-item [routerLink]="['/dashboard', 'roles']">
+                  <span>Listado</span>
                 </a>
               </mat-nav-list>
             </mat-expansion-panel>

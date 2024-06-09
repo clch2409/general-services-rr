@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { TipoEventoService } from '../../../../services/tipoEvento.service';
 import Swal from 'sweetalert2';
 import { TipoEvento } from '../../../../models/tipoEvento.model';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-nuevo-tipo-evento',
@@ -14,6 +15,9 @@ import { TipoEvento } from '../../../../models/tipoEvento.model';
 })
 export class NuevoTipoEventoComponent implements OnInit{
   tipoEventoForm!: FormGroup;
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
+
 
   constructor(private fb: FormBuilder,
     private tipoEventoService: TipoEventoService,
@@ -38,7 +42,7 @@ export class NuevoTipoEventoComponent implements OnInit{
 
   inicializarFormulario() {
     this.tipoEventoForm = this.fb.group({
-      nombre: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
     });
   }
 

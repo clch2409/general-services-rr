@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RolService } from '../../../../services/rol.service';
 import { Rol } from '../../../../models/rol.model';
 import Swal from 'sweetalert2';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-editar-roles',
@@ -14,6 +15,8 @@ export class EditarRolesComponent implements OnInit {
   rolForm: FormGroup;
   rolId: number;
   rol: Rol = new Rol();
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
 
   constructor(
     private route: ActivatedRoute,
@@ -50,7 +53,7 @@ export class EditarRolesComponent implements OnInit {
 
   inicializarFormulario() {
     this.rolForm = this.fb.group({
-      nombre: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
     });
   }
 
@@ -64,8 +67,8 @@ export class EditarRolesComponent implements OnInit {
   }
 
   solicitarConfirmacion(): void{
-    const rolAcutalizado: Rol = this.rolForm.value;
-    let mensaje = `<b>Nombre</b>: ${rolAcutalizado.nombre}<br>`;
+    const rolActualizado: Rol = this.rolForm.value;
+    let mensaje = `<b>Nombre</b>: ${rolActualizado.nombre}<br>`;
     Swal.fire({
       title: 'Confirmar Actualización',
       html: '¿Desea actualizar el rol con los siguientes datos?<br>' + mensaje,
@@ -75,7 +78,7 @@ export class EditarRolesComponent implements OnInit {
       icon: 'question'
     }).then((result) => {
       if(result.isConfirmed){
-        this.guardarCambios(rolAcutalizado);
+        this.guardarCambios(rolActualizado);
       }
     })
   }

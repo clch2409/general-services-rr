@@ -1,22 +1,18 @@
-h4{
-  margin: 20px 0 12px 0;
-}
-
-textarea{
-  height: 150px;
-}
-
 label{
   display: block;
   width: 100%;
   margin: 6px 0;
 }
 
+label select{
+  width: 100%;
+}
+
 button{
   margin-top: 16px;
 }
 
-input, textarea{
+input, select{
   border: 2px solid gray;
 }
 
@@ -25,8 +21,21 @@ input, textarea{
   gap: 12px;
 }
 
-/* .agrupaciones label{
-  display: block;
-  width: 100%;
-} */
+.botones{
+  display: flex;
+  justify-content: center;
+  gap: 12px
+}
 
+.proveedores{
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.proveedores button{
+  padding: 0;
+  margin: 0;
+}

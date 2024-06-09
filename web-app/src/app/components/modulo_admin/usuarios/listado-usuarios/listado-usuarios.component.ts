@@ -3,6 +3,8 @@ import { UsuarioService } from '../../../../services/usuario.service';
 import { Usuario } from '../../../../models/usuario.model';
 import { StorageService } from '../../../../services/storage.service';
 import Swal from 'sweetalert2';
+import { ExportPdfService } from '../../../../services/export-pdf.service';
+import { ExportExcelService } from '../../../../services/export-excel.service';
 
 @Component({
   selector: 'app-listado-usuarios',
@@ -18,7 +20,12 @@ export class ListadoUsuariosComponent implements OnInit {
   totalUsuarios: number = 0;
   typeFilter: String = 'todos';
 
-  constructor(private usuarioService: UsuarioService, private storageService: StorageService) {}
+  constructor(
+    private usuarioService: UsuarioService,
+    private storageService: StorageService,
+    private exportPdf: ExportPdfService,
+    private exportExcel: ExportExcelService,
+    ) {}
 
   ngOnInit(): void {
     this.obtenerUsuarios();
@@ -177,6 +184,12 @@ export class ListadoUsuariosComponent implements OnInit {
     this.storageService.volverMenuPrincipal();
   }
 
+  exportarAPdf(){
+    this.exportPdf.exportarUsuarios();
+  }
 
+  exportarAExcel(){
+    this.exportExcel.exportarUsuarios();
+  }
 }
 

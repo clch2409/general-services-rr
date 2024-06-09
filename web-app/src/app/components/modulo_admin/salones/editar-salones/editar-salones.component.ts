@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { StorageService } from '../../../../services/storage.service';
 import { Dia } from '../../../../models/dia.model';
 import { PayloadUpdateLocal } from '../../../../models/payloadUpdateLocal';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-editar-salones',
@@ -19,6 +20,11 @@ export class EditarSalonesComponent implements OnInit {
   salonId: number;
   preciosSalon!: Dia[];
   salon: Local = new Local();
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
+  directionPattern: RegExp = Patterns.DIRECTION_PATTERN.getPattern();
+  descriptionPattern: RegExp = Patterns.DESCRIPTION_PATTERN.getPattern();
+
 
   constructor(
     private route: ActivatedRoute,
@@ -82,9 +88,9 @@ export class EditarSalonesComponent implements OnInit {
 
   inicializarFormulario() {
     this.salonForm = this.fb.group({
-      nombre: ['', Validators.required],
-      descripcion: ['', Validators.required],
-      direccion: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      descripcion: ['', [Validators.required, Validators.pattern(this.descriptionPattern)]],
+      direccion: ['', [Validators.required, Validators.pattern(this.directionPattern)]],
       aforoMinimo: ['', Validators.required],
       aforoMaximo: ['', Validators.required],
       fechaInactivacion: ['', Validators.required],

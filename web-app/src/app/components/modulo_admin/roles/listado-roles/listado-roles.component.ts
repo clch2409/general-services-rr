@@ -4,6 +4,8 @@ import { Rol } from '../../../../models/rol.model';
 import { StorageService } from '../../../../services/storage.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { ExportExcelService } from '../../../../services/export-excel.service';
+import { ExportPdfService } from '../../../../services/export-pdf.service';
 
 @Component({
   selector: 'app-listado-roles',
@@ -22,6 +24,8 @@ export class ListadoRolesComponent implements OnInit {
   constructor(private rolService: RolService,
     private storageService: StorageService,
     private router: Router,
+    private exportPdf: ExportPdfService,
+    private exportExcel: ExportExcelService,
   ) {}
 
   ngOnInit(): void {
@@ -105,5 +109,13 @@ export class ListadoRolesComponent implements OnInit {
   cerrarSesion(){
     this.storageService.cerrarSesion();
     this.storageService.volverMenuPrincipal();
+  }
+
+  exportarAPdf(){
+    this.exportPdf.exportarRoles();
+  }
+
+  exportarAExcel(){
+    this.exportExcel.exportarRoles();
   }
 }

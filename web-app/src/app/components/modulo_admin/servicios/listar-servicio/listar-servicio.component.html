@@ -13,8 +13,8 @@
                 <button [routerLink]="['/dashboard', 'nuevo-servicio']" class="btn btn-success">Nuevo Servicio</button>
               </div>
               <div class="btn-group botones-exportadores">
-                <button class="btn btn-danger"><mat-icon>picture_as_pdf</mat-icon></button>
-                <button class="btn btn-success"><mat-icon>text_snippet</mat-icon></button>
+                <button class="btn btn-danger" (click)="exportarAPdf()"><mat-icon>picture_as_pdf</mat-icon></button>
+                <button class="btn btn-success" (click)="exportarAExcel()"><mat-icon>text_snippet</mat-icon></button>
               </div>
             </div>
           </div>

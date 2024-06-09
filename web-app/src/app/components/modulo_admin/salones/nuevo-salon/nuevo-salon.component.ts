@@ -7,6 +7,7 @@ import { StorageService } from '../../../../services/storage.service';
 import { Router } from '@angular/router';
 import { Dia } from '../../../../models/dia.model';
 import { LocalDia } from '../../../../models/local.dia.model';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-nuevo-salon',
@@ -22,6 +23,11 @@ export class NuevoSalonComponent implements OnInit {
   precioViernes!: number;
   precioSabado!: number;
   precioDomingo!: number;
+  
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
+  directionPattern: RegExp = Patterns.DIRECTION_PATTERN.getPattern();
+  descriptionPattern: RegExp = Patterns.DESCRIPTION_PATTERN.getPattern();
 
   constructor(private fb: FormBuilder, private localService: LocalService, private storageService: StorageService, private router: Router) {}
 
@@ -43,11 +49,12 @@ export class NuevoSalonComponent implements OnInit {
 
   inicializarFormulario() {
     this.localForm = this.fb.group({
-      nombre: ['', Validators.required],
-      descripcion: ['', Validators.required],
-      direccion: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
+      descripcion: ['', [Validators.required, Validators.pattern(this.descriptionPattern)]],
+      direccion: ['', [Validators.required, Validators.pattern(this.directionPattern)]],
       aforoMinimo: ['', Validators.required],
       aforoMaximo: ['', Validators.required],
+      fechaInactivacion: ['', Validators.required],
     });
   }
 

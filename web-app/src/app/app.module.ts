@@ -58,6 +58,10 @@ import { EditarColaboradorComponent } from './components/modulo_admin/colaborado
 import { NuevoEventoComponent } from './components/modulo_admin/eventos/nuevo-evento/nuevo-evento.component';
 import { ListadoEventosComponent } from './components/modulo_admin/eventos/listado-eventos/listado-eventos.component';
 import { EditarEventoComponent } from './components/modulo_admin/eventos/editar-evento/editar-evento.component';
+import { AsignarServiciosComponent } from './components/modulo_admin/eventos/asignar-servicios/asignar-servicios.component';
+import { NuevoCargoComponent } from './components/modulo_admin/cargos/nuevo-cargo/nuevo-cargo.component';
+import { EditarCargoComponent } from './components/modulo_admin/cargos/editar-cargo/editar-cargo.component';
+import { ListarCargosComponent } from './components/modulo_admin/cargos/listar-cargos/listar-cargos.component';
 
 
 @NgModule({
@@ -106,6 +110,13 @@ import { EditarEventoComponent } from './components/modulo_admin/eventos/editar-
     NuevoEventoComponent,
     ListadoEventosComponent,
     EditarEventoComponent,
+    AsignarServiciosComponent,
+    NuevoCargoComponent,
+    EditarCargoComponent,
+    ListarCargosComponent,
+    ListarCargosComponent,
+    EditarCargoComponent,
+    NuevoCargoComponent
   ],
   imports: [
     HttpClientModule,

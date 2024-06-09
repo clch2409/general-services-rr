@@ -6,6 +6,7 @@ import { TipoBuffetService } from '../../../../services/tipoBuffet.service';
 import { StorageService } from '../../../../services/storage.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { Patterns } from '../../../../utils/patterns';
 
 @Component({
   selector: 'app-editar-tipo-buffet',
@@ -16,6 +17,9 @@ export class EditarTipoBuffetComponent implements OnInit{
   tipoBuffetForm: FormGroup;
   tipoBuffetId: number;
   tipoBuffet!: TipoBuffet;
+  passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
+  namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
+
 
   constructor(
     private route: ActivatedRoute,
@@ -65,7 +69,7 @@ export class EditarTipoBuffetComponent implements OnInit{
 
   inicializarFormulario() {
     this.tipoBuffetForm = this.fb.group({
-      nombre: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       precioPorPlato: ['', Validators.required],
     });
   }

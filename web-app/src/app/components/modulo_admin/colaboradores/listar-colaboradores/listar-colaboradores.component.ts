@@ -4,6 +4,8 @@ import { ColaboradorEvento } from '../../../../models/colaboradorEvento';
 import { StorageService } from '../../../../services/storage.service';
 import { ColaboradorService } from '../../../../services/colaborador.service';
 import Swal from 'sweetalert2';
+import { ExportPdfService } from '../../../../services/export-pdf.service';
+import { ExportExcelService } from '../../../../services/export-excel.service';
 
 @Component({
   selector: 'app-listar-colaboradores',
@@ -21,7 +23,12 @@ export class ListarColaboradoresComponent implements OnInit{
   searchDni = '';
   searchEmail = '';
 
-  constructor(private colaboradoresService: ColaboradorService, private storageService: StorageService) { }
+  constructor(
+    private colaboradoresService: ColaboradorService,
+    private storageService: StorageService,
+    private exportPdf: ExportPdfService,
+    private exportExcel: ExportExcelService,
+  ) { }
 
   ngOnInit(): void {
     this.obtenerColaboradores();
@@ -189,5 +196,13 @@ export class ListarColaboradoresComponent implements OnInit{
       return '';
     }
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  exportarAPdf(){
+    this.exportPdf.exportarColaboradores();
+  }
+
+  exportarAExcel(){
+    this.exportExcel.exportarColaboradores();
   }
 }

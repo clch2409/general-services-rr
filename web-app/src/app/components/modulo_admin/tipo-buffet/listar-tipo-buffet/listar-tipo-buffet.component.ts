@@ -3,6 +3,8 @@ import { TipoBuffet } from '../../../../models/tipoBuffet.model';
 import { TipoBuffetService } from '../../../../services/tipoBuffet.service';
 import { StorageService } from '../../../../services/storage.service';
 import Swal from 'sweetalert2';
+import { ExportExcelService } from '../../../../services/export-excel.service';
+import { ExportPdfService } from '../../../../services/export-pdf.service';
 
 @Component({
   selector: 'app-listar-tipo-buffet',
@@ -19,8 +21,11 @@ export class ListarTipoBuffetComponent implements OnInit{
   totalBuffets: number = 0;
   typeFilter: String = 'todos'
 
-  constructor(private tipoBuffetService: TipoBuffetService,
-    private storageService: StorageService
+  constructor(
+    private tipoBuffetService: TipoBuffetService,
+    private storageService: StorageService,
+    private exportPdf: ExportPdfService,
+    private exportExcel: ExportExcelService,
   ) {}
 
   ngOnInit(): void {
@@ -131,4 +136,11 @@ export class ListarTipoBuffetComponent implements OnInit{
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  exportarAPdf(){
+    this.exportPdf.exportarTiposBuffet();
+  }
+
+  exportarAExcel(){
+    this.exportExcel.exportarTiposBuffet();
+  }
 }

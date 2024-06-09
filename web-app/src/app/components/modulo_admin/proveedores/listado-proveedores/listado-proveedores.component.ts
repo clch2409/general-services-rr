@@ -3,6 +3,8 @@ import { ProveedorService } from '../../../../services/proveedor.service';
 import { Proveedor } from '../../../../models/proveedor.model';
 import { StorageService } from '../../../../services/storage.service';
 import Swal from 'sweetalert2';
+import { ExportPdfService } from '../../../../services/export-pdf.service';
+import { ExportExcelService } from '../../../../services/export-excel.service';
 
 @Component({
   selector: 'app-listado-proveedores',
@@ -20,7 +22,9 @@ export class ListadoProveedoresComponent implements OnInit {
 
   constructor(
     private proveedorService: ProveedorService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private exportPdf: ExportPdfService,
+    private exportExcel: ExportExcelService,
   )
    {
 
@@ -133,6 +137,26 @@ export class ListadoProveedoresComponent implements OnInit {
     }
   }
 
+  mostrarServicios(proveedorId: number){
+    let mensaje = 'Este proveedor cuenta con los siguientes servicios: <br>';
+    const proveedorSeleccionado = this.proveedores.find(proveedor => proveedor.id === proveedorId);
+    if (proveedorSeleccionado?.servicios?.length === 0){
+      Swal.fire('Mostrar Servicios', 'Este proveedor no cuenta con Servicios registrados, regístrelos.', 'info');
+    }
+    else{
+      proveedorSeleccionado?.servicios?.forEach(servicio => {
+        mensaje += `-${servicio.nombre}<br>`
+      });
+      Swal.fire({
+        title: 'Mostrar Servicios',
+        html: mensaje,
+        showConfirmButton: true,
+        confirmButtonText: 'OK',
+        icon: 'success'
+      });
+    }
+  }
+
   eliminarProveedor(id: number) {
     this.proveedorService.eliminarProveedor(id).subscribe(
       (response) => {
@@ -197,5 +221,13 @@ export class ListadoProveedoresComponent implements OnInit {
       return '';
     }
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  exportarAPdf(){
+    this.exportPdf.exportarProveedores();
+  }
+
+  exportarAExcel(){
+    this.exportExcel.exportarProveedores();
   }
 }
