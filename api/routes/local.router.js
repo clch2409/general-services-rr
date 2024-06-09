@@ -38,53 +38,24 @@ localRouter.post('/add/insumos',
 );
 
 localRouter.post('/add/prices',
+  authenticationByJwt(),
+  validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(addPriceToLocalSchema, 'body'),
-  async (req, res, next) => {
-    try{
-      const { body } = req;
-      const addedPrice = await localService.addPriceToLocal(body);
-
-      res.status(200).json({
-        addedPrice
-      });
-    }
-    catch(e){
-      next(e);
-    }
-  }
+  addPriceToLocal
 );
 
 localRouter.post('/add/all/prices',
+  authenticationByJwt(),
+  validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(addAllPricesToLocalSchema, 'body'),
-  async (req, res, next) => {
-    try{
-      const { body } = req;
-      const addedPrices = await localService.addPriceAllPricesToLocal(body);
-
-      res.status(200).json({
-        addedPrices
-      });
-    }
-    catch(e){
-      next(e);
-    }
-  }
+  addPriceAllPricesToLocal
 );
 
 localRouter.post('/modify/prices',
-  async (req, res, next) => {
-    try{
-      const { localId, diaId, precio } = req.body;
-      const modifiedPrice = await localService.modifyPriceOfLocal(localId, diaId, precio);
-
-      res.status(200).json({
-        modifiedPrice
-      });
-    }
-    catch(e){
-      next(e);
-    }
-  }
+  authenticationByJwt(),
+  validateRoles(ADMIN.name, ENCARGADO.name),
+  validatorHandler(addAllPricesToLocalSchema, 'body'),
+  modifyPriceOfLocal
 );
 
 localRouter.post('/retire/insumos',
@@ -170,6 +141,49 @@ async function addInsumosToLocal (req, res, next) {
   }
 }
 
+
+async function addPriceToLocal(req, res, next){
+  try{
+    const { body } = req;
+    const addedPrice = await localService.addPriceToLocal(body);
+
+    res.status(200).json({
+      addedPrice
+    });
+  }
+  catch(e){
+    next(e);
+  }
+}
+
+async function addPriceAllPricesToLocal(req, res, next) {
+  try{
+    const { body } = req;
+    const addedPrices = await localService.addPriceAllPricesToLocal(body);
+
+    res.status(200).json({
+      addedPrices
+    });
+  }
+  catch(e){
+    next(e);
+  }
+}
+
+async function modifyPriceOfLocal(req, res, next) {
+  try{
+    const { localId, diaId, precio } = req.body;
+    const modifiedPrice = await localService.modifyPriceOfLocal(localId, diaId, precio);
+
+    res.status(200).json({
+      modifiedPrice
+    });
+  }
+  catch(e){
+    next(e);
+  }
+}
+
 async function retireInsumosOffLocal (req, res, next) {
   try{
     const { idLocal, idInsumo, cantidad } = req.body;
@@ -237,6 +251,7 @@ async function deleteLocal (req, res, next) {
     next(e)
   }
 }
+
 //****************** Funciones *************************
 
 module.exports = { localRouter }

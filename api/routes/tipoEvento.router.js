@@ -7,32 +7,33 @@ const tipoEventoService = require('./../services/tipoEvento.service');
 const { createTipoEventoSchema, getTipoEventoSchema, updateTipoEventoSchema } = require('./../schema/tipoEvento.schema');
 const { validateRoles } = require('./../middlewares/auth.handler');
 const { ADMIN, ENCARGADO, CLIENTE } = require('./../utils/enums/rol.enum');
+const { authenticationByJwt } = require('./../utils/auth/functions/passport.auth');
 
 const tipoEventoRouter = Router();
 
 //* ***************** Rutas *****************
 tipoEventoRouter.get('',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name, CLIENTE.name),
   findAll
 );
 
 tipoEventoRouter.post('',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(createTipoEventoSchema, 'body'),
   createTipoEvento
 );
 
 tipoEventoRouter.get('/:id',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getTipoEventoSchema, 'params'),
   findTipoEventoById
 );
 
 tipoEventoRouter.patch('/:id',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getTipoEventoSchema, 'params'),
   validatorHandler(updateTipoEventoSchema, 'body'),

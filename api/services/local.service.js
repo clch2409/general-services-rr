@@ -12,6 +12,27 @@ class LocalService{
     return await models.Local.findAll();
   }
 
+  async findAllFormated(){
+    const localFormatted = []
+
+    const locales = await this.findAll();
+
+    locales.forEach(local => {
+      localFormatted.push(
+        [
+          local.nombre,
+          local.direccion,
+          local.aforoMinimo + ' personas',
+          local.aforoMaximo + ' personas',
+          (local.fechaInactivacion) ? new Date(local.fechaInactivacion) : '--',
+          local.status,
+        ]
+      );
+    });
+
+    return localFormatted;
+  }
+
   async findAllActivos(){
     return await models.Local.findAll({
       where: {

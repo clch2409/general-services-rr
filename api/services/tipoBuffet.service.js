@@ -8,6 +8,23 @@ class TipoBuffetService{
     return models.TipoBuffet.findAll();
   }
 
+  async findAllFormated(){
+    const tipoBuffetFormatted = []
+
+    const tipoBuffets = await this.findAll();
+
+    tipoBuffets.forEach(buffet => {
+      tipoBuffetFormatted.push(
+        [
+          buffet.nombre,
+          `S/. ${buffet.precioPorPlato}`,
+        ]
+      );
+    });
+
+    return tipoBuffetFormatted;
+  }
+
   async createTipoBuffet(body){
     return models.TipoBuffet.create(body);
   }

@@ -33,7 +33,7 @@ const colaboradorSchema = {
   },
   dni: {
     allowNull: false,
-    type: DataTypes.STRING(9),
+    type: DataTypes.CHAR(9),
   },
   email: {
     allowNull: false,

@@ -8,6 +8,23 @@ class RolService{
     return await models.Rol.findAll()
   }
 
+  async findAllFormated(){
+    const rolFormatted = []
+
+    const roles = await this.findAll();
+
+    roles.forEach(rol => {
+      rolFormatted.push(
+        [
+          rol.nombre,
+          new Date(rol.createdAt).toLocaleDateString('es-ES'),
+        ]
+      );
+    });
+
+    return rolFormatted;
+  }
+
   async createRol(body){
     return await models.Rol.create(body);
   }

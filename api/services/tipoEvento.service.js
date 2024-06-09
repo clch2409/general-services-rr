@@ -8,6 +8,22 @@ class TipoEventoService{
     return models.TipoEvento.findAll();
   }
 
+  async findAllFormated(){
+    const tipoEventoFormatted = []
+
+    const tipoEventos = await this.findAll();
+
+    tipoEventos.forEach(evento => {
+      tipoEventoFormatted.push(
+        [
+          evento.nombre,
+        ]
+      );
+    });
+
+    return tipoEventoFormatted;
+  }
+
   async createTipoEvento(body){
     return models.TipoEvento.create(body);
   }

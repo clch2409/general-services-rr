@@ -10,7 +10,8 @@ const horaFin = joi.date();
 const cantidadPersonas = joi.number().integer().positive();
 const status = joi.string().valid(RESERVADO.name, REALIZADO.name, EN_PROCESO.name, CANCELADO.name);
 
-const listadoServicios = joi.array().items(joi.number().integer().positive());
+const listadoServiciosIds = joi.array().items(joi.number().integer().positive());
+const lisatdoColabroadoresIds = joi.array().items(joi.number().integer().positive());
 
 const createEventoSchema = joi.object({
   colorEvento: colorEvento.required(),
@@ -45,18 +46,18 @@ const updateEventoSchema = joi.object({
   status,
 });
 
-const addServicioToEventoSchema = joi.object({
-  id: id.required(),
-  servicioId: id.required()
+const addServiciosToEventoSchema = joi.object({
+  eventoId: id.required(),
+  servicios: listadoServiciosIds.required()
 });
 
-const addColaboradorToEventoSchema = joi.object({
-  id: id.required(),
-  colaboradorId: id.required()
+const addColaboradoresToEventoSchema = joi.object({
+  eventoId: id.required(),
+  colaboradores: lisatdoColabroadoresIds.required()
 });
 
 const cotizacionSchema = joi.object({
-  servicios: listadoServicios.required(),
+  servicios: listadoServiciosIds.required(),
   localId: id.required(),
   diaId: id.required(),
   cantidadPersonas: cantidadPersonas.required(),
@@ -68,7 +69,7 @@ module.exports = {
   createEventoSchema,
   getEventoByIdSchema,
   updateEventoSchema,
-  addServicioToEventoSchema,
-  addColaboradorToEventoSchema,
+  addServiciosToEventoSchema,
+  addColaboradoresToEventoSchema,
   cotizacionSchema
 }

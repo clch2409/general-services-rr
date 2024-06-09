@@ -40,6 +40,11 @@ const getEncargadoByEmailSchema = joi.object({
   email: email.required()
 });
 
+const checkEncargadoEventoSchema = joi.object({
+  fechaEvento: joi.date().required(),
+  encargadoId: id.required(),
+})
+
 const updateEncargadoSchema  = joi.object({
   nombres,
   apPaterno,
@@ -47,6 +52,7 @@ const updateEncargadoSchema  = joi.object({
   dni,
   telefono,
   fechaContratacion,
+
 });
 
-module.exports = { createEncargadoSchema, getEncargadoByIdSchema, getEncargadoByDniSchema, updateEncargadoSchema, getEncargadoByEmailSchema }
+module.exports = { createEncargadoSchema, getEncargadoByIdSchema, getEncargadoByDniSchema, updateEncargadoSchema, getEncargadoByEmailSchema, checkEncargadoEventoSchema }

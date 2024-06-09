@@ -3,6 +3,7 @@ const passport = require('passport');
 
 const validatorHandler = require('../middlewares/validator.handler');
 const authService = require('../services/auth.service');
+
 const { loginSchema, changePasswordSchema } = require('../schema/usuario.schema');
 
 const authRouter = express.Router();
@@ -10,12 +11,11 @@ const authRouter = express.Router();
 //***************** Rutas ******************
 authRouter.post('/login',
   validatorHandler(loginSchema, 'body'),
-  passport.authenticate('local', {session: false}),
+  passport.authenticate('local', {session:false}),
   loginUser
 );
 
 authRouter.post('/recovery',
-  // passport.authenticate('jwt', {session: false}),
   sendRecoveryEmail
 );
 

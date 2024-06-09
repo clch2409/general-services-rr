@@ -15,25 +15,6 @@ class EventoService {
     return models.Evento.findAll()
   }
 
-  /*
-  // Verificar si ya el local se encuentra reservado hoy
-  // Verificar si la cantidad de personas sobrepasan el máximo de aforo
-  // Verificar si la encargada ya tiene un evento en el día
-  // No permitir al cliente reservar un evento si ya tiene un evento reservado
-  // Verificar si la fecha de reserva no es anterior a la fecha de hoy
-  // Hacer que los eventos del día de hoy estén en proceso
-  // Hacer que los eventos ya se encuentren realizados
-  // Hacer que el evento pase a cancelado
-  // * Agregar colaboradores a evento
-  // * Agregar servicios al evento
-  * Enviar mensaje a colaborador
-  * Enviar mensaje a encargado
-  // * Colocar automáticamente un encargado
-  // * Realizar cotizaciones
-  // * Contabilizar precio total del evento
-  // * Hacer schema de cotizacion
-  */
-
   async createEvento(body){
     const { localId, fechaEvento, cantidadPersonas, encargadoId, clienteId, horaInicio } = body;
 
@@ -256,20 +237,61 @@ class EventoService {
     return colabsAssigned;
   }
 
-  async addServiciosToEvento(body){
-    const { servicios, eventoId } = body;
 
-    servicios.forEach(async (servicio) => {
-      const servicioEvento = {
-        servicioId: servicio,
-        eventoId: eventoId
-      }
-      await models.ServicioEvento.create(servicioEvento);
-    })
-
+  async addServiciosToEvento(servicios, eventoId){
     const evento = await this.findEventoById(eventoId);
 
-    return evento;
+    if (!evento){
+      throw boom.notFound('El evento ingresado no existe');
+    }
+    if (evento.status === CANCELADO.name){
+      throw boom.conflict('El evento ya fue cancelado');
+    }
+    if (evento.status === TERMINADO.name){
+      throw boom.conflict('El evento ya fue terminado');
+    }
+
+    servicios.forEach(async (servicio) => {
+      const servicioEventoFound = await models.ServicioEvento.findOne({
+        where:{
+          idServicio: servicio,
+          idEvento: eventoId
+        }
+      });
+
+      if (!servicioEventoFound){
+        const servicioEvento = {
+          idServicio: servicio,
+          idEvento: eventoId
+        }
+        await models.ServicioEvento.create(servicioEvento);
+      }
+    })
+  }
+
+  async removeServiciosFromEvento(eventoId, servicioId){
+    const eventoFound = await this.findEventoById(eventoId);
+
+    if (!eventoFound){
+      throw boom.notFound('El evento ingresado no existe');
+    }
+    if (eventoFound.status === CANCELADO.name){
+      throw boom.conflict('El evento ya fue cancelado');
+    }
+    if (eventoFound.status === TERMINADO.name){
+      throw boom.conflict('El evento ya fue terminado');
+    }
+
+    const servicioFound = await models.ServicioEvento.findOne({
+      where:{
+        idServicio: servicioId,
+        idEvento: eventoId
+      }
+    });
+
+    servicioFound.destroy();
+
+    return servicioFound;
   }
 
   async makeCotizacion(body){
@@ -336,6 +358,19 @@ class EventoService {
       precioServicios,
       precioTotalEvento
     }
+  }
+
+  getServiciosAlreadyAdded(evento, servicios){
+    const eventosAlreadyAdded = [];
+
+    servicios.forEach(servicio => {
+      const eventoAdded = evento.servicios.some(serv => serv.id == servicio);
+      if (eventoAdded){
+        eventosAlreadyAdded.push(eventoAdded);
+      }
+    })
+
+    return eventosAlreadyAdded;
   }
 }
 

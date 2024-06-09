@@ -1,5 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
+const { TABLA_PROVEEDOR } = require('./../models/proveedor.model');
+
 const TABLA_SERVICIO = 'servicios';
 
 const servicioSchema = {
@@ -18,6 +20,17 @@ const servicioSchema = {
     allowNull: false,
     type: DataTypes.FLOAT(6,2).UNSIGNED,
   },
+  proveedorId: {
+    field: 'id_proveedor',
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: TABLA_PROVEEDOR,
+      key: 'id_proveedor'
+    },
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
+  },
   createdAt: {
     field: 'created_at',
     allowNull: false,
@@ -35,6 +48,9 @@ const servicioSchema = {
 class Servicio extends Model{
 
   static associate(models){
+    this.belongsTo(models.Proveedor, {
+      as: 'proveedor'
+    });
   }
 
   static config(sequelize){

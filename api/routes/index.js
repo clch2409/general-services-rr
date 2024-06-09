@@ -13,6 +13,8 @@ const { tipoEventoRouter } = require('./tipoEvento.router');
 const { servicioRouter } = require('./servicio.router');
 const { eventoRouter } = require('./evento.router');
 const { tipoBuffetRouter } = require('./tipoBuffet.router');
+const { exportPdfRouter } = require('./exportsPdf.router');
+const { exportExcelRouter } = require('./exportsXls.router');
 
 const root = '/api/v1';
 
@@ -34,6 +36,8 @@ function routerApi(app){
   router.use('/servicios', servicioRouter);
   router.use('/eventos', eventoRouter);
   router.use('/buffets', tipoBuffetRouter);
+  router.use('/pdf', exportPdfRouter);
+  router.use('/xlsx', exportExcelRouter);
 }
 
 module.exports = { routerApi }

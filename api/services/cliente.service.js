@@ -12,6 +12,28 @@ class ClienteService{
     });
   }
 
+  async findAllFormated(){
+    const clientesFormated = []
+
+    const clientes = await this.findAll();
+
+    clientes.forEach(cliente => {
+      clientesFormated.push(
+        [
+          cliente.nombres,
+          cliente.apPaterno,
+          cliente.apMaterno,
+          cliente.dni,
+          cliente.telefono,
+          cliente.direccion,
+          cliente.usuario.email
+        ]
+      );
+    });
+
+    return clientesFormated;
+  }
+
   async findAllActivos(){
     return await models.Cliente.findAll({
       where: {

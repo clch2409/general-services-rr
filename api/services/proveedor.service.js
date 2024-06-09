@@ -11,6 +11,27 @@ class ProveedorService{
     return await models.Proveedor.findAll();
   }
 
+  async findAllFormated(){
+    const proveedorFormatted = []
+
+    const proveedores = await this.findAll();
+
+    proveedores.forEach(proveedor => {
+      proveedorFormatted.push(
+        [
+          proveedor.nombre,
+          proveedor.email,
+          proveedor.telefono,
+          proveedor.direccion,
+          new Date(proveedor.fechaContrato).toLocaleDateString('es-ES'),
+          proveedor.status,
+        ]
+      );
+    });
+
+    return proveedorFormatted;
+  }
+
   async createProveedor(body){
     return await models.Proveedor.create(body);
   }

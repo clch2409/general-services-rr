@@ -11,12 +11,30 @@ class CargoService {
     });
   }
 
+  async findAllFormated(){
+    const cargoFormatted = []
+
+    const cargos = await this.findAll();
+
+    cargos.forEach(cargo => {
+      cargoFormatted.push(
+        [
+          cargo.nombre,
+        ]
+      );
+    });
+
+    return cargoFormatted;
+  }
+
   async createCargo(body){
     return await models.Cargo.create(body);
   }
 
   async findCargoById(cargoId){
-    const foundCargo = await models.Cargo.findByPk(cargoId);
+    const foundCargo = await models.Cargo.findByPk(cargoId, {
+      include: ['colaboradores']
+    });
 
     if(!foundCargo){
       throw boom.notFound('El cargo buscado no existe');

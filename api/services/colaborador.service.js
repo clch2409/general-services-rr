@@ -13,6 +13,30 @@ class ColaboradorService{
     return await models.Colaborador.findAll();
   }
 
+  async findAllFormated(){
+    const colaboradoresFormated = []
+
+    const colaboradores = await this.findAll();
+
+    colaboradores.forEach(colaborador => {
+      colaboradoresFormated.push(
+        [
+          colaborador.nombres,
+          colaborador.apPaterno,
+          colaborador.apMaterno,
+          colaborador.dni,
+          colaborador.telefono,
+          new Date(colaborador.fechaContratacion).toLocaleDateString('es-ES'),
+          colaborador.email,
+          colaborador.cargo.nombre,
+          colaborador.status
+        ]
+      );
+    });
+
+    return colaboradoresFormated;
+  }
+
   async createColaborador(body){
     await this.checkDniAndHiringDate(body);
 

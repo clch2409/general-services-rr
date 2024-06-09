@@ -3,8 +3,13 @@ const express = require('express');
 const validatorHandler = require('../middlewares/validator.handler');
 const encargadoService = require('./../services/encargadoSalon.service');
 
-const { createEncargadoSchema, getEncargadoByIdSchema, getEncargadoByDniSchema, getEncargadoByEmailSchema,
-        updateEncargadoSchema } = require('../schema/encargadoSalon.schema');
+const { createEncargadoSchema,
+  getEncargadoByIdSchema,
+  getEncargadoByDniSchema,
+  getEncargadoByEmailSchema,
+  updateEncargadoSchema,
+  checkEncargadoEventoSchema
+} = require('../schema/encargadoSalon.schema');
 const { validateRoles } = require('../middlewares/auth.handler');
 const { ADMIN, ENCARGADO } = require('../utils/enums/rol.enum');
 const { authenticationByJwt } = require('../utils/auth/functions/passport.auth');
@@ -18,18 +23,11 @@ encargadoRouter.get('',
   findAll
 );
 
-encargadoRouter.get('/check',
-  // authenticationByJwt(),
-  // validateRoles(ADMIN.name),
-  async (req, res, next) => {
-    try{
-      const { fechaEvento } = req.body;
-      const eventos = encargadoService.checkEncargadoAvalible(fechaEvento)
-    }
-    catch(e){
-      next(e);
-    }
-  }
+encargadoRouter.post('/check',
+  authenticationByJwt(),
+  validateRoles(ADMIN.name),
+  validatorHandler(checkEncargadoEventoSchema, 'body'),
+  checkEncargadoAvalible
 );
 
 encargadoRouter.get('/activos',
@@ -90,6 +88,22 @@ async function findAll(req, res, next){
   }
   catch(e){
     next(e)
+  }
+}
+
+async function checkEncargadoAvalible(req, res, next){
+  try{
+    const { fechaEvento, encargadoId } = req.body;
+    const eventos = await encargadoService.checkEncargadoAvalible(fechaEvento, encargadoId)
+
+    if (!eventos){
+      res.status(200).json({
+        message: 'El encargado se encuentra disponible'
+      });
+    }
+  }
+  catch(e){
+    next(e);
   }
 }
 

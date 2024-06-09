@@ -11,6 +11,29 @@ class EncargadoService{
     return await models.EncargadoSalon.findAll();
   }
 
+  async findAllFormated(){
+    const encargadoSalonFormated = []
+
+    const encargadosSalon = await this.findAll();
+
+    encargadosSalon.forEach(colaborador => {
+      encargadoSalonFormated.push(
+        [
+          colaborador.nombres,
+          colaborador.apPaterno,
+          colaborador.apMaterno,
+          colaborador.dni,
+          colaborador.telefono,
+          new Date(colaborador.fechaContratacion).toLocaleDateString('es-ES'),
+          colaborador.usuario.email,
+          colaborador.status
+        ]
+      );
+    });
+
+    return encargadoSalonFormated;
+  }
+
   async findAllActiveEncargados(){
     return await models.EncargadoSalon.findAll({
       where: {
@@ -123,6 +146,21 @@ class EncargadoService{
     const fechaContratacionColaborador = new Date(fechaContrato)
 
     return fechaHoy > fechaContratacionColaborador;
+  }
+
+  async checkEncargadoAvalible (fechaEvento, encargadoId){
+    const foundEvento = await models.Evento.findOne({
+      where: {
+        encargadoId,
+        fechaEvento
+      }
+    });
+
+    if (foundEvento){
+      throw boom.notAcceptable('El encargado ya se encuentra en un evento!');
+    }
+
+    return foundEvento;
   }
 
 }

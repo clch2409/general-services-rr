@@ -7,39 +7,40 @@ const validatorHandler = require('./../middlewares/validator.handler');
 const { createColaboradorSchema, getColaboradorByIdSchema, updateColaboradorSchema, getColaboradorByDniSchema } = require('./../schema/colaborador.schema');
 const { validateRoles } = require('./../middlewares/auth.handler');
 const { ADMIN, ENCARGADO } = require('./../utils/enums/rol.enum');
+const { authenticationByJwt } = require('./../utils/auth/functions/passport.auth');
 
 const colaboradorRouter = Router();
 
 //* ***************** Rutas *****************
 colaboradorRouter.get('',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   findAll
 );
 
 colaboradorRouter.post('',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(createColaboradorSchema, 'body'),
   createColaborador
 );
 
 colaboradorRouter.get('/:id',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getColaboradorByIdSchema, 'params'),
   findColaboradorById
 );
 
 colaboradorRouter.get('/dni/:dni',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getColaboradorByDniSchema, 'params'),
   findColaboradorByDni
 );
 
 colaboradorRouter.patch('/:id',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getColaboradorByIdSchema, 'params'),
   validatorHandler(updateColaboradorSchema, 'body'),
@@ -47,7 +48,7 @@ colaboradorRouter.patch('/:id',
 );
 
 colaboradorRouter.delete('/:id',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getColaboradorByIdSchema, 'params'),
   deleteColaborador

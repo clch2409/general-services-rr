@@ -11,6 +11,25 @@ class InsumoService {
     });
   }
 
+  async findAllFormated(){
+    const insumosFormated = []
+
+    const insumos = await this.findAll();
+
+    insumos.forEach(insumo => {
+      insumosFormated.push(
+        [
+          insumo.nombre,
+          `S/. ${insumo.precio}`,
+          insumo.proveedor.nombre,
+          insumo.status,
+        ]
+      );
+    });
+
+    return insumosFormated;
+  }
+
   async createInsumo(body){
     return await models.Insumo.create(body);
   }

@@ -7,32 +7,33 @@ const servicioService = require('./../services/servicio.service');
 const { createServicioSchema, getServicioByIdSchema, updateServicioSchema } = require('./../schema/servicio.schema');
 const { validateRoles } = require('./../middlewares/auth.handler');
 const { ADMIN, ENCARGADO, CLIENTE } = require('./../utils/enums/rol.enum');
+const { authenticationByJwt } = require('./../utils/auth/functions/passport.auth');
 
 const servicioRouter = Router();
 
 //* ***************** Rutas *****************
 servicioRouter.get('',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name, CLIENTE.name),
   findAll
 );
 
 servicioRouter.post('',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(createServicioSchema, 'body'),
   createServicio
 );
 
 servicioRouter.get('/:id',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getServicioByIdSchema, 'params'),
   findServicioById
 );
 
 servicioRouter.patch('/:id',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getServicioByIdSchema, 'params'),
   validatorHandler(updateServicioSchema, 'body'),

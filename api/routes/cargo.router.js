@@ -7,32 +7,33 @@ const validatorHandler = require('./../middlewares/validator.handler');
 const { createCargoSchema, getCargoSchema, updateCargoSchema } = require('./../schema/cargo.schema');
 const { validateRoles } = require('./../middlewares/auth.handler');
 const { ADMIN, ENCARGADO } = require('./../utils/enums/rol.enum');
+const { authenticationByJwt } = require('./../utils/auth/functions/passport.auth');
 
 const cargoRouter = Router();
 
 //* ***************** Rutas *****************
 cargoRouter.get('',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   findAll
 );
 
 cargoRouter.post('',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(createCargoSchema, 'body'),
   createCargo
 );
 
 cargoRouter.get('/:id',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getCargoSchema, 'params'),
   findCargoById
 );
 
 cargoRouter.patch('/:id',
-  passport.authenticate('jwt', {session: false}),
+  authenticationByJwt(),
   validateRoles(ADMIN.name, ENCARGADO.name),
   validatorHandler(getCargoSchema, 'params'),
   validatorHandler(updateCargoSchema, 'body'),
@@ -57,7 +58,7 @@ async function createCargo(req, res, next){
     const { body } = req;
     const newCargo = await cargoService.createCargo(body);
 
-    res.status(200).json(newCargo);
+    res.status(201).json(newCargo);
   }
   catch(e){
     next(e)
@@ -69,7 +70,7 @@ async function findCargoById(req, res, next) {
     const { id } = req.params;
     const cargoFound = await cargoService.findCargoById(id)
 
-    res.status(302).json(cargoFound);
+    res.status(200).json(cargoFound);
   }
   catch(e){
     next(e)

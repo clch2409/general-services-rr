@@ -12,6 +12,23 @@ class UsuarioService{
     });
   }
 
+  async findAllFormated(){
+    const usuariosFormatted = []
+
+    const usuarios = await this.findAll();
+
+    usuarios.forEach(usuario => {
+      usuariosFormatted.push(
+        [
+          usuario.email,
+          usuario.rol.nombre,
+        ]
+      );
+    });
+
+    return usuariosFormatted;
+  }
+
   async createUser(newUser){
     const nuevoUsuario = await models.Usuario.create(newUser);
 

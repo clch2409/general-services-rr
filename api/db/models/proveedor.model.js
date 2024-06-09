@@ -68,6 +68,10 @@ class Proveedor extends Model{
       as: 'insumos',
       foreignKey: 'proveedorId'
     });
+    this.hasMany(models.Servicio, {
+      as: 'servicios',
+      foreignKey: 'proveedorId'
+    });
   }
 
   static config(sequelize){
@@ -81,7 +85,7 @@ class Proveedor extends Model{
         },
       },
       defaultScope: {
-        include: ['insumos']
+        include: ['insumos', 'servicios']
       }
     }
   }

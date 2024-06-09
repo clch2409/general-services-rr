@@ -52,6 +52,7 @@ function setupModels(sequelize){
   Colaborador.associate(sequelize.models);
   Evento.associate(sequelize.models);
   TipoBuffet.associate(sequelize.models);
+  Servicio.associate(sequelize.models);
 }
 
 module.exports = setupModels
