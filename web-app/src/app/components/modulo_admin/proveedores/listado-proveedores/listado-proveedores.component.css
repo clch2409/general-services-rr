@@ -8,6 +8,23 @@
   gap: 8px
 }
 
+.buscadores > label > span {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.buscadores > label > input {
+  width: 100%;
+}
+
+.buscadores > label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  margin: 0 10px;
+}
+
 .botones-buscadores{
   margin-bottom: 16px;
 }

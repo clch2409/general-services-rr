@@ -20,19 +20,15 @@
         </div>
         <table class="table table-striped">
           <thead>
-            <tr>
+            <tr class="text-center">
               <th>ID</th>
               <th>Nombre</th>
-              <th>Creado en</th>
-              <th>Actualizado en</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let cargo of filteredCargos">
+            <tr *ngFor="let cargo of filteredCargos" class="text-center">
               <td>{{ cargo.id }}</td>
               <td>{{ cargo.nombre }}</td>
-              <td>{{ cargo.createdAt }}</td>
-              <td>{{ cargo.updatedAt }}</td>
               <td class="align-content-center">
                 <button class="btn btn-success btn-sm" [routerLink]="['/dashboard', 'editar-cargo', cargo.id]"><mat-icon>edit</mat-icon></button>
               </td>
@@ -40,11 +36,16 @@
           </tbody>
         </table>
         <div class="botones">
-          <div class="btn-group">
-            <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
-            <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
-          </div>
-        </div>
+          @if (filteredCargos.length > 0){
+            <p>Página {{ page }} de {{ totalPages }}</p>
+            <div class="btn-group">
+              <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
+              <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
+            </div>
+          }
+          @else {
+            <p>No se encontraron resultados</p>
+          }
       </div>
     </div>
   </div>

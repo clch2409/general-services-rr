@@ -17,8 +17,13 @@ export class ListadoProveedoresComponent implements OnInit {
   page: number = 1;
   pageSize: number = 5;
   totalProveedores: number = 0;
+  totalPages: number = 0;
   typeFilter: String = 'todos';
-  searchId = '';
+  searchName = '';
+  searchEmail = '';
+  searchPhone = '';
+  searchInicioDate: string = '';
+  searchFinDate: string = '';
 
   constructor(
     private proveedorService: ProveedorService,
@@ -46,8 +51,6 @@ export class ListadoProveedoresComponent implements OnInit {
     this.proveedorService.obtenerProveedores().subscribe(
       (data: Proveedor[]) => {
         this.proveedores = data;
-        this.filteredProveedores = this.getProveedores(this.page, this.pageSize);
-        this.totalProveedores = this.getTotalProveedores();
         this.mostrarActivos();
       },
       (error) => {
@@ -69,6 +72,7 @@ export class ListadoProveedoresComponent implements OnInit {
     this.typeFilter = 'todos';
     this.filteredProveedores = this.getProveedores(this.page, this.pageSize);
     this.totalProveedores = this.getTotalProveedores();
+    this.totalPages = Math.ceil(this.totalProveedores / this.pageSize);
   }
 
   mostrarActivos(){
@@ -76,12 +80,23 @@ export class ListadoProveedoresComponent implements OnInit {
     this.typeFilter = 'activos';
     this.filteredProveedores = this.getProveedores(this.page, this.pageSize);
     this.totalProveedores = this.getTotalProveedores();
+    this.totalPages = Math.ceil(this.totalProveedores / this.pageSize);
+  }
+
+  mostrarFiltradoFechas(){
+    this.resetearPaginacion()
+    this.typeFilter = 'fechas';
+    this.filteredProveedores = this.getProveedores(this.page, this.pageSize);
+    this.totalProveedores = this.getTotalProveedores();
+    this.totalPages = Math.ceil(this.totalProveedores / this.pageSize);
   }
 
   buscarProveedores() {
     this.resetearPaginacion();
     this.typeFilter = 'filtrados';
     this.filteredProveedores = this.getProveedores(this.page, this.pageSize);
+    this.totalProveedores = this.getTotalProveedores();
+    this.totalPages = Math.ceil(this.totalProveedores / this.pageSize);
   }
 
   filtrarActivos(){
@@ -89,14 +104,40 @@ export class ListadoProveedoresComponent implements OnInit {
   }
 
   filtrarProveedores(): Proveedor[] {
-    return this.proveedores.filter((insumo) => {
-      const idMatch = insumo.id && insumo.id.toString().includes(this.searchId);
-      return idMatch;
+    return this.proveedores.filter((proveedor) => {
+      const nameMatch = proveedor.nombre && proveedor.nombre.toLowerCase().includes(this.searchName.toLowerCase());
+      const emailMatch = proveedor.email && proveedor.email.toLowerCase().includes(this.searchEmail.toLowerCase());
+      const phoneMatch = proveedor.telefono && proveedor.telefono.toLowerCase().includes(this.searchPhone);
+      return nameMatch && emailMatch && phoneMatch;
     });
   }
 
+  filtrarPorFechas(fechaInicio: string, fechaFin: string) {
+    if (fechaInicio != '' && fechaFin != '') {
+      const fechaInicioDate = new Date(fechaInicio);
+      const fechaFinDate = new Date(fechaFin);
+
+      const proveedoresFiltrados = this.proveedores.filter(proveedor => {
+        const fechaContratoDate = new Date(proveedor.fechaContrato!);
+        return fechaContratoDate >= fechaInicioDate && fechaContratoDate <= fechaFinDate;
+      })
+
+      return proveedoresFiltrados;
+    }
+    else{
+      Swal.fire({
+        title: 'Validando Fechas',
+        html: 'Ingrese las fechas en los buscadores para filtrar los proveedores.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
+        icon: 'error'
+      });
+      return this.filteredProveedores;
+    }
+  }
+
   resetearFiltros() {
-    this.searchId = '';
+    this.searchName = '';
     this.filteredProveedores = this.proveedores;
   }
 
@@ -108,6 +149,8 @@ export class ListadoProveedoresComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       icon: 'question'
     })
     .then(data => {
@@ -132,6 +175,7 @@ export class ListadoProveedoresComponent implements OnInit {
         html: mensaje,
         showConfirmButton: true,
         confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
         icon: 'success'
       });
     }
@@ -152,6 +196,7 @@ export class ListadoProveedoresComponent implements OnInit {
         html: mensaje,
         showConfirmButton: true,
         confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
         icon: 'success'
       });
     }
@@ -179,6 +224,9 @@ export class ListadoProveedoresComponent implements OnInit {
     }
     else if (this.typeFilter === 'filtrados'){
       return this.filtrarProveedores().slice(start, end);
+    }
+    else if (this.typeFilter === 'fechas'){
+      return this.filtrarPorFechas(this.searchInicioDate, this.searchFinDate).slice(start, end);
     }
     else{
       return this.filtrarActivos().slice(start, end);
@@ -221,6 +269,21 @@ export class ListadoProveedoresComponent implements OnInit {
       return '';
     }
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  transformarFechaDate(fecha: string){
+    return new Date(`${fecha}:01:00:00`)
+  }
+
+  transformarFechaLarga(fecha: string){
+    console.log(fecha);
+    const fechaContratacion = new Date(fecha);
+    return fechaContratacion.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 
   exportarAPdf(){

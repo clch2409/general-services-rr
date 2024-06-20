@@ -52,7 +52,9 @@ export class NuevoInsumoComponent implements OnInit {
       icon: 'info',
       showCancelButton: true,
       cancelButtonText: 'No',
-      confirmButtonText: 'Sí'
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
     })
     .then((response) => {
       if(response.isConfirmed){
@@ -114,7 +116,7 @@ export class NuevoInsumoComponent implements OnInit {
     this.insumoService.crearInsumo(nuevoInsumo).subscribe(
       (response) => {
         console.log('Insumo creado correctamente:', response);
-        Swal.fire('Insumo Creado!', 'El insumo ha sido registrado correctamente!', 'success')
+        Swal.fire('Insumo Creado!', 'El insumo ha sido registrado correctamente! Ahora pasara al listado de insumos', 'success')
         .then(result => this.regresarListadoInsumos());
       },
       (error) => {
@@ -129,6 +131,24 @@ export class NuevoInsumoComponent implements OnInit {
   cerrarSesion(){
     this.storageService.cerrarSesion();
     this.storageService.volverMenuPrincipal();
+  }
+
+  confirmarRegresoListadoInsumos(){
+    Swal.fire({
+      title: 'Regresar al Listado de Insumos!',
+      html: '¿Desea regresar al listado de insumos?',
+      icon: 'question',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    })
+    .then((response) => {
+      if(response.isConfirmed){
+        this.regresarListadoInsumos();
+      }
+    });
   }
 
   regresarListadoInsumos(){

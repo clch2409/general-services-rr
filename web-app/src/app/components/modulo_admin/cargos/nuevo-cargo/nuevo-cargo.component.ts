@@ -55,6 +55,8 @@ export class NuevoCargoComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       icon: 'question'
     }).then((result) => {
       if(result.isConfirmed){
@@ -79,6 +81,24 @@ export class NuevoCargoComponent implements OnInit {
         }
       );
     }
+  }
+
+  confirmarRegresarListadoCargos(){
+    Swal.fire({
+      title: 'Confirmar regreso',
+      html: '¿Desea regresar al listado de cargos? <br> Los datos no guardados se perderán',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      icon: 'question'
+    })
+    .then((result) => {
+      if(result.isConfirmed){
+        this.regresarListadoCargos();
+      }
+    })
   }
 
   cerrarSesion(){

@@ -52,9 +52,7 @@ export class EditarSalonesComponent implements OnInit {
     this.storageService.comprobarSesion();
   }
 
-  regresarListadoLocales(){
-    this.router.navigate(['/dashboard', 'salones']);
-  }
+
 
   obtenerSalon() {
     this.localService.obtenerLocalPorId(this.salonId).subscribe({
@@ -93,7 +91,7 @@ export class EditarSalonesComponent implements OnInit {
       direccion: ['', [Validators.required, Validators.pattern(this.directionPattern)]],
       aforoMinimo: ['', Validators.required],
       aforoMaximo: ['', Validators.required],
-      fechaInactivacion: ['', Validators.required],
+      fechaInactivacion: [''],
     });
     this.pricesForm = this.fb.group({
       domingo: ['', Validators.required],
@@ -108,7 +106,7 @@ export class EditarSalonesComponent implements OnInit {
   }
 
   validarFormulario(){
-    if (this.salonForm.valid){
+    if (this.salonForm.valid && this.pricesForm.valid){
       this.solicitarConfirmacion()
     }
     else{
@@ -128,24 +126,52 @@ export class EditarSalonesComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       icon: 'question'
     }).then((result) => {
       if(result.isConfirmed){
-        this.guardarCambios(localActualizado);
+        if (localActualizado.fechaInactivacion == null){
+          delete localActualizado.fechaInactivacion
+        }
+        this.confirmarPrecios(localActualizado);
       }
     })
   }
 
-  guardarCambios(localActualizado: Local) {
+  confirmarPrecios(nuevoLocal: Local){
+    let mensaje = '¿Dese ingresar los siguientes precios?<br>';
+    const preciosForm = this.pricesForm.value;
+    const nombresDias = [...Object.keys(preciosForm)];
+    const precios: number[] = [];
+    Object.values(preciosForm).forEach(precio => precios.push(parseInt(`${precio}`)));
+    nombresDias.forEach((nombre, index) => {
+      mensaje += `-${this.convertirPrimeraLetraEnMayuscula(nombre)}: S/.${precios[index]}<br>`
+    })
+    Swal.fire({
+      title: 'Confirmar Registro',
+      html: mensaje,
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      icon: 'question'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.guardarLocal(nuevoLocal, precios)
+      }
+    })
+  }
+
+  guardarLocal(localActualizado: Local, precios: number[]) {
     this.localService.actualizarLocal(this.salonId, localActualizado).subscribe(
       (response) => {
         console.log('Salón actualizado correctamente:', response);
         Swal.fire('Salón Actualizado', 'El salón se ha sido actualizado correctamente', 'success')
         .then((result) => {
-          this.regresarListadoLocales();
+          this.actualizarPrecios(response.id!, precios);
         });
-
-
       },
       (error) => {
         console.error('Error al actualizar el salón:', error);
@@ -154,6 +180,46 @@ export class EditarSalonesComponent implements OnInit {
         }
       }
     );
+  }
+
+  actualizarPrecios(localId: number, precios: number[]){
+    this.localService.agregarTodosLosPreciosAlLocal(localId, precios).subscribe(
+      (response) => {
+        console.log('Los precios han sido actualizado correctamente', response);
+      },
+      (error) => {
+        console.error('Error al actualizar los precios', error);
+      }
+    )
+  }
+
+
+  confirmarRegresoListadoLocales(){
+    Swal.fire({
+      title: 'Confirmar Regreso',
+      html: '¿Desea regresar al listado de locales? </br> Se perderán todos los cambios que no hayas guardado.',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      icon: 'question'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.regresarListadoLocales();
+      }
+    })
+  }
+
+  regresarListadoLocales(){
+    this.router.navigate(['/dashboard', 'salones']);
+  }
+
+  convertirPrimeraLetraEnMayuscula(string: String) {
+    if (typeof string !== 'string' || string.length === 0) {
+      return '';
+    }
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   colocarDias(dias: Dia[]){
@@ -172,4 +238,5 @@ export class EditarSalonesComponent implements OnInit {
     this.storageService.cerrarSesion();
     this.storageService.volverMenuPrincipal();
   }
+
 }

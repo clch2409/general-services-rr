@@ -5,6 +5,8 @@ import { StorageService } from '../../../../services/storage.service';
 import Swal from 'sweetalert2';
 import { ExportExcelService } from '../../../../services/export-excel.service';
 import { ExportPdfService } from '../../../../services/export-pdf.service';
+import { ProveedorService } from '../../../../services/proveedor.service';
+import { Proveedor } from '../../../../models/proveedor.model';
 
 @Component({
   selector: 'app-listar-servicio',
@@ -14,21 +16,25 @@ import { ExportPdfService } from '../../../../services/export-pdf.service';
 export class ListarServicioComponent implements OnInit{
   servicios: Servicio[] = [];
   filteredServicios: Servicio[] = [];
-  searchId = '';
+  proveedores: Proveedor[] = []
+  searchProveedor = '';
   searchName = '';
   page: number = 1;
   pageSize: number = 4;
   totalServicios: number = 0;
+  totalPages: number = 0;
   typeFilter: String = 'todos'
 
   constructor(private servicioService: ServicioService,
     private storageService: StorageService,
+    private proveedorService: ProveedorService,
     private exportPdf: ExportPdfService,
     private exportExcel: ExportExcelService,
   ) {}
 
   ngOnInit(): void {
-    this.obtenerLocal();
+    this.obtenerServicios();
+    this.obtenerProveedores();
   }
 
   ngAfterViewInit(): void{
@@ -51,12 +57,13 @@ export class ListarServicioComponent implements OnInit{
     this.totalServicios = this.getTotalServicios();
   }
 
-  obtenerLocal() {
+  obtenerServicios() {
     this.servicioService.obtenerServicios().subscribe(
       (data: Servicio[]) => {
         this.servicios = data;
         this.filteredServicios = this.getServicios(this.page, this.pageSize);
-        this.totalServicios = this.getTotalServicios()
+        this.totalServicios = this.getTotalServicios();
+        this.totalPages = Math.ceil(this.servicios.length / this.pageSize);
       },
       (error) => {
         console.error('Error al obtener la lista de locales:', error);
@@ -67,26 +74,44 @@ export class ListarServicioComponent implements OnInit{
     );
   }
 
+  obtenerProveedores(){
+    this.proveedorService.obtenerProveedores().subscribe(
+      (response: Proveedor[]) => {
+        this.proveedores = response;
+        console.log(this.proveedores)
+      },
+      (error) => {
+        console.error('Error al obtener proveedor:', error);
+        if (error.status === 401){
+          Swal.fire('Sesión Caducada', 'Su sesión ha cadicado. Inicie sesión de nuevo, por favor.', 'info').then(data => this.cerrarSesion());
+        }
+      }
+    )
+  }
+
   buscarServicios() {
     this.resetearPaginacion();
     this.typeFilter = 'filtrados';
     this.filteredServicios = this.getServicios(this.page, this.pageSize);
+    this.totalServicios = this.getTotalServicios();
+    this.totalPages = Math.ceil(this.totalServicios/ this.pageSize);
   }
 
   filtrarServicios() : Servicio[]{
     return this.servicios.filter((servicio) => {
-      const idMatch = servicio.id && servicio.id.toString().includes(this.searchId);
-      const nameMatch = servicio.nombre && servicio.nombre.includes(this.searchName);
-      return idMatch && nameMatch;
+      const nameMatch = servicio.nombre && servicio.nombre.toLowerCase().includes(this.searchName.toLowerCase());
+      const proveedorMatch = servicio.proveedor?.nombre && servicio.proveedor?.nombre.toLowerCase().includes(this.searchProveedor.toLowerCase());
+      return nameMatch && proveedorMatch;
     });
   }
 
   resetearFiltros() {
-    this.searchId = '';
+    this.searchProveedor = '';
     this.searchName = '';
     this.resetearPaginacion();
     this.filteredServicios = this.getServicios(this.page, this.pageSize);
     this.totalServicios = this.getTotalServicios();
+    this.totalPages = Math.ceil(this.totalServicios/ this.pageSize);
   }
 
   cerrarSesion(){

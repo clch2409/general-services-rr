@@ -7,28 +7,87 @@
         </div>
         <div class="card-body">
           <form [formGroup]="eventoForm" (ngSubmit)="validarConfirmacion()">
-            <label for="localId">
-              <span>Local</span>
-              <select class="form-select" formControlName="localId" required>
-                <option *ngFor="let local of locales" [value]="local.id">{{ local.nombre }}</option>
-              </select>
-              <button type="button" class="btn btn-primary" (click)="confirmarAgregarBuffet()"><mat-icon>add</mat-icon></button>
+            <div class="agrupaciones">
+              <label for="localId">
+                <span>Local</span>
+                <select class="form-select" formControlName="localId" (change)="seleccionarLocal()" required>
+                  <option *ngFor="let local of locales" [value]="local.id">{{ local.nombre }}</option>
+                </select>
+                <span>
+                  @if (localSeleccionado.aforoMinimo != null){
+                    Aforo mínimo: {{localSeleccionado.aforoMinimo}} personas
+                    <br>
+                    Aforo maximo: {{localSeleccionado.aforoMaximo}} personas
+                  }
+                  @else {
+                    Aforo mínimo: -- personas
+                    <br>
+                    Aforo maximo: -- personas
+                  }
+                </span>
+              </label>
+              <label for="encargadoId">
+                <span>Encargado</span>
+                <select class="form-select" formControlName="encargadoId" required>
+                  <option *ngFor="let encargado of encargados" [value]="encargado.id">{{ encargado.nombres }} {{encargado.apPaterno}}</option>
+                </select>
+              </label>
+            </div>
+            @if(rol === 'admin' || rol === 'encargado'){
+              <label for="nombreCliente">
+                <span>Cliente</span>
+                <input type="text" list="listaClientes" class="form-control" id="nombreCliente" [(ngModel)]="nombreCliente" [ngModelOptions]="{standalone: true}">
+                <datalist id="listaClientes">
+                  @for(cliente of clientes; track cliente){
+                    <option class="fw-medium" [value]="cliente.nombres +  ' ' + cliente.apPaterno"></option>
+                  }
+                </datalist>
+              </label>
+            }
+            <label for="fechaEvento">
+              <span>Fecha</span>
+              <input type="date" formControlName="fechaEvento" id="fechaEvento" class="form-control" required>
             </label>
-            <label for="diaId">
-              <span>Día</span>
-              <input type="date" formControlName="diaId" class="form-control" required>
-            </label>
+            <div class="agrupaciones">
+              <label for="horaInicio">
+                <span>Hora Inicio</span>
+                <input type="time" formControlName="horaInicio" id="horaInicio" class="form-control" (change)="colocarHoraFin()" required>
+              </label>
+              <label for="horaFin">
+                <span>Hora Fin</span>
+                <input type="time" formControlName="horaFin" id="horaFin" class="form-control" required readonly>
+              </label>
+            </div>
             <label for="cantidadPersonas">
               <span>Cantidad de Personas</span>
-              <input type="number" formControlName="cantidadPersonas" class="form-control" required>
+              <input type="number" formControlName="cantidadPersonas" class="form-control"
+              [class.correcto]="isValid"
+              [class.incorrecto]="!isValid && isValid != null"
+              [min]="localSeleccionado.aforoMinimo!"
+              [max]="localSeleccionado.aforoMaximo!"
+              (keyup)="validarCantidadPersonas()"
+              required>
             </label>
-            <label for="tipoBuffetId">
-              <span>Tipo de Buffet</span>
-              <select class="form-select" formControlName="tipoBuffetId" required>
-                <option *ngFor="let tipoBuffet of tipoBuffets" [value]="tipoBuffet.id">{{ tipoBuffet.nombre }}</option>
-              </select>
-              <button type="button" class="btn btn-primary" (click)="irNuevoBuffet()">Agregar Tipo de Buffet</button>
-            </label>
+            <div class="agrupaciones">
+              <label for="tipoEvento">
+                <span>Tipo de Evento</span>
+                <div class="tipo_buffet">
+                  <select class="form-select" formControlName="tipoEventoId" id="tipoEvento" required>
+                    <option *ngFor="let tipoEvento of tiposEvento" [value]="tipoEvento.id">{{ tipoEvento.nombre }}</option>
+                  </select>
+                  <button type="button" class="btn btn-primary" (click)="confirmarAgregarEvento()"><mat-icon>add</mat-icon></button>
+                </div>
+              </label>
+              <label for="tipoBuffet">
+                <span>Tipo de Buffet</span>
+                <div class="tipo_buffet">
+                  <select class="form-select" formControlName="tipoBuffetId" id="tipoBuffet" required>
+                    <option *ngFor="let tipoBuffet of tipoBuffets" [value]="tipoBuffet.id">{{ tipoBuffet.nombre }}</option>
+                  </select>
+                  <button type="button" class="btn btn-primary" (click)="confirmarAgregarBuffet()"><mat-icon>add</mat-icon></button>
+                </div>
+              </label>
+            </div>
             <div class="text-center">
               <button type="submit" class="btn btn-primary">Crear</button>
             </div>

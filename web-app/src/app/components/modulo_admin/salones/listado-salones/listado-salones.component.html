@@ -14,7 +14,7 @@
                   <button (click)="resetearFiltros()" class="btn btn-danger">Resetear Buscadores</button>
                   <button [routerLink]="['/dashboard', 'nuevo-salon']" class="btn btn-success">Nuevo Local</button>
                   <button [routerLink]="['/dashboard', 'add-insumos']" class="btn btn-info">Agregar Insumos</button>
-                  <button [routerLink]="['/dashboard', 'add-insumos']" class="btn btn-warning">Mover Insumos</button>
+                  <button [routerLink]="['/dashboard', 'move-insumos']" class="btn btn-warning">Mover Insumos</button>
                 </div>
                 <div class="btn-group botones-exportadores">
                   <button class="btn btn-danger"><mat-icon>picture_as_pdf</mat-icon></button>
@@ -58,10 +58,16 @@
                 </tbody>
             </table>
             <div class="botones">
-              <div class="btn-group">
-                <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
-                <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
-              </div>
+              @if (filteredLocal.length > 0){
+                <p>Página {{ page }} de {{ totalPages }}</p>
+                <div class="btn-group">
+                  <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
+                  <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
+                </div>
+              }
+              @else {
+                <p>No se encontraron resultados</p>
+              }
             </div>
         </div>
     </div>

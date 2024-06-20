@@ -1,0 +1,42 @@
+.titulo{
+  margin-top: 16px;
+}
+
+.buscadores {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.buscadores label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  margin: 0 10px;
+}
+
+.buscadores span {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.buscadores input {
+  width: 100%;
+}
+
+.botones-buscadores{
+  margin-bottom: 16px;
+}
+
+.buscadores input:hover{
+  cursor: text;
+}
+
+.botones{
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}

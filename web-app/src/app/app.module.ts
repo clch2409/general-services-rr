@@ -62,6 +62,7 @@ import { AsignarServiciosComponent } from './components/modulo_admin/eventos/asi
 import { NuevoCargoComponent } from './components/modulo_admin/cargos/nuevo-cargo/nuevo-cargo.component';
 import { EditarCargoComponent } from './components/modulo_admin/cargos/editar-cargo/editar-cargo.component';
 import { ListarCargosComponent } from './components/modulo_admin/cargos/listar-cargos/listar-cargos.component';
+import { AsignarColaboradorComponent } from './components/modulo_admin/eventos/asignar-colaborador/asignar-colaborador.component';
 
 
 @NgModule({
@@ -111,12 +112,10 @@ import { ListarCargosComponent } from './components/modulo_admin/cargos/listar-c
     ListadoEventosComponent,
     EditarEventoComponent,
     AsignarServiciosComponent,
+    AsignarColaboradorComponent,
     NuevoCargoComponent,
     EditarCargoComponent,
     ListarCargosComponent,
-    ListarCargosComponent,
-    EditarCargoComponent,
-    NuevoCargoComponent
   ],
   imports: [
     HttpClientModule,

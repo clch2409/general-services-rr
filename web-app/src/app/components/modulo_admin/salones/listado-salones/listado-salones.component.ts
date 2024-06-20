@@ -19,6 +19,7 @@ export class ListadoSalonesComponent implements OnInit {
   page: number = 1;
   pageSize: number = 5;
   totalLocales: number = 0;
+  totalPages: number = 0;
   typeFilter: String = 'todos'
 
   constructor(
@@ -50,6 +51,7 @@ export class ListadoSalonesComponent implements OnInit {
     this.typeFilter = 'todos';
     this.filteredLocal = this.getLocales(this.page, this.pageSize);
     this.totalLocales = this.getTotalLocales();
+    this.totalPages = Math.ceil(this.local.length / this.pageSize);
   }
 
   mostrarActivos(){
@@ -57,6 +59,33 @@ export class ListadoSalonesComponent implements OnInit {
     this.typeFilter = 'activos';
     this.filteredLocal = this.getLocales(this.page, this.pageSize);
     this.totalLocales = this.getTotalLocales();
+    this.totalPages = Math.ceil(this.local.length / this.pageSize);
+  }
+
+  buscarLocal() {
+    this.resetearPaginacion();
+    this.typeFilter = 'filtrados';
+    this.filteredLocal = this.getLocales(this.page, this.pageSize);
+    this.totalLocales = this.getTotalLocales();
+    this.totalPages = Math.ceil(this.totalLocales / this.pageSize);
+  }
+
+  filtrarLocales() : Local[]{
+    return this.local.filter((local) => {
+      const idMatch = local.id && local.id.toString().includes(this.searchId);
+      const nameMatch = local.nombre && local.nombre.toLowerCase().includes(this.searchName);
+      return idMatch && nameMatch;
+    });
+  }
+
+  filtrarActivos(): Local[]{
+    return this.local.filter(encargado => encargado.status === 'activo');
+  }
+
+  resetearFiltros() {
+    this.searchId = '';
+    this.searchName = '';
+    this.mostrarActivos();
   }
 
   validarEliminacion(salon: Local){
@@ -67,6 +96,8 @@ export class ListadoSalonesComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       icon: 'question'
     })
     .then(data => {
@@ -80,8 +111,6 @@ export class ListadoSalonesComponent implements OnInit {
     this.localService.obtenerLocales().subscribe(
       (data: Local[]) => {
         this.local = data;
-        this.filteredLocal = this.getLocales(this.page, this.pageSize);
-        this.totalLocales = this.getTotalLocales()
         this.mostrarActivos()
       },
       (error) => {
@@ -93,31 +122,7 @@ export class ListadoSalonesComponent implements OnInit {
     );
   }
 
-  buscarLocal() {
-    this.resetearPaginacion();
-    this.typeFilter = 'filtrados';
-    this.filteredLocal = this.getLocales(this.page, this.pageSize);
-  }
 
-  filtrarLocales() : Local[]{
-    return this.local.filter((local) => {
-      const idMatch = local.id && local.id.toString().includes(this.searchId);
-      const nameMatch = local.nombre && local.nombre.toString().includes(this.searchName);
-      return idMatch && nameMatch;
-    });
-  }
-
-  filtrarActivos(): Local[]{
-    return this.local.filter(encargado => encargado.status === 'activo');
-  }
-
-  resetearFiltros() {
-    this.searchId = '';
-    this.searchName = '';
-    this.resetearPaginacion();
-    this.filteredLocal = this.getLocales(this.page, this.pageSize);
-    this.totalLocales = this.getTotalLocales();
-  }
 
   eliminarLocal(id: number) {
     this.localService.eliminarLocal(id).subscribe(
@@ -138,7 +143,14 @@ export class ListadoSalonesComponent implements OnInit {
     let mensaje = 'Este local cuenta con los siguientes insumos: <br>';
     const localSeleccionado = this.local.find(local => local.id === localId);
     if (localSeleccionado?.insumos?.length === 0){
-      Swal.fire('Mostrar Insumos', 'Este local no cuenta con insumos registrados, regístrelos.', 'info');
+      Swal.fire({
+        title: 'Mostrar Insumos',
+        html: 'Este local no cuenta con insumos registrados, regístrelos.',
+        showConfirmButton: true,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
+        icon: 'info'
+      });
     }
     else{
       localSeleccionado?.insumos?.forEach(insumo => {
@@ -149,6 +161,7 @@ export class ListadoSalonesComponent implements OnInit {
         html: mensaje,
         showConfirmButton: true,
         confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
         icon: 'success'
       });
     }
@@ -164,7 +177,14 @@ export class ListadoSalonesComponent implements OnInit {
     const localSeleccionado = this.local.find(local => local.id == id);
     const preciosOrdenados = localSeleccionado?.precios?.sort((a, b) => a.id! - b.id!)
     if (localSeleccionado?.precios?.length === 0){
-      Swal.fire('Mostrar Precios', 'Este local no cuenta con precios registrados, regístrelos.', 'info');
+      Swal.fire({
+        title: 'Mostrar Precios',
+        html: 'Este local no cuenta con precios registrados, regístrelos.',
+        showConfirmButton: true,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
+        icon: 'info'
+      });
     }
     else{
       preciosOrdenados?.forEach(dia => {
@@ -175,6 +195,7 @@ export class ListadoSalonesComponent implements OnInit {
         html: mensaje,
         showConfirmButton: true,
         confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
         icon: 'success'
       });
     }

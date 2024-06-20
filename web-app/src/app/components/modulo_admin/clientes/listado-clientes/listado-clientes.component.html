@@ -4,7 +4,7 @@
       <div class="titulo">
         <h2>Listado de Clientes</h2>
         <div class="input-group buscadores">
-          <input type="text" inputmode="numeric" [(ngModel)]="searchId" class="form-control" placeholder="Buscar por ID" (keyup)="buscarClientes()" min="0">
+          <input type="text" inputmode="numeric" [(ngModel)]="searchName" class="form-control" placeholder="Buscar por Nombres" (keyup)="buscarClientes()" min="0">
           <input type="text" [(ngModel)]="searchDni" class="form-control" placeholder="Buscar por DNI" (keyup)="buscarClientes()">
           <input type="text" [(ngModel)]="searchEmail" class="form-control" placeholder="Buscar por Email" (keyup)="buscarClientes()">
         </div>
@@ -22,7 +22,7 @@
 
       <table class="table table-striped">
         <thead>
-          <tr>
+          <tr class="text-center">
             <th>ID</th>
             <th>Nombres</th>
             <th>Apellido Paterno</th>
@@ -30,15 +30,12 @@
             <th>Teléfono</th>
             <th>DNI</th>
             <th>Dirección</th>
-            <th>Usuario</th>
-            <th>Estado</th>
-            <th>Creado en</th>
-            <th>Actualizado en</th>
+            <th>Email</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let cliente of filteredClientes">
+          <tr *ngFor="let cliente of filteredClientes" class="text-center">
             <td>{{ cliente.id }}</td>
             <td>{{ cliente.nombres }}</td>
             <td>{{ cliente.apPaterno }}</td>
@@ -47,9 +44,6 @@
             <td>{{ cliente.dni }}</td>
             <td>{{ cliente.direccion }}</td>
             <td>{{ cliente.usuario?.email }}</td>
-            <td>{{ cliente.status }}</td>
-            <td>{{ cliente.createdAt }}</td>
-            <td>{{ cliente.updatedAt }}</td>
             <td>
               <button [routerLink]="['/dashboard/editar-cliente', cliente.id]" class="btn btn-success"><mat-icon>edit</mat-icon></button>
             </td>
@@ -57,10 +51,16 @@
         </tbody>
       </table>
       <div class="botones">
-        <div class="btn-group">
-          <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
-          <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
-        </div>
+        @if (filteredClientes.length > 0){
+          <p>Página {{ page }} de {{ totalPages }}</p>
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
+            <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
+          </div>
+        }
+        @else {
+          <p>No se encontraron resultados</p>
+        }
       </div>
     </div>
   </div>

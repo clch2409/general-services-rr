@@ -45,7 +45,6 @@ export class EditarCargoComponent implements OnInit {
     this.cargoService.obtenerCargoPorId(this.cargoId).subscribe({
       next: (data: Cargo) => {
         this.cargo = data;
-        console.log(data)
         this.cargoForm.patchValue(data);
       },
       error: err => {
@@ -68,7 +67,7 @@ export class EditarCargoComponent implements OnInit {
       this.solicitarConfirmacion()
     }
     else{
-      Swal.fire('Datos Faltantes', 'Verifique que se estén ingresando todos los datos del cargo', 'error')
+      Swal.fire('Datos Faltantes', 'Verifique que los datos del cargo han sido ingresados correctamente', 'error')
     }
   }
 
@@ -81,6 +80,8 @@ export class EditarCargoComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       icon: 'question'
     }).then((result) => {
       if(result.isConfirmed){
@@ -103,6 +104,24 @@ export class EditarCargoComponent implements OnInit {
         }
       }
     );
+  }
+
+  confirmarRegresarListadoCargos(){
+    Swal.fire({
+      title: 'Confirmar regreso',
+      html: '¿Desea regresar al lista de cargos? <br> Los datos no guardados se perderán',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      icon: 'question'
+    })
+    .then((result) => {
+      if(result.isConfirmed){
+        this.regresarListadoCargos();
+      }
+    })
   }
 
   cerrarSesion(){

@@ -4,8 +4,13 @@
           <div class="titulo">
             <h2>Listado de Servicios</h2>
             <div class="input-group buscador">
-              <input [(ngModel)]="searchId" class="form-control" placeholder="Buscar por ID" (keyup)="buscarServicios()">
               <input [(ngModel)]="searchName" class="form-control" placeholder="Buscar por Nombre" (keyup)="buscarServicios()">
+              <input [(ngModel)]="searchProveedor" list="proveedores" class="form-control" placeholder="Buscar por Proveedor" (keyup)="buscarServicios()">
+              <datalist id="proveedores">
+                @for(proveedor of proveedores; track proveedor){
+                  <option [value]="proveedor?.nombre"></option>
+                }
+              </datalist>
             </div>
             <div class="botones">
               <div class="btn-group botones-buscadores">
@@ -18,14 +23,13 @@
               </div>
             </div>
           </div>
-          <table class="table table-striped">
+          <table class="table table-striped text-center">
               <thead>
                   <tr>
                       <th>ID</th>
                       <th>Nombre</th>
-                      <th>Precio</th>
-                      <th>Creado en</th>
-                      <th>Actualizado en</th>
+                      <th>Precio (S/.)</th>
+                      <th>Proveedor</th>
                       <th>Acciones</th>
                   </tr>
               </thead>
@@ -35,8 +39,7 @@
                       <td>{{ servicio.id }}</td>
                       <td>{{ servicio.nombre }}</td>
                       <td>{{ servicio.precio }}</td>
-                      <td>{{ servicio.createdAt }}</td>
-                      <td>{{ servicio.updatedAt }}</td>
+                      <td>{{ servicio.proveedor?.nombre }}</td>
                       <td class="align-content-center">
                         <div class="btn-group">
                           <button class="btn btn-success btn-sm" [routerLink]="['/dashboard', 'editar-servicio', servicio.id]"><mat-icon>edit</mat-icon></button>
@@ -47,10 +50,16 @@
               </tbody>
           </table>
           <div class="botones">
-            <div class="btn-group">
-              <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
-              <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
-            </div>
+            @if (filteredServicios.length > 0){
+              <p>Página {{ page }} de {{ totalPages }}</p>
+              <div class="btn-group">
+                <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
+                <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
+              </div>
+            }
+            @else {
+              <p>No se encontraron resultados</p>
+            }
           </div>
       </div>
   </div>

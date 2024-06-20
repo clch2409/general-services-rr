@@ -18,12 +18,19 @@
               </label>
               <label for="proveedor">
                 <span>Proveedor</span>
-                <input type="text" id="proveedor" formControlName="proveedor" class="form-control" [disabled]="true" readonly >
+                <div class="proveedores">
+                  <select class="form-select" formControlName="proveedorId">
+                    @for (proveedor of proveedores; track proveedor) {
+                      <option [value]="proveedor.id">{{proveedor.nombre}}</option>
+                    }
+                  </select>
+                  <button type="button" class="btn btn-primary" (click)="confirmarAgregarProvedor()"><mat-icon>add</mat-icon></button>
+                </div>
               </label>
             </div>
             <div class="botones">
               <button type="submit" class="btn btn-primary">Actualizar</button>
-              <button type="" class="btn btn-danger" (click)="regresarListaInsumos()">Regresar</button>
+              <button type="button" class="btn btn-danger" (click)="confirmarRegresoListadoInsumos()">Regresar</button>
             </div>
           </form>
         </div>

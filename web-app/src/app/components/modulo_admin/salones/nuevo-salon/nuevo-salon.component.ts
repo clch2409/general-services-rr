@@ -16,14 +16,8 @@ import { Patterns } from '../../../../utils/patterns';
 })
 export class NuevoSalonComponent implements OnInit {
   localForm!: FormGroup;
-  precioLunes!: number;
-  precioMartes!: number;
-  precioMiercoles!: number;
-  precioJueves!: number;
-  precioViernes!: number;
-  precioSabado!: number;
-  precioDomingo!: number;
-  
+  pricesForm!: FormGroup;
+
   passwordPattern: RegExp = Patterns.PASSWORD_PATTERN.getPattern();
   namePattern: RegExp = Patterns.NAME_PATTERN.getPattern();
   directionPattern: RegExp = Patterns.DIRECTION_PATTERN.getPattern();
@@ -43,10 +37,6 @@ export class NuevoSalonComponent implements OnInit {
     this.storageService.comprobarSesion();
   }
 
-  regresarListadoLocales(){
-    this.router.navigate(['/dashboard', 'salones']);
-  }
-
   inicializarFormulario() {
     this.localForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
@@ -54,8 +44,18 @@ export class NuevoSalonComponent implements OnInit {
       direccion: ['', [Validators.required, Validators.pattern(this.directionPattern)]],
       aforoMinimo: ['', Validators.required],
       aforoMaximo: ['', Validators.required],
-      fechaInactivacion: ['', Validators.required],
+      // fechaInactivacion: ['', Validators.required],
     });
+    this.pricesForm = this.fb.group({
+      domingo: ['', Validators.required],
+      lunes: ['', Validators.required],
+      martes: ['', Validators.required],
+      miercoles: ['', Validators.required],
+      jueves: ['', Validators.required],
+      viernes: ['', Validators.required],
+      sabado: ['', Validators.required],
+
+    })
   }
 
   validarFormulario(){
@@ -82,6 +82,8 @@ export class NuevoSalonComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       icon: 'question'
     }).then((result) => {
       if(result.isConfirmed){
@@ -91,46 +93,13 @@ export class NuevoSalonComponent implements OnInit {
   }
 
   confirmarPrecios(nuevoLocal: Local){
-    const preciosForm = document.querySelectorAll('.precio');
-    const preciosObjetos: Dia[] = []
     let mensaje = '¿Dese ingresar los siguientes precios?<br>';
-    preciosForm.forEach(elemento => {
-      const dia = new Dia();
-      dia.LocalDia = new LocalDia();
-      if (elemento.id === 'domingo'){
-        dia.id = 1;
-        dia.LocalDia.precioLocal = this.precioDomingo;
-      }
-      if (elemento.id === 'lunes'){
-        dia.id = 2;
-        dia.LocalDia.precioLocal = this.precioLunes;
-      }
-      if (elemento.id === 'martes'){
-        dia.id = 3;
-        dia.LocalDia.precioLocal = this.precioMartes;
-      }
-      if (elemento.id === 'miercoles'){
-        dia.id = 4;
-        dia.LocalDia.precioLocal = this.precioMiercoles;
-      }
-      if (elemento.id === 'jueves'){
-        dia.id = 5;
-        dia.LocalDia.precioLocal = this.precioJueves;
-      }
-      if (elemento.id === 'viernes'){
-        dia.id = 6;
-        dia.LocalDia.precioLocal = this.precioViernes;
-      }
-      if (elemento.id === 'sabado'){
-        dia.id = 7;
-        dia.LocalDia.precioLocal = this.precioSabado;
-      }
-      dia.nombre = this.convertirPrimeraLetraEnMayuscula(elemento.id);
-      preciosObjetos.push(dia);
-    })
-    const preciosOrdenado: Dia[] = this.ordenarPreciosMayorMenor(preciosObjetos);
-    preciosOrdenado.forEach(precio => {
-      mensaje += `-${precio.nombre}: S/.${precio.LocalDia?.precioLocal}<br>`;
+    const preciosForm = this.pricesForm.value;
+    const nombresDias = [...Object.keys(preciosForm)];
+    const precios: number[] = [];
+    Object.values(preciosForm).forEach(precio => precios.push(parseInt(`${precio}`)));
+    nombresDias.forEach((nombre, index) => {
+      mensaje += `-${this.convertirPrimeraLetraEnMayuscula(nombre)}: S/.${precios[index]}<br>`
     })
     Swal.fire({
       title: 'Confirmar Registro',
@@ -138,22 +107,21 @@ export class NuevoSalonComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       icon: 'question'
     }).then((result) => {
       if(result.isConfirmed){
-        this.guardarLocal(nuevoLocal, preciosOrdenado)
+        this.guardarLocal(nuevoLocal, precios)
       }
     })
   }
 
-  guardarLocal(nuevoLocal: Local, precios: Dia[]) {
+  guardarLocal(nuevoLocal: Local, precios: number[]) {
     this.localService.crearLocal(nuevoLocal).subscribe(
       (response) => {
         console.log('Local creado correctamente:', response);
-        Swal.fire('Local Creado!', 'El local ha sido registrado exitosamente', 'success')
-          .then((result) => {
-          this.guardarPrecios(response.id!, precios);
-        });
+        this.guardarPrecios(response.id!, precios);
       },
       (error) => {
         console.error('Error al crear el local:', error);
@@ -165,15 +133,21 @@ export class NuevoSalonComponent implements OnInit {
 
   }
 
-  guardarPrecios(idLocal: number, precios: Dia[]){
-    const preciosNumeros: number[] = []
-    precios.forEach(dia => {
-      preciosNumeros.push(dia.LocalDia?.precioLocal!);
-    })
-    this.localService.agregarTodosLosPreciosAlLocal(idLocal, preciosNumeros).subscribe(
+  guardarPrecios(idLocal: number, precios: number[]){
+    this.localService.agregarTodosLosPreciosAlLocal(idLocal, precios).subscribe(
       (response) => {
         console.log('Creado exitosamente los precios', response);
-        this.regresarListadoLocales();
+        Swal.fire({
+          title: 'Local Creado',
+          html: 'El local se ha creado exitosamente. Será redirigido al listado de locales.',
+          showCancelButton: true,
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#3085d6',
+          icon: 'success'
+        })
+          .then((result) => {
+            this.regresarListadoLocales();
+        });
       },
       (error) => {
         console.error('Error al crear los precios', error);
@@ -182,7 +156,26 @@ export class NuevoSalonComponent implements OnInit {
     )
   }
 
+  confirmarRegresoListadoLocales(){
+    Swal.fire({
+      title: 'Confirmar Regreso',
+      html: '¿Desea regresar al listado de locales? </br> Se perderán todos los cambios que no hayas guardado.',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      icon: 'question'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.regresarListadoLocales();
+      }
+    })
+  }
 
+  regresarListadoLocales(){
+    this.router.navigate(['/dashboard', 'salones']);
+  }
 
   cerrarSesion(){
     this.storageService.cerrarSesion();

@@ -1,0 +1,52 @@
+label{
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+}
+
+button{
+  margin-top: 16px;
+}
+
+input, select{
+  border: 2px solid gray;
+}
+
+tr > th{
+  padding: 0;
+}
+
+.agrupaciones{
+  display: flex;
+  gap: 12px;
+}
+
+.datos_evento{
+  margin: 32px 0;
+}
+
+.separacion{
+  display: flex;
+  gap: 16px
+}
+
+.agrupacion-botones-confirmacion, .agrupacion-botones-seleccionar{
+  display: flex;
+  margin-top: 20px;
+}
+
+.botones-confirmacion, .botones-seleccionar{
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+#quitar{
+  margin-top: 0;
+  padding: 0;
+}
+
+#contenedorColaboradores, #contenedorColaboradoresEvento{
+  margin-top: 20px;
+}

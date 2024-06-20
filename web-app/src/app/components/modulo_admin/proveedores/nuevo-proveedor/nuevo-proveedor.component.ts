@@ -61,8 +61,10 @@ export class NuevoProveedorComponent implements OnInit {
       html: 'Desea registrar los siguientes datos del proveedor?<br>' + mensaje,
       icon: 'question',
       confirmButtonText: 'Sí',
+      cancelButtonText: 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       showCancelButton: true,
-      cancelButtonText: 'No'
     }).then(result => {
       if (result.isConfirmed){
         const nuevoProveedor: Proveedor = proveedorForm;
@@ -88,6 +90,24 @@ export class NuevoProveedorComponent implements OnInit {
   cerrarSesion(){
     this.storageService.cerrarSesion();
     this.storageService.volverMenuPrincipal();
+  }
+
+  confirmarRegresarListadoProveedores(){
+    Swal.fire({
+      title: 'Confirmar Regreso',
+      text: '¿Desea regresar al listado de proveedores?',
+      icon: 'question',
+      confirmButtonText: 'Sí',
+      cancelButtonText: 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      showCancelButton: true
+    })
+    .then(result => {
+      if (result.isConfirmed){
+        this.regresarListadoProveedores();
+      }
+    });
   }
 
   regresarListadoProveedores(){

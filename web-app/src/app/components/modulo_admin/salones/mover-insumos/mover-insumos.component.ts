@@ -51,8 +51,6 @@ export class MoverInsumosComponent implements OnInit{
         this.insumoSeleccionadoEnviador = this.localSeleccionadoEnviador.insumos![0];
         this.insumoSeleccionadoIdEnviador = this.insumoSeleccionadoEnviador.id!;
         this.filtrarLocalesRecibidores()
-        console.log(this.localesEnviadores)
-        console.log(this.localesRecibidores)
       },
       (error) =>{
         console.error('Error al obtener los insumos', error);
@@ -91,6 +89,8 @@ export class MoverInsumosComponent implements OnInit{
       showCancelButton: true,
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'Continuar',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       input: 'number',
     })
     .then((response) => {
@@ -119,7 +119,9 @@ export class MoverInsumosComponent implements OnInit{
       icon: 'question',
       showCancelButton: true,
       cancelButtonText: 'No',
-      confirmButtonText: 'Sí'
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
     })
     .then((response) => {
       if(response.isConfirmed){
@@ -136,7 +138,8 @@ export class MoverInsumosComponent implements OnInit{
           title: 'Insumos Movidos!',
           html: 'Los insumos se han movido correctamente',
           icon: 'success',
-          confirmButtonText: 'OK'
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#3085d6',
         })
         .then((response) => {
           window.location.reload()
@@ -174,7 +177,8 @@ export class MoverInsumosComponent implements OnInit{
       icon: 'info',
       showCancelButton: true,
       cancelButtonText: 'No',
-      confirmButtonText: 'Sí'
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
     })
     .then((response) => {
       if(response.isConfirmed){

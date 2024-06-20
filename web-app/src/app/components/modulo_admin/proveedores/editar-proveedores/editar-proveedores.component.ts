@@ -95,6 +95,8 @@ export class EditarProveedoresComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       icon: 'question'
     }).then((result) => {
       if(result.isConfirmed){
@@ -122,6 +124,23 @@ export class EditarProveedoresComponent implements OnInit {
   cerrarSesion(){
     this.storageService.cerrarSesion();
     this.storageService.volverMenuPrincipal();
+  }
+
+  confirmarRegresoListadoProveedores(){
+    Swal.fire({
+      title: 'Confirmar Regreso',
+      html: '¿Desea regresar al listado de proveedores?',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      icon: 'question'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.regresarListadoProveedores();
+      }
+    })
   }
 
   regresarListadoProveedores(){

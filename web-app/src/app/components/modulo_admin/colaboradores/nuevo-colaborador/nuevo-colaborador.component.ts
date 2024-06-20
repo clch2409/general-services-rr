@@ -56,7 +56,7 @@ export class NuevoColaboradorComponent {
       this.confirmarGuardado()
     }
     else{
-      Swal.fire('Datos Faltantes', 'Verifique que se estén ingresando todos los datos del Colaborador', 'error')
+      Swal.fire('Datos Faltantes', 'Verifique que los datos han sido ingresados correctamente', 'error')
     }
   }
 
@@ -117,6 +117,21 @@ export class NuevoColaboradorComponent {
         }
       }
     )
+  }
+
+  confirmarRegresoListadoColaboradores(){
+    Swal.fire({
+      title: 'Confirmar Regreso',
+      html: '¿Desea regresar al listado de Colaboradores? <br>El progreso realizado se perderá',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      icon: 'question'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.regresarListadoColaboradores();
+      }
+    })
   }
 
   regresarListadoColaboradores(){

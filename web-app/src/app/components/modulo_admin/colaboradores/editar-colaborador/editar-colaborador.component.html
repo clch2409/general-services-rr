@@ -46,12 +46,16 @@
                 </div>
                 <label for="cargo">
                   <span>Cargo</span>
-                  <input type="text" id="cargo" formControlName="cargo" class="form-control" required readonly>
+                  <select name="cargo" id="cargo" class="form-select" formControlName="cargoId">
+                    @for(cargo of cargos; track cargo){
+                      <option [value]="cargo.id">{{cargo.nombre}}</option>
+                    }
+                  </select>
                 </label>
             </div>
             <div class="botones">
               <button type="submit" class="btn btn-success" (click)="validarFormulario()">Actualizar</button>
-              <button type="" class="btn btn-danger" (click)="regresarListadoColaborador()">Regresar</button>
+              <button type="" class="btn btn-danger" (click)="confirmarRegresoListadoColaboradores()">Regresar</button>
             </div>
         </form>
         </div>

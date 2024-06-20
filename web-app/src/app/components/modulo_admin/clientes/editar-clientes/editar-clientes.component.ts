@@ -71,6 +71,9 @@ export class EditarClientesComponent implements OnInit {
         if (err.status === 401){
           Swal.fire('Sesión Caducada', 'Su sesión ha cadicado. Inicie sesión de nuevo, por favor.', 'info').then(data => this.cerrarSesion());
         }
+        if (err.status === 406){
+          Swal.fire('Error al Crear Cliente', err.error.message.message, 'error');
+        }
       }
     });
   }
@@ -112,17 +115,37 @@ export class EditarClientesComponent implements OnInit {
   actualizarCliente(clienteActualizado: Cliente) {
     this.clienteService.actualizarCliente(this.clienteId, clienteActualizado).subscribe({
       next: data => {
-        Swal.fire('Cliente Actualizado!', 'Cliente actualizado exitosamente', 'success')
+        Swal.fire('Cliente Actualizado!', 'El cliente fue actualizado correctamente. Pasará al listado de clientes', 'success')
         .then((result) => {
-          this.router.navigate(['/dashboard', 'clientes']);
+          this.regresarListadoClientes();
         });
 
       },
       error: err => {
-        Swal.fire('Error!', 'Hubo un problema al actualizar el cliente', 'error');
         console.error('Error al actualizar cliente:', err);
+        if (err.status === 401){
+          Swal.fire('Sesión Caducada', 'Su sesión ha cadicado. Inicie sesión de nuevo, por favor.', 'info').then(data => this.cerrarSesion());
+        }
+        if (err.status === 406){
+          Swal.fire('Error al Actualizar Cliente', err.error.message.message, 'error');
+        }
       }
     });
+  }
+
+  confirmarRegresoListadoClientes(){
+    Swal.fire({
+      title: 'Confirmar Regreso',
+      html: '¿Desea regresar al listado de Clientes? <br>El progreso realizado se perderá',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      icon: 'question'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.regresarListadoClientes();
+      }
+    })
   }
 
   cerrarSesion(){

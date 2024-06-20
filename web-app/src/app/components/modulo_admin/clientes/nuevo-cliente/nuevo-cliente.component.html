@@ -46,6 +46,7 @@
                 <label for="contrasena">
                   <span>Contraseña</span>
                   <input autocomplete="off" type="password" id="contrasena" formControlName="contrasena" class="form-control" required [pattern]="passwordPattern">
+                  <span>Mínimo 8 caracteres, al menos una letra mayúscula, una letra minúscula, un número y un carácter especial</span>
                 </label>
                 <label for="repetir-contrasena">
                   <span>Repita Contraseña</span>
@@ -55,6 +56,9 @@
             </div>
             <div class="text-center">
               <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+            <div class="text-center">
+              <button type="button" class="btn btn-success" (click)="confirmarRegresoListadoClientes()">Regresar al Listado de Clientes</button>
             </div>
           </form>
         </div>

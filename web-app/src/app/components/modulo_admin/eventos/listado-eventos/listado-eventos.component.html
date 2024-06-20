@@ -4,12 +4,21 @@
       <div class="titulo">
         <h2>Listado de Eventos</h2>
         <div class="input-group buscadores">
-          <input type="tel" [(ngModel)]="searchId" class="form-control" placeholder="Buscar por ID" (keyup)="buscarEventos()">
+          <label for="fechaInicial">
+            <span>Fecha Inicial</span>
+            <input type="date" [(ngModel)]="searchInicioDate" class="form-control" id="fechaInicial" placeholder="Fecha de Inicio">
+          </label>
+          <label for="fechaFinal">
+            <span>Fecha Final</span>
+            <input type="date" [(ngModel)]="searchFinDate" class="form-control" id="fechaFinal" placeholder="Fecha Final">
+          </label>
         </div>
         <div class="botones">
           <div class="btn-group botones-buscadores">
+            <button (click)="buscarEventos()" class="btn btn-warning">Filtrar por Fechas</button>
             <button (click)="mostrarTodos()" class="btn btn-primary">Todos</button>
-            <button (click)="mostrarActivos()" class="btn btn-warning">Activos</button>
+            <button (click)="mostrarReservados()" class="btn btn-warning">Reservados</button>
+            <button (click)="mostrarEnProceso()" class="btn btn-primary">En Proceso</button>
             <button (click)="resetearFiltros()" class="btn btn-danger">Resetear Buscadores</button>
             <button [routerLink]="['/dashboard', 'nuevo-evento']" class="btn btn-success">Nuevo Evento</button>
           </div>
@@ -36,30 +45,39 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let evento of filteredEventos">
-            <td>{{ evento.id }}</td>
-            <td>{{ evento.fechaEvento }}</td>
-            <td>{{ evento.horaInicio }}</td>
-            <td>{{ evento.horaFin }}</td>
-            <td>{{ evento.cantidadPersonas }}</td>
-            <td>{{ evento.tipoBuffet?.nombre }}</td>
-            <td>{{ evento.encargado?.nombres }}</td>
-            <td>{{ evento.local?.nombre }}</td>
-            <td>{{ convertirPrimeraLetraEnMayuscula(evento.status!) }}</td>
-            <td class="d-flex align-content-center">
-              <div class="btn-group">
-                <button class="btn btn-danger btn-sm" (click)="validarEliminacion(evento)"><mat-icon>delete_forever</mat-icon></button>
-                <button class="btn btn-success btn-sm" [routerLink]="['/dashboard', 'editar-evento', evento.id]"><mat-icon>edit</mat-icon></button>
-              </div>
-            </td>
-          </tr>
+          @for (evento of filteredEventos; track evento) {
+            <tr>
+              <td>{{ evento.id }}</td>
+              <td>{{ this.transformarFechaLarga(evento.fechaEvento?.toString()!) }}</td>
+              <td>{{ this.transformarHora(evento.horaInicio?.toString()!) }}</td>
+              <td>{{ this.transformarHora(evento.horaFin?.toString()!) }}</td>
+              <td>{{ evento.cantidadPersonas }}</td>
+              <td>{{ evento.tipoBuffet?.nombre }}</td>
+              <td>{{ evento.encargado?.nombres }}</td>
+              <td>{{ evento.local?.nombre }}</td>
+              <td>{{ convertirPrimeraLetraEnMayuscula(evento.status!) }}</td>
+              <td class="d-flex align-content-center">
+                <div class="btn-group">
+                  <button class="btn btn-danger btn-sm" (click)="validarEliminacion(evento)"><mat-icon>block</mat-icon></button>
+                  <button class="btn btn-success btn-sm" (click)="validarIrEditarEvento(evento)"><mat-icon>edit</mat-icon></button>
+                  <button class="btn btn-warning btn-sm" (click)="validarIrAsignarColaboradores(evento)"><mat-icon>construction</mat-icon></button>
+                </div>
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
       <div class="botones">
-        <div class="btn-group">
-          <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
-          <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
-        </div>
+        @if (filteredEventos.length > 0){
+          <p>Página {{ page }} de {{ totalPages }}</p>
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
+            <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
+          </div>
+        }
+        @else {
+          <p>No se encontraron resultados</p>
+        }
       </div>
     </div>
   </div>

@@ -24,12 +24,15 @@
                       <option [value]="proveedor.nombre">{{proveedor.nombre}}</option>
                     }
                   </select>
-                  <button type="submit" class="btn btn-primary" (click)="confirmarAgregarProvedor()"><mat-icon>add</mat-icon></button>
+                  <button type="button" class="btn btn-primary" (click)="confirmarAgregarProvedor()"><mat-icon>add</mat-icon></button>
                 </div>
               </label>
             </div>
             <div class="text-center">
               <button type="submit" class="btn btn-primary">Crear</button>
+            </div>
+            <div class="text-center">
+              <button type="button" class="btn btn-success" (click)="confirmarRegresoListadoInsumos()">Regresar al Listado de Insumos</button>
             </div>
           </form>
         </div>

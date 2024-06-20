@@ -5,49 +5,80 @@
       </div>
       <div class="card-body">
         <div class="container row">
+          <form [formGroup]="eventoForm" class="col-12 datos_evento">
+            <h3>Información del Evento</h3>
+            <div class="agrupaciones">
+              <label for="local">
+                <span>Local</span>
+                <input class="form-control" type="text" id="local" formControlName="local" readonly>
+              </label>
+              <label for="cantidadPersonas">
+                <span>Cantidad Personas</span>
+                <input class="form-control" type="tel" id="cantidadPersonas" formControlName="cantidadPersonas" readonly>
+              </label>
+              <label for="encargado">
+                <span>Encargado</span>
+                <input class="form-control" type="tel" id="encargado" formControlName="encargado" readonly>
+              </label>
+              <label for="tipoEvento">
+                <span>Tipo Evento</span>
+                <input class="form-control" type="tel" id="tipoEvento" formControlName="tipoEvento" readonly>
+              </label>
+            </div>
+            <div class="agrupaciones">
+              <label for="fechaEvento">
+                <span>Fecha Evento</span>
+                <input class="form-control" type="date" id="fechaEvento" formControlName="fechaEvento" readonly>
+              </label>
+              <label for="horaInicio">
+                <span>Hora Inicio</span>
+                <input class="form-control" type="time" id="horaInicio" formControlName="horaInicio" readonly>
+              </label>
+              <label for="horaFin">
+                <span>Hora Fin</span>
+                <input class="form-control" type="time" id="horaFin" formControlName="horaFin" readonly>
+              </label>
+            </div>
+          </form>
           <div class="container col-6" id="listadoColaboradores">
+            <h3>Seleccionar Colaboradores</h3>
             <div class="separacion">
               <label for="colaborador">
                 <span>Colaborador</span>
-                <input type="text" list="listaColaboradores" class="form-control" id="colaborador" [(ngModel)]="colaboradorSeleccionado">
-                <datalist id="listaColaboradores">
-                  <option class="fw-medium" *ngFor="let colaborador of colaboradores" [value]="colaborador.nombres"></option>
-                </datalist>
+                <select name="" id="colaborador" class="form-select" [(ngModel)]="colaboradorSeleccionado">
+                  @for(colaborador of colaboradores; track colaborador){
+                    <option class="fw-medium" [value]="colaborador.id">{{colaborador.nombres}} {{colaborador.apPaterno}} - {{colaborador.cargo?.nombre}}</option>
+                  }
+                </select>
               </label>
             </div>
-            <h3>Colaboradores Seleccionados</h3>
             <table class="table" id="contenedorColaboradores">
               <thead>
                 <tr>
-                  <th>Colaborador</th>
-                  <th>Quitar</th>
+                  <th class="text-center">Colaborador</th>
+                  <th class="text-center">Quitar</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let colaborador of colaboradoresSeleccionados; trackBy: trackByColaborador">
-                  <td>
-                    <span [id]="'selected-'+colaborador.colaborador.id">{{colaborador.colaborador.nombres}}</span>
-                  </td>
-                  <td>
-                    <button class="btn btn-danger quitar" (click)="quitarColaborador(colaborador.colaborador.id)"><mat-icon>close</mat-icon></button>
-                  </td>
-                </tr>
+                @for(colaborador of colaboradoresSeleccionados; track colaborador){
+                  <tr>
+                    <td class="text-center">
+                      <span>{{colaborador.nombres}} {{colaborador.apPaterno}} - {{colaborador.cargo?.nombre}}</span>
+                    </td>
+                    <td class="text-center">
+                      <button class="btn btn-danger" id="quitar" (click)="quitarColaborador(colaborador.id!)"><mat-icon>close</mat-icon></button>
+                    </td>
+                  </tr>
+                }
               </tbody>
             </table>
             <div class="agrupacion-botones-seleccionar">
               <div class="botones-seleccionar">
                 <button class="btn btn-primary fw-bold" id="" (click)="verificarSeleccionColaborador()">Seleccionar</button>
-                <button class="btn btn-primary fw-bold" id="" (click)="otroColaborador()"><mat-icon>restart_alt</mat-icon></button>
               </div>
             </div>
           </div>
-          <div class="container col-6">
-            <label for="evento">
-              <span>Evento</span>
-              <select class="form-select fw-medium" id="evento" [(ngModel)]="eventoSeleccionadoId" (change)="obtenerEventoSeleccionado()">
-                <option class="fw-medium" *ngFor="let evento of eventos" [value]="evento.id">{{evento.nombre}}</option>
-              </select>
-            </label>
+          <div class="container col-6" id="listadoColaboradoresEvento">
             <h3>Colaboradores del Evento</h3>
             <table class="table" id="contenedorColaboradoresEvento">
               <thead>
@@ -57,14 +88,16 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let colaborador of eventoSeleccionado.colaboradores; trackBy: trackByColaborador">
-                  <td>
-                    <span [id]="'colaboradorEventoSelected-'+colaborador.id">{{colaborador.nombres}}</span>
-                  </td>
-                  <td>
-                    <button class="btn btn-danger quitar" (click)="confirmarRetiro(colaborador.id!)"><mat-icon>logout</mat-icon></button>
-                  </td>
-                </tr>
+                @if(evento){
+                  <tr *ngFor="let colaborador of evento.colaboradores;">
+                    <td>
+                      <span>{{colaborador.nombres}}</span>
+                    </td>
+                    <td>
+                      <button class="btn btn-danger" id="quitar" (click)="confirmarRetiro(colaborador.id!)"><mat-icon>logout</mat-icon></button>
+                    </td>
+                  </tr>
+                }
               </tbody>
             </table>
           </div>
@@ -72,6 +105,7 @@
             <div class="botones-confirmacion">
               <button class="btn btn-primary fw-bold" id="asignarColaboradores" (click)="validarAsignacion()">Asignar Colaboradores</button>
               <button class="btn btn-success fw-bold" id="irListadoEventos" (click)="irListadoEventos()">Ir al Listado de Eventos</button>
+              <button class="btn btn-primary fw-bold" id="irListadoEventos" (click)="validarGuardado()">Guardar Evento</button>
             </div>
           </div>
         </div>

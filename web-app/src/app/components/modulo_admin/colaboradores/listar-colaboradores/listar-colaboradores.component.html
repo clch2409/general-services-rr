@@ -4,12 +4,23 @@
       <div class="titulo">
         <h2>Listado de Colaboradores</h2>
         <div class="input-group buscadores">
-          <input inputmode="numeric" [(ngModel)]="searchId" class="form-control" placeholder="Buscar por ID" (keyup)="buscarColaboradores()">
+          <label for="fechaInicial">
+            <span>Fecha Inicial</span>
+            <input type="date" [(ngModel)]="searchInicioDate" class="form-control" id="fechaInicial" placeholder="Fecha de Inicio">
+          </label>
+          <label for="fechaFinal">
+            <span>Fecha Final</span>
+            <input type="date" [(ngModel)]="searchFinDate" class="form-control" id="fechaFinal" placeholder="Fecha Final">
+          </label>
+        </div>
+        <div class="input-group buscadores">
+          <input inputmode="numeric" [(ngModel)]="searchName" class="form-control" placeholder="Buscar por Nombres" (keyup)="buscarColaboradores()">
           <input [(ngModel)]="searchDni" class="form-control" placeholder="Buscar por DNI" (keyup)="buscarColaboradores()">
           <input [(ngModel)]="searchEmail" class="form-control" placeholder="Buscar por Email" (keyup)="buscarColaboradores()">
         </div>
         <div class="botones">
           <div class="btn-group botones-buscadores">
+            <button (click)="mostrarFiltradoFechas()" class="btn btn-primary">Filtrar por Fecha de Contrato</button>
             <button (click)="mostrarTodos()" class="btn btn-primary">Todos</button>
             <button (click)="mostrarActivos()" class="btn btn-warning">Activos</button>
             <button (click)="resetearFiltros()" class="btn btn-danger">Resetear Buscadores</button>
@@ -24,7 +35,7 @@
 
       <table class="table table-striped">
         <thead>
-          <tr>
+          <tr class="text-center">
             <th>ID</th>
             <th>Nombres</th>
             <th>Apellido Paterno</th>
@@ -39,7 +50,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let colaborador of filteredColaboradores">
+          <tr *ngFor="let colaborador of filteredColaboradores" class="text-center">
             <td>{{ colaborador.id }}</td>
             <td>{{ colaborador.nombres }}</td>
             <td>{{ colaborador.apPaterno }}</td>
@@ -48,7 +59,7 @@
             <td>{{ colaborador.dni }}</td>
             <td>{{ colaborador.email }}</td>
             <td>{{ colaborador.cargo?.nombre }}</td>
-            <td>{{ colaborador.fechaContratacion}}</td>
+            <td>{{ transformarFechaLarga(colaborador.fechaContratacion?.toString()!)}}</td>
             <td>{{ convertirPrimeraLetraEnMayuscula(colaborador.status!) }}</td>
             <td class="align-content-center">
               <div class="btn-group">
@@ -60,10 +71,16 @@
         </tbody>
       </table>
       <div class="botones">
-        <div class="btn-group">
-          <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
-          <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
-        </div>
+        @if (filteredColaboradores.length > 0){
+          <p>Página {{ page }} de {{ totalPages }}</p>
+          <div class="btn-group">
+            <button class="btn btn-primary" (click)="previousPage()"><mat-icon>arrow_back</mat-icon></button>
+            <button class="btn btn-primary" (click)="nextPage()"><mat-icon>arrow_forward</mat-icon></button>
+          </div>
+        }
+        @else {
+          <p>No se encontraron resultados</p>
+        }
       </div>
     </div>
   </div>

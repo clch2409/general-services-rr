@@ -8,7 +8,7 @@ button{
   margin-top: 16px;
 }
 
-input{
+input, select{
   border: 2px solid gray;
 }
 
@@ -21,4 +21,17 @@ input{
   display: flex;
   justify-content: center;
   gap: 12px
+}
+
+.proveedores{
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.proveedores button{
+  padding: 0;
+  margin: 0;
 }

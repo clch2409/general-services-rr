@@ -58,7 +58,7 @@ export class NuevoEncargadoComponent implements OnInit {
       this.validarContrasenas()
     }
     else{
-      Swal.fire('Datos Faltantes', 'Verifique que se estén ingresando todos los datos del Encargado', 'error')
+      Swal.fire('Datos Faltantes', 'Verifique que todos los campos esten completos y que los datos sean ingresados correctamente.', 'error')
     }
   }
 
@@ -84,7 +84,7 @@ export class NuevoEncargadoComponent implements OnInit {
      mensaje += `Apellidos: ${nuevoEncargado.apPaterno} ${nuevoEncargado.apMaterno}<br>`;
      mensaje += `Dni: ${nuevoEncargado.dni}<br>`;
      mensaje += `Telefono: ${nuevoEncargado.telefono}<br>`;
-     mensaje += `Fecha de Contratación: ${nuevoEncargado.fechaContratacion}<br>`;
+     mensaje += `Fecha de Contratación: ${this.transformarFechaLarga(this.encargadoForm.value.fechaContratacion)}<br>`;
      mensaje += `Email: ${nuevoUsuario.email}<br>`;
     Swal.fire({
       title: 'Confirmar registro',
@@ -92,10 +92,13 @@ export class NuevoEncargadoComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       icon: 'question'
     }).then((result) => {
       if(result.isConfirmed){
         nuevoEncargado.usuario = nuevoUsuario;
+        nuevoEncargado.fechaContratacion = this.transformarFechaDate(this.encargadoForm.value.fechaContratacion);
         this.guardarEncargado(nuevoEncargado);
       }
     })
@@ -114,9 +117,48 @@ export class NuevoEncargadoComponent implements OnInit {
           if (error.status === 401){
             Swal.fire('Sesión Caducada', 'Su sesión ha cadicado. Inicie sesión de nuevo, por favor.', 'info').then(data => this.cerrarSesion());
           }
+          if (error.status === 406){
+            Swal.fire('Error al crear Encargado', error.error.message.message, 'error');
+          }
         }
       );
     }
+  }
+
+  confirmarRegresoListadoEncargados(){
+    Swal.fire({
+      title: 'Confirmar Regreso',
+      html: '¿Desea regresar al listado de encargados? </br> Se perderán todos los cambios que no hayas guardado.',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      icon: 'question'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.regresarListadoEncargados();
+      }
+    })
+  }
+
+  regresarListadoEncargados(){
+    this.router.navigate(['/dashboard', 'encargados'])
+  }
+
+  transformarFechaDate(fecha: string){
+    return new Date(`${fecha}:01:00:00`)
+  }
+
+  transformarFechaLarga(fecha: string){
+    const horaConFecha = `${fecha}:00:00:00`;
+    const fechaFormateada = new Date(horaConFecha);
+    return fechaFormateada.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 
   cerrarSesion(){

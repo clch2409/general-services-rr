@@ -39,10 +39,6 @@ export class NuevoServicioComponent implements OnInit {
     this.storageService.comprobarSesion();
   }
 
-  regresarListadoServicios(){
-    this.router.navigate(['/dashboard', 'servicios']);
-  }
-
   inicializarFormulario() {
     this.serviceForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
@@ -62,7 +58,9 @@ export class NuevoServicioComponent implements OnInit {
       icon: 'info',
       showCancelButton: true,
       cancelButtonText: 'No',
-      confirmButtonText: 'Sí'
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
     })
     .then((response) => {
       if(response.isConfirmed){
@@ -107,6 +105,8 @@ export class NuevoServicioComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       icon: 'question'
     }).then((result) => {
       if(result.isConfirmed){
@@ -134,6 +134,28 @@ export class NuevoServicioComponent implements OnInit {
       }
     );
 
+  }
+
+  confirmarRegresoListadoServicios(){
+    Swal.fire({
+      title: 'Regresar al Listado de Servicios!',
+      html: '¿Desea regresar al listado de servicios? Los datos no guardados se perderán',
+      icon: 'question',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    })
+    .then((response) => {
+      if(response.isConfirmed){
+        this.regresarListadoServicios();
+      }
+    });
+  }
+
+  regresarListadoServicios(){
+    this.router.navigate(['/dashboard', 'servicios']);
   }
 
   cerrarSesion(){

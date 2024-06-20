@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { EventoService } from '../../../../services/evento.service';
 import { LocalService } from '../../../../services/local.service';
 import { TipoBuffetService } from '../../../../services/tipoBuffet.service';
 import { ServicioService } from '../../../../services/servicio.service';
 import { StorageService } from '../../../../services/storage.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Servicio } from '../../../../models/servicio.model';
 import { Evento } from '../../../../models/evento.model';
 import Swal from 'sweetalert2';
@@ -15,19 +15,42 @@ import Swal from 'sweetalert2';
   templateUrl: './asignar-servicios.component.html',
   styleUrl: './asignar-servicios.component.css'
 })
-export class AsignarServiciosComponent {
+export class AsignarServiciosComponent implements OnInit  {
   servicios!: Servicio[];
   evento!: Evento;
-  serviciosSeleccionados!: Servicio[];
-  serviciosSeleccionadosId!: number[];
+  eventoId!: number;
+  serviciosSeleccionados: Servicio[] = [];
+  serviciosSeleccionadosId: number[] = [];
 
 
   constructor(private fb: FormBuilder,
+    private route: ActivatedRoute,
     private eventoService: EventoService,
     private serviciosService: ServicioService,
     private storageService: StorageService,
     private router: Router
   ) {}
+
+  ngOnInit(): void{
+    this.eventoId = this.route.snapshot.params['evenid'];
+    this.obtenerEvento(this.eventoId)
+    this.obtenerServicios();
+  }
+
+  obtenerEvento(eventoId: number){
+    this.eventoService.buscarEventoPorId(eventoId).subscribe(
+      (response) => {
+        this.evento = response;
+        this.obtenerServicios();
+      },
+      (error) => {
+        console.error('Error al obtener el evento', error);
+        if (error.status === 401){
+          Swal.fire('Sesión Caducada', 'Su sesión ha cadicado. Inicie sesión de nuevo, por favor.', 'info').then(data => this.cerrarSesion());
+        }
+      }
+    )
+  }
 
   obtenerServicios(){
     this.serviciosService.obtenerServicios().subscribe(
@@ -44,10 +67,31 @@ export class AsignarServiciosComponent {
     )
   }
 
-  seleccionarServicio(servicioId: number){
-    const servicioSeleccionado = this.servicios.find(servicio => servicio.id === servicioId);
+  validarEvento(servicioId: number, event: Event){
+    console.log(event);
+
+    const elemento = event.target as HTMLInputElement;
+
+    if (elemento.checked) {
+      this.agregarServicios(servicioId);
+    } else {
+      this.quitarServicios(servicioId);
+    }
+
+    console.log(this.serviciosSeleccionadosId);
+    console.log(this.serviciosSeleccionados);
+  }
+
+  agregarServicios(servicioId: number){
+    const servicioSeleccionado = this.servicios.find(servicio => servicio.id == servicioId);
     this.serviciosSeleccionados.push(servicioSeleccionado!);
     this.serviciosSeleccionadosId.push(servicioId);
+  }
+
+  quitarServicios(servicioId: number){
+    const index = this.serviciosSeleccionados.findIndex(servicio => servicio.id == servicioId);
+    this.serviciosSeleccionados.splice(index, 1);
+    this.serviciosSeleccionadosId.splice(index, 1);
   }
 
   validarConfirmacion(){

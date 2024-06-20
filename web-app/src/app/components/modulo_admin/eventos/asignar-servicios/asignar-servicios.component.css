@@ -1,4 +1,18 @@
 .servicios{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 32px;
+  margin-bottom: 16px;
+}
+
+.servicios > label {
   display: flex;
-  flex-flow: row wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.servicios > label > input {
+  width: 24px;
+  height: 24px;
 }

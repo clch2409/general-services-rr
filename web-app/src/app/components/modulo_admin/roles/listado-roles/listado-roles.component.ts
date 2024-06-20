@@ -19,6 +19,7 @@ export class ListadoRolesComponent implements OnInit {
   page: number = 1;
   pageSize: number = 5;
   totalRoles: number = 0;
+  totalPages: number = 0;
   typeFilter: String = '';
 
   constructor(private rolService: RolService,
@@ -56,6 +57,8 @@ export class ListadoRolesComponent implements OnInit {
     this.resetearPaginacion();
     this.typeFilter = 'filtrados';
     this.filteredRoles = this.getRoles(this.page, this.pageSize);
+    this.totalRoles = this.getTotalRoles();
+    this.totalPages = Math.ceil(this.totalRoles / this.pageSize);
   }
 
   filtrarRoles() : Rol[]{
@@ -70,6 +73,7 @@ export class ListadoRolesComponent implements OnInit {
     this.resetearPaginacion();
     this.filteredRoles = this.getRoles(this.page, this.pageSize);
     this.totalRoles = this.getTotalRoles();
+    this.totalPages = Math.ceil(this.totalRoles / this.pageSize);
   }
 
   getRoles(page: number, pageSize: number): Rol[] {

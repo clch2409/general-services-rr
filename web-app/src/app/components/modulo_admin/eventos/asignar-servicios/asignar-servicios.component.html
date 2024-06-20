@@ -11,7 +11,7 @@
               @for (servicio of servicios; track servicio) {
                 <label [for]="servicio.nombre">
                   <span>{{convertirPrimeraLetraEnMayuscula(servicio.nombre!)}}</span>
-                  <input type="checkbox" class="form-check-input" [checked]="seleccionarServicio(servicio.id!)">
+                  <input type="checkbox" class="form-check-input" [id]="servicio.nombre" (click)="validarEvento(servicio.id!, $event)">
                 </label>
               }
             </div>

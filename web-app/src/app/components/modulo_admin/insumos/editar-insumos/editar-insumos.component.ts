@@ -6,6 +6,8 @@ import { Insumo } from '../../../../models/insumo.model';
 import Swal from 'sweetalert2';
 import { StorageService } from '../../../../services/storage.service';
 import { Patterns } from '../../../../utils/patterns';
+import { ProveedorService } from '../../../../services/proveedor.service';
+import { Proveedor } from '../../../../models/proveedor.model';
 
 @Component({
   selector: 'app-editar-insumos',
@@ -13,6 +15,7 @@ import { Patterns } from '../../../../utils/patterns';
   styleUrls: ['./editar-insumos.component.css']
 })
 export class EditarInsumosComponent implements OnInit {
+  proveedores!: Proveedor[]
   insumoForm: FormGroup;
   insumoId: number;
   insumo: Insumo = new Insumo();
@@ -24,7 +27,8 @@ export class EditarInsumosComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private insumoService: InsumoService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private proveedorService: ProveedorService
   ) {
     this.insumoId = 0;
     this.insumoForm = this.fb.group({});
@@ -34,6 +38,7 @@ export class EditarInsumosComponent implements OnInit {
   ngOnInit(): void {
     this.insumoId = this.route.snapshot.params['insid'];
     this.obtenerInsumo();
+    this.obtenerProveedores();
   }
 
   ngAfterViewInit(): void{
@@ -51,7 +56,7 @@ export class EditarInsumosComponent implements OnInit {
         console.log(data)
         this.insumoForm.patchValue({
           ...data,
-          proveedor: data.proveedor?.nombre
+          proveedorId: data.proveedorId
         });
       },
       error: err => {
@@ -63,11 +68,26 @@ export class EditarInsumosComponent implements OnInit {
     });
   }
 
+  obtenerProveedores(){
+    this.proveedorService.obtenerProveedores().subscribe(
+      (response: Proveedor[]) => {
+        this.proveedores = response;
+        console.log(this.proveedores)
+      },
+      (error) => {
+        console.error('Error al obtener proveedores:', error);
+        if (error.status === 401){
+          Swal.fire('Sesión Caducada', 'Su sesión ha cadicado. Inicie sesión de nuevo, por favor.', 'info').then(data => this.cerrarSesion());
+        }
+      }
+    )
+  }
+
   inicializarFormulario() {
     this.insumoForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.pattern(this.namePattern)]],
       precio: ['', Validators.required],
-      proveedor: ['', Validators.required],
+      proveedorId: ['', Validators.required],
     });
   }
 
@@ -91,6 +111,8 @@ export class EditarInsumosComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       icon: 'question'
     }).then((result) => {
       if(result.isConfirmed){
@@ -103,8 +125,19 @@ export class EditarInsumosComponent implements OnInit {
     this.insumoService.actualizarInsumo(this.insumoId, insumoActualizado).subscribe(
       (response) => {
         console.log('Insumo actualizado correctamente:', response);
-        Swal.fire('Insumo Actualizado!', 'El insumo ha sido actualizado correctamente', 'success')
-        .then(data => this.regresarListaInsumos());
+        Swal.fire({
+          title: 'Insumo Actualizado!',
+          html: 'El insumo ha sido actualizado correctamente! Ahora pasará al listado de insumos',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#3085d6',
+        })
+        .then((response) => {
+          if(response.isConfirmed){
+            this.regresarListadoInsumos();
+          }
+        })
+        .then(data => this.regresarListadoInsumos());
       },
       (error) => {
         console.error('Error al actualizar el insumo:', error);
@@ -120,9 +153,47 @@ export class EditarInsumosComponent implements OnInit {
     this.storageService.volverMenuPrincipal();
   }
 
+  confirmarRegresoListadoInsumos(){
+    Swal.fire({
+      title: 'Regresar al Listado de Insumos!',
+      html: '¿Desea regresar al listado de insumos? Los cambios no guardados se perderán',
+      icon: 'question',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33'
+    })
+    .then((response) => {
+      if(response.isConfirmed){
+        this.regresarListadoInsumos();
+      }
+    });
+  }
 
-  regresarListaInsumos(){
+  confirmarAgregarProvedor(){
+    Swal.fire({
+      title: 'Agregar Proveedor!',
+      html: '¿Desea Agregar un nuevo Proveedor?<br>Los datos ingresados se perderán',
+      icon: 'info',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+    })
+    .then((response) => {
+      if(response.isConfirmed){
+        this.irNuevoProveedor()
+      }
+    });
+  }
+
+  regresarListadoInsumos(){
     this.router.navigate(['/dashboard', 'insumos'])
   }
 
+  irNuevoProveedor(){
+    this.router.navigate(['/dashboard', 'nuevo-proveedor'])
+  }
 }

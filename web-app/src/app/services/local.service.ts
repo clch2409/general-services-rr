@@ -69,20 +69,20 @@ export class LocalService {
   }
 
   agregarTodosLosPreciosAlLocal(id: number, precios: any[]): Observable<Local> {
-    return this.http.post<Local>(`${this.baseUrl}/add/all/prices/`, {dias: [1,2,3,4,5,6,7], idLocal: id, precios: precios}, {
+    return this.http.post<Local>(`${this.baseUrl}/add/all/prices`, {dias: [1,2,3,4,5,6,7], idLocal: id, precios: precios}, {
       headers: new HttpHeaders ({
         Authorization: `Bearer ${this.storageService.obtenerToken()}`
       })
     });
   }
 
-  modificarPrecioDelLocal(id: number, diaId: number, precio: number): Observable<Local> {
-    return this.http.put<Local>(`${this.baseUrl}/modificar-price/${id}/${diaId}`, { precio }, {
-      headers: new HttpHeaders ({
-        Authorization: `Bearer ${this.storageService.obtenerToken()}`
-      })
-    });
-  }
+  // modificarPrecioDelLocal(idLocal: number, idDia: number, precioLocal: number): Observable<Local> {
+  //   return this.http.post<Local>(`${this.baseUrl}/modify/prices`, { precioLocal, idDia, idLocal }, {
+  //     headers: new HttpHeaders ({
+  //       Authorization: `Bearer ${this.storageService.obtenerToken()}`
+  //     })
+  //   });
+  // }
 
   obtenerPrecioPorDia(id: number, diaId: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/obtener-price/${id}/${diaId}`, {

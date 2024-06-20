@@ -18,6 +18,7 @@ export class ListadoUsuariosComponent implements OnInit {
   page: number = 1;
   pageSize: number = 5;
   totalUsuarios: number = 0;
+  totalPages: number = 0;
   typeFilter: String = 'todos';
 
   constructor(
@@ -49,6 +50,7 @@ export class ListadoUsuariosComponent implements OnInit {
     this.typeFilter = 'todos';
     this.filteredUsuarios = this.getUsuarios(this.page, this.pageSize);
     this.totalUsuarios = this.getTotalUsuarios();
+    this.totalPages = Math.ceil(this.totalUsuarios / this.pageSize);
   }
 
   mostrarActivos(){
@@ -56,6 +58,7 @@ export class ListadoUsuariosComponent implements OnInit {
     this.typeFilter = 'activos';
     this.filteredUsuarios = this.getUsuarios(this.page, this.pageSize);
     this.totalUsuarios = this.getTotalUsuarios();
+    this.totalPages = Math.ceil(this.totalUsuarios / this.pageSize);
   }
 
 
@@ -63,8 +66,6 @@ export class ListadoUsuariosComponent implements OnInit {
     this.usuarioService.obtenerUsuarios().subscribe(
       (data: Usuario[]) => {
         this.usuarios = data;
-        this.filteredUsuarios = this.getUsuarios(this.page, this.pageSize);
-        this.totalUsuarios = this.getTotalUsuarios();
         this.mostrarActivos();
       },
       (error) => {
@@ -80,6 +81,8 @@ export class ListadoUsuariosComponent implements OnInit {
     this.resetearPaginacion();
     this.typeFilter = 'filtrados';
     this.filteredUsuarios = this.getUsuarios(this.page, this.pageSize);
+    this.totalUsuarios = this.getTotalUsuarios();
+    this.totalPages = Math.ceil(this.totalUsuarios / this.pageSize);
   }
 
   filtrarUsuarios() : Usuario[]{

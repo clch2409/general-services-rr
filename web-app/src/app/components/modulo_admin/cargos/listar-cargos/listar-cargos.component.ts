@@ -17,6 +17,7 @@ export class ListarCargosComponent implements OnInit {
   filteredCargos: Cargo[] = [];
   searchId = '';
   searchNombre = '';
+  totalPages: number = 0;
   page: number = 1;
   pageSize: number = 5;
   totalCargos!: number;
@@ -42,8 +43,7 @@ export class ListarCargosComponent implements OnInit {
     this.cargoService.obtenerCargos().subscribe(
       (data: Cargo[]) => {
         this.cargos = data;
-        this.filteredCargos = this.getCargos(this.page, this.pageSize);
-        this.totalCargos = this.getTotalCargos();
+        this.mostrarTodos();
       },
       (error) => {
         console.error('Error al obtener la lista de cargos:', error);
@@ -54,10 +54,20 @@ export class ListarCargosComponent implements OnInit {
     );
   }
 
+  mostrarTodos(){
+    this.resetearPaginacion();
+    this.typeFilter = 'todos';
+    this.filteredCargos = this.getCargos(this.page, this.pageSize);
+    this.totalCargos = this.getTotalCargos();
+    this.totalPages = Math.ceil(this.totalCargos / this.pageSize);
+  }
+
   buscarCargos() {
     this.resetearPaginacion();
     this.typeFilter = 'filtrados';
     this.filteredCargos = this.getCargos(this.page, this.pageSize);
+    this.totalCargos = this.getTotalCargos();
+    this.totalPages = Math.ceil(this.totalCargos / this.pageSize);
   }
 
   filtrarCargos() : Cargo[]{
@@ -71,10 +81,7 @@ export class ListarCargosComponent implements OnInit {
   resetearFiltros() {
     this.searchId = '';
     this.searchNombre = '';
-    this.resetearPaginacion();
-    this.typeFilter = 'todos';
-    this.filteredCargos = this.getCargos(this.page, this.pageSize);
-    this.totalCargos = this.getTotalCargos();
+    this.mostrarTodos();
   }
 
   getCargos(page: number, pageSize: number): Cargo[] {

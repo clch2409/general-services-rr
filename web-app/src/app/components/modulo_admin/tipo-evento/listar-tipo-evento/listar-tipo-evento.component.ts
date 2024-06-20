@@ -20,6 +20,7 @@ export class ListarTipoEventoComponent implements OnInit{
   page: number = 1;
   pageSize: number = 4;
   totalTiposEvento: number = 0;
+  totalPages: number = 0;
   typeFilter: String = 'todos'
 
   constructor(
@@ -51,14 +52,15 @@ export class ListarTipoEventoComponent implements OnInit{
     this.typeFilter = 'todos';
     this.filteredTiposEvento = this.getTiposBuffet(this.page, this.pageSize);
     this.totalTiposEvento = this.getTotalTiposEvento();
+    this.totalPages = Math.ceil(this.totalTiposEvento/ this.pageSize);
   }
 
   obtenerTiposEventos() {
     this.tipoEventoService.obtenerTipoEventos().subscribe(
       (data: TipoEvento[]) => {
         this.tiposEvento = data;
-        this.filteredTiposEvento = this.getTiposBuffet(this.page, this.pageSize);
-        this.totalTiposEvento = this.getTotalTiposEvento()
+        this.mostrarTodos();
+
       },
       (error: HttpErrorResponse) => {
         console.error('Error al obtener la lista de locales:', error);
@@ -73,6 +75,8 @@ export class ListarTipoEventoComponent implements OnInit{
     this.resetearPaginacion();
     this.typeFilter = 'filtrados';
     this.filteredTiposEvento = this.getTiposBuffet(this.page, this.pageSize);
+    this.totalTiposEvento = this.getTotalTiposEvento();
+    this.totalPages = Math.ceil(this.totalTiposEvento/ this.pageSize);
   }
 
   filtrarTipoEvento() : TipoEvento[]{
@@ -89,6 +93,7 @@ export class ListarTipoEventoComponent implements OnInit{
     this.resetearPaginacion();
     this.filteredTiposEvento = this.getTiposBuffet(this.page, this.pageSize);
     this.totalTiposEvento = this.getTotalTiposEvento();
+    this.totalPages = Math.ceil(this.totalTiposEvento/ this.pageSize);
   }
 
   cerrarSesion(){

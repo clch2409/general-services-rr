@@ -18,10 +18,13 @@ export class ListarColaboradoresComponent implements OnInit{
   page: number = 1;
   pageSize: number = 5;
   totalColaboradores: number = 0;
+  totalPages: number = 0;
   typeFilter: String = 'todos';
-  searchId = '';
+  searchName = '';
   searchDni = '';
   searchEmail = '';
+  searchInicioDate = '';
+  searchFinDate = '';
 
   constructor(
     private colaboradoresService: ColaboradorService,
@@ -47,8 +50,6 @@ export class ListarColaboradoresComponent implements OnInit{
     this.colaboradoresService.obtenerColaboradores().subscribe(
       (data: Colaborador[]) => {
         this.colaboradores = data;
-        this.filteredColaboradores = this.getColaboradores(this.page, this.pageSize);
-        this.totalColaboradores = this.getTotalColaboradores();
         this.mostrarActivos();
       },
       (error) => {
@@ -64,15 +65,8 @@ export class ListarColaboradoresComponent implements OnInit{
     this.resetearPaginacion();
     this.typeFilter = 'filtrados';
     this.filteredColaboradores = this.getColaboradores(this.page, this.pageSize);
-  }
-
-  filtrarColaboradores(): Colaborador[]{
-    return this.colaboradores.filter((colaborador) => {
-      const idMatch = colaborador.id && colaborador.id.toString().includes(this.searchId);
-      const dniMatch = colaborador.dni && colaborador.dni.includes(this.searchDni);
-      const emailMatch = colaborador.email && colaborador.email.includes(this.searchEmail)
-      return idMatch && dniMatch && emailMatch;
-    });
+    this.totalColaboradores = this.getTotalColaboradores();
+    this.totalPages = Math.ceil(this.totalColaboradores / this.pageSize);
   }
 
   resetearPaginacion(){
@@ -85,6 +79,7 @@ export class ListarColaboradoresComponent implements OnInit{
     this.typeFilter = 'todos';
     this.filteredColaboradores = this.getColaboradores(this.page, this.pageSize);
     this.totalColaboradores = this.getTotalColaboradores();
+    this.totalPages = Math.ceil(this.totalColaboradores / this.pageSize);
   }
 
   mostrarActivos(){
@@ -92,19 +87,61 @@ export class ListarColaboradoresComponent implements OnInit{
     this.typeFilter = 'activos';
     this.filteredColaboradores = this.getColaboradores(this.page, this.pageSize);
     this.totalColaboradores = this.getTotalColaboradores();
+    this.totalPages = Math.ceil(this.totalColaboradores / this.pageSize);
+  }
+
+  mostrarFiltradoFechas(){
+    this.resetearPaginacion()
+    this.typeFilter = 'fechas';
+    this.filteredColaboradores = this.getColaboradores(this.page, this.pageSize);
+    this.totalColaboradores = this.getTotalColaboradores();
+    this.totalPages = Math.ceil(this.totalColaboradores / this.pageSize);
   }
 
   filtrarActivos(){
     return this.colaboradores.filter(colaborador => colaborador.status === 'activo');
   }
 
+  filtrarColaboradores(): Colaborador[]{
+    return this.colaboradores.filter((colaborador) => {
+      const nameMatch = colaborador.nombres && colaborador.nombres.toLowerCase().includes(this.searchName.toLowerCase());
+      const dniMatch = colaborador.dni && colaborador.dni.includes(this.searchDni);
+      const emailMatch = colaborador.email && colaborador.email.includes(this.searchEmail.toLowerCase())
+      return nameMatch && dniMatch && emailMatch;
+    });
+  }
+
+  filtrarPorFechas(fechaInicio: string, fechaFin: string) {
+    if (fechaInicio != '' && fechaFin != '') {
+      const fechaInicioDate = new Date(fechaInicio);
+      const fechaFinDate = new Date(fechaFin);
+
+      const proveedoresFiltrados = this.colaboradores.filter(proveedor => {
+        const fechaContratoDate = new Date(proveedor.fechaContratacion!);
+        return fechaContratoDate >= fechaInicioDate && fechaContratoDate <= fechaFinDate;
+      })
+
+      return proveedoresFiltrados;
+    }
+    else{
+      Swal.fire({
+        title: 'Validando Fechas',
+        html: 'Ingrese las fechas en los buscadores para filtrar los proveedores.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
+        icon: 'error'
+      });
+      return this.filteredColaboradores;
+    }
+  }
+
   resetearFiltros() {
-    this.searchId = '';
+    this.searchName = '';
     this.searchDni = '';
     this.searchEmail = '';
-    this.resetearPaginacion();
-    this.filteredColaboradores = this.getColaboradores(this.page, this.pageSize);
-    this.totalColaboradores = this.getTotalColaboradores();
+    this.searchInicioDate = '';
+    this.searchFinDate = '';
+    this.mostrarActivos();
   }
 
   validarEliminacion(encargado: Colaborador){
@@ -157,11 +194,11 @@ export class ListarColaboradoresComponent implements OnInit{
     else if (this.typeFilter === 'filtrados'){
       return this.filtrarColaboradores().slice(start, end);
     }
-    else if (this.typeFilter === 'activos'){
-      return this.filtrarActivos().slice(start, end);
+    else if (this.typeFilter === 'fechas'){
+      return this.filtrarPorFechas(this.searchInicioDate, this.searchFinDate).slice(start, end);
     }
-    else{
-      return this.colaboradores;
+    else {
+      return this.filtrarActivos().slice(start, end);
     }
   }
 
@@ -186,6 +223,9 @@ export class ListarColaboradoresComponent implements OnInit{
     else if (this.typeFilter === 'filtrados'){
       return this.filtrarColaboradores().length;
     }
+    else if (this.typeFilter === 'fechas'){
+      return this.filtrarPorFechas(this.searchInicioDate, this.searchFinDate).length;
+    }
     else{
       return this.filtrarActivos().length;
     }
@@ -196,6 +236,21 @@ export class ListarColaboradoresComponent implements OnInit{
       return '';
     }
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  transformarFechaDate(fecha: string){
+    return new Date(`${fecha}:01:00:00`)
+  }
+
+  transformarFechaLarga(fecha: string){
+    console.log(fecha);
+    const fechaContratacion = new Date(fecha);
+    return fechaContratacion.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 
   exportarAPdf(){

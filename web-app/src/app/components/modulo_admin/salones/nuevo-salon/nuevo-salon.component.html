@@ -33,43 +33,46 @@
                 </div>
               </div>
               <h4>Precios por Dia</h4>
-              <div>
+              <div [formGroup]="pricesForm">
                 <div class="agrupaciones">
                   <label for="lunes">
                     <span>Precio Lunes</span>
-                    <input autocomplete="off" type="number" id="lunes" [(ngModel)]="precioLunes" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="lunes" formControlName="lunes"  class="form-control precio" required>
                   </label>
                   <label for="martes">
                     <span>Precio Martes</span>
-                    <input autocomplete="off" type="number" id="martes" [(ngModel)]="precioMartes" [ngModelOptions]="{standalone: true}"  class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="martes" formControlName="martes"  class="form-control precio" required>
                   </label>
                   <label for="miercoles">
                     <span>Precio Miércoles</span>
-                    <input autocomplete="off" type="number" id="miercoles" [(ngModel)]="precioMiercoles" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="miercoles" formControlName="miercoles"  class="form-control precio" required>
                   </label>
                   <label for="jueves">
                     <span>Precio Jueves</span>
-                    <input autocomplete="off" type="number" id="jueves" [(ngModel)]="precioJueves" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="jueves" formControlName="jueves"  class="form-control precio" required>
                   </label>
                 </div>
                 <div class="agrupaciones">
                   <label for="viernes">
                     <span>Precio Viernes</span>
-                    <input autocomplete="off" type="number" id="viernes" [(ngModel)]="precioViernes" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="viernes" formControlName="viernes"  class="form-control precio" required>
                   </label>
                   <label for="sabado">
                     <span>Precio Sábado</span>
-                    <input autocomplete="off" type="number" id="sabado" [(ngModel)]="precioSabado" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="sabado" formControlName="sabado"  class="form-control precio" required>
                   </label>
                   <label for="domingo">
                     <span>Precio Domingo</span>
-                    <input autocomplete="off" type="number" id="domingo" [(ngModel)]="precioDomingo" [ngModelOptions]="{standalone: true}" class="form-control precio" required>
+                    <input autocomplete="off" type="number" id="domingo" formControlName="domingo"  class="form-control precio" required>
                   </label>
                 </div>
               </div>
             </div>
             <div class="text-center">
               <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+            <div class="text-center">
+              <button type="button" class="btn btn-success" (click)="confirmarRegresoListadoLocales()">Regresar al Listado de Locales</button>
             </div>
           </form>
         </div>

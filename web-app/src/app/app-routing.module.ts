@@ -48,6 +48,7 @@ import { AsignarServiciosComponent } from './components/modulo_admin/eventos/asi
 import { ListarCargosComponent } from './components/modulo_admin/cargos/listar-cargos/listar-cargos.component';
 import { NuevoCargoComponent } from './components/modulo_admin/cargos/nuevo-cargo/nuevo-cargo.component';
 import { EditarCargoComponent } from './components/modulo_admin/cargos/editar-cargo/editar-cargo.component';
+import { AsignarColaboradorComponent } from './components/modulo_admin/eventos/asignar-colaborador/asignar-colaborador.component';
 
 
 const routes: Routes = [
@@ -99,6 +100,7 @@ const routes: Routes = [
           { path: 'nuevo-evento', component: NuevoEventoComponent, title: 'Registrar Evento' },
           { path: 'editar-evento/:evenid', component: EditarEventoComponent, title: 'Editar Evento' },
           { path: 'asignar-servicios/:evenid', component: AsignarServiciosComponent, title: 'Asignar Servicios' },
+          { path: 'asignar-colabs/:evenid', component: AsignarColaboradorComponent, title: 'Asignar Colaboradores' },
           { path: 'cargos', component: ListarCargosComponent, title: 'Listado Cargos' },
           { path: 'nuevo-cargo', component: NuevoCargoComponent, title: 'Registrar Cargo' },
           { path: 'editar-cargo/:carid', component: EditarCargoComponent, title: 'Editar Cargo' },

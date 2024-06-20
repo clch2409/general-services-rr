@@ -103,7 +103,7 @@ export class EditarEncargadosComponent implements OnInit {
      mensaje += `<b>Apellidos</b>: ${encargadoActualizado.apPaterno} ${encargadoActualizado.apMaterno}<br>`;
      mensaje += `<b>Dni</b>: ${encargadoActualizado.dni}<br>`;
      mensaje += `<b>Telefono</b>: ${encargadoActualizado.telefono}<br>`;
-     mensaje += `<b>Fecha de Contratación</b>: ${encargadoActualizado.fechaContratacion}<br>`;
+     mensaje += `<b>Fecha de Contratación</b>: ${this.transformarFechaLarga(this.encargadoForm.value.fechaContratacion)}<br>`;
      mensaje += `<b>Email</b>: ${usuarioActualizado.email}<br>`;
     Swal.fire({
       title: 'Confirmar Actualización',
@@ -111,10 +111,13 @@ export class EditarEncargadosComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       icon: 'question'
     }).then((result) => {
       if(result.isConfirmed){
         encargadoActualizado.usuario = usuarioActualizado;
+        encargadoActualizado.fechaContratacion = this.transformarFechaDate(this.encargadoForm.value.fechaContratacion);
         this.guardarCambios(encargadoActualizado);
       }
     })
@@ -137,6 +140,38 @@ export class EditarEncargadosComponent implements OnInit {
         }
       }
     );
+  }
+
+  confirmarRegresoListadoEncargados(){
+    Swal.fire({
+      title: 'Confirmar Regreso',
+      html: '¿Desea regresar al listado de encargados? <br>Los datos no guardados se perderán',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      icon: 'question'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.regresarListadoEncargados();
+      }
+    })
+  }
+
+  transformarFechaDate(fecha: string){
+    return new Date(`${fecha}:01:00:00`)
+  }
+
+  transformarFechaLarga(fecha: string){
+    const horaConFecha = `${fecha}:00:00:00`;
+    const fechaFormateada = new Date(horaConFecha);
+    return fechaFormateada.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 
   cerrarSesion(){

@@ -19,6 +19,7 @@ export class ListarTipoBuffetComponent implements OnInit{
   page: number = 1;
   pageSize: number = 4;
   totalBuffets: number = 0;
+  totalPages: number = 0;
   typeFilter: String = 'todos'
 
   constructor(
@@ -50,14 +51,15 @@ export class ListarTipoBuffetComponent implements OnInit{
     this.typeFilter = 'todos';
     this.filteredTiposBuffet = this.getTiposBuffet(this.page, this.pageSize);
     this.totalBuffets = this.getTotalBuffets();
+    this.totalPages = Math.ceil(this.totalBuffets / this.pageSize);
   }
 
   obtenerTiposBuffet() {
     this.tipoBuffetService.obtenerTipoBuffet().subscribe(
       (data: TipoBuffet[]) => {
         this.tiposBuffet = data;
-        this.filteredTiposBuffet = this.getTiposBuffet(this.page, this.pageSize);
-        this.totalBuffets = this.getTotalBuffets()
+        this.mostrarTodos()
+
       },
       (error) => {
         console.error('Error al obtener la lista de locales:', error);
@@ -72,6 +74,8 @@ export class ListarTipoBuffetComponent implements OnInit{
     this.resetearPaginacion();
     this.typeFilter = 'filtrados';
     this.filteredTiposBuffet = this.getTiposBuffet(this.page, this.pageSize);
+    this.totalBuffets = this.getTotalBuffets();
+    this.totalPages = Math.ceil(this.totalBuffets / this.pageSize);
   }
 
   filtrarBuffets() : TipoBuffet[]{
@@ -88,6 +92,7 @@ export class ListarTipoBuffetComponent implements OnInit{
     this.resetearPaginacion();
     this.filteredTiposBuffet = this.getTiposBuffet(this.page, this.pageSize);
     this.totalBuffets = this.getTotalBuffets();
+    this.totalPages = Math.ceil(this.totalBuffets / this.pageSize);
   }
 
   cerrarSesion(){

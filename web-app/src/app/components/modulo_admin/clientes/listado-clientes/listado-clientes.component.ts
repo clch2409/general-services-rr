@@ -18,8 +18,9 @@ export class ListadoClientesComponent implements OnInit {
   page: number = 1;
   pageSize: number = 5;
   totalClients: number = 0;
+  totalPages: number = 0;
   typeFilter: String = 'todos';
-  searchId = '';
+  searchName = '';
   searchDni = '';
   searchEmail = '';
 
@@ -45,8 +46,8 @@ export class ListadoClientesComponent implements OnInit {
     this.clienteService.obtenerClientes().subscribe(
       (data: Cliente[]) => {
         this.clientes = data;
-        this.filteredClientes = this.getClients(this.page, this.pageSize);
-        this.totalClients = this.getTotalClientes();
+        this.mostrarTodos();
+
       },
       (error: HttpErrorResponse) => {
         console.error('Error al obtener la lista de clientes:', error);
@@ -61,14 +62,16 @@ export class ListadoClientesComponent implements OnInit {
     this.resetearPaginacion();
     this.typeFilter = 'filtrados';
     this.filteredClientes = this.getClients(this.page, this.pageSize);
+    this.totalClients = this.getTotalClientes();
+    this.totalPages = Math.ceil(this.totalClients / this.pageSize);
   }
 
   filtrarClientes(): Cliente[] {
     return this.clientes.filter((cliente) => {
-      const idMatch = cliente.id && cliente.id.toString().includes(this.searchId);
+      const nameMatch = cliente.nombres && cliente.nombres.toLowerCase().includes(this.searchName.toLowerCase());
       const dniMatch = cliente.dni && cliente.dni?.includes(this.searchDni);
-      const emailMatch = cliente.usuario?.email && cliente.usuario?.email?.includes(this.searchEmail);
-      return idMatch && dniMatch && emailMatch;
+      const emailMatch = cliente.usuario?.email && cliente.usuario?.email?.includes(this.searchEmail.toLowerCase());
+      return nameMatch && dniMatch && emailMatch;
     });
 
   }
@@ -83,17 +86,19 @@ export class ListadoClientesComponent implements OnInit {
     this.typeFilter = 'todos';
     this.filteredClientes = this.getClients(this.page, this.pageSize);
     this.totalClients = this.getTotalClientes();
+    this.totalPages = Math.ceil(this.totalClients / this.pageSize);
   }
 
 
   resetearFiltros() {
-    this.searchId ='';
+    this.searchName ='';
     this.searchDni = '';
     this.searchEmail = '';
     this.resetearPaginacion();
     this.typeFilter = 'todos';
     this.filteredClientes = this.getClients(this.page, this.pageSize);
     this.totalClients = this.getTotalClientes();
+    this.totalPages = Math.ceil(this.totalClients / this.pageSize);
   }
 
   cerrarSesion(){
@@ -135,6 +140,13 @@ export class ListadoClientesComponent implements OnInit {
     else{
       return this.filtrarClientes().length;
     }
+  }
+
+  convertirPrimeraLetraEnMayuscula(string: String) {
+    if (typeof string !== 'string' || string.length === 0) {
+      return '';
+    }
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   exportarAPdf(){

@@ -58,7 +58,7 @@ export class NuevoClienteComponent implements OnInit {
       this.validarContrasenas()
     }
     else{
-      Swal.fire('Datos Faltantes', 'Verifique que se estén ingresando todos los datos del Cliente', 'error')
+      Swal.fire('Datos Faltantes', 'Verifique que los datos han sido ingresados correctamente', 'error')
     }
   }
 
@@ -107,7 +107,7 @@ export class NuevoClienteComponent implements OnInit {
         console.log('Cliente creado correctamente:', response);
         Swal.fire('Creado', 'El cliente se ha registrado correctamente', 'success')
         .then((result) => {
-          this.router.navigate(['/dashboard', 'clientes'])
+          this.regresarListadoClientes();
         })
       },
       (error: HttpErrorResponse) => {
@@ -115,8 +115,30 @@ export class NuevoClienteComponent implements OnInit {
         if(error.status === 401){
           Swal.fire('Sesión Caducada', 'Su sesión ha cadicado. Inicie sesión de nuevo, por favor.', 'info').then(data => this.cerrarSesion());
         }
+        if (error.status === 406){
+          Swal.fire('Error al Crear Cliente', error.error.message.message, 'error');
+        }
       }
     );
+  }
+
+  confirmarRegresoListadoClientes(){
+    Swal.fire({
+      title: 'Confirmar Regreso',
+      html: '¿Desea regresar al listado de Clientes? <br>El progreso realizado se perderá',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      icon: 'question'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.regresarListadoClientes();
+      }
+    })
+  }
+
+  regresarListadoClientes(){
+    this.router.navigate(['/dashboard', 'clientes'])
   }
 
   cerrarSesion(){

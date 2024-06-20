@@ -45,7 +45,7 @@ export class EventoService {
   }
 
   cancelarEvento(id: number): Observable<Evento> {
-    return this.http.put<Evento>(`${this.baseUrl}/${id}/cancelar`, {}, {
+    return this.http.post<Evento>(`${this.baseUrl}/cancel/${id}`, {}, {
       headers: new HttpHeaders ({
         Authorization: `Bearer ${this.storageService.obtenerToken()}`
       })
@@ -77,7 +77,23 @@ export class EventoService {
   }
 
   agregarColaboradoresAlEvento(id: number, colaboradores: number[]): Observable<Evento> {
-    return this.http.put<Evento>(`${this.baseUrl}/add/colaboradores/${id}`, colaboradores, {
+    return this.http.post<Evento>(`${this.baseUrl}/add/colaboradores`, {eventoId: id, colaboradores}, {
+      headers: new HttpHeaders ({
+        Authorization: `Bearer ${this.storageService.obtenerToken()}`
+      })
+    });
+  }
+
+  retirarColaboradorDelEvento(id: number, idColaborador: number): Observable<Evento> {
+    return this.http.post<Evento>(`${this.baseUrl}/remove/colaborador`, {eventoId: id, colaboradorId: idColaborador}, {
+      headers: new HttpHeaders ({
+        Authorization: `Bearer ${this.storageService.obtenerToken()}`
+      })
+    });
+  }
+
+  colocarAsginadoAEvento(idEvento: number): Observable<Evento> {
+    return this.http.post<Evento>(`${this.baseUrl}/asignado/${idEvento}`, {}, {
       headers: new HttpHeaders ({
         Authorization: `Bearer ${this.storageService.obtenerToken()}`
       })
@@ -85,7 +101,7 @@ export class EventoService {
   }
 
   agregarServiciosAlEvento(id: number, servicios: number[]): Observable<Evento> {
-    return this.http.put<Evento>(`${this.baseUrl}/add/servicios`, {servicios, eventoId: id}, {
+    return this.http.post<Evento>(`${this.baseUrl}/add/servicios`, {servicios, eventoId: id}, {
       headers: new HttpHeaders ({
         Authorization: `Bearer ${this.storageService.obtenerToken()}`
       })

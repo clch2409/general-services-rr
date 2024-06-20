@@ -42,6 +42,7 @@ export class EditarColaboradorComponent implements OnInit{
   ngOnInit(): void {
     this.colaboradorId = this.route.snapshot.params['colid'];
     this.obtenerColaborador();
+    this.obtenerCargos();
   }
 
   ngAfterViewInit(): void{
@@ -52,7 +53,7 @@ export class EditarColaboradorComponent implements OnInit{
     this.storageService.comprobarSesion();
   }
 
-  regresarListadoColaborador(){
+  regresarListadoColaboradores(){
     this.router.navigate(['/dashboard', 'colaboradores'])
   }
 
@@ -62,7 +63,6 @@ export class EditarColaboradorComponent implements OnInit{
         this.colaborador = data.colaborador;
         this.colaboradorForm.patchValue({
           ...this.colaborador,
-          cargo: this.colaborador.cargo?.nombre,
           fechaContratacion: new Date(data.fechaContratacion).toISOString().substring(0, 10),
         });
       },
@@ -83,7 +83,8 @@ export class EditarColaboradorComponent implements OnInit{
       telefono: ['', [Validators.required, Validators.pattern(this.phonePattern)]],
       dni: ['', [Validators.required, Validators.pattern(this.dniPattern)]],
       email: ['', [Validators.required, Validators.email]],
-      fechaContratacion: ['', Validators.required]
+      fechaContratacion: ['', Validators.required],
+      cargoId: ['', Validators.required],
     });
   }
 
@@ -125,7 +126,7 @@ export class EditarColaboradorComponent implements OnInit{
         console.log('Colaborador actualizado correctamente:', response);
         Swal.fire('Colaborador Actualizado!', 'El Colaborador se ha sido actualizado correctamente', 'success')
         .then((result) => {
-          this.regresarListadoColaborador();
+          this.regresarListadoColaboradores();
         });
 
       },
@@ -138,20 +139,35 @@ export class EditarColaboradorComponent implements OnInit{
     );
   }
 
-  // obtenerCargos(){
-  //   this.cargoService.obtenerCargos().subscribe(
-  //     (response) =>{
-  //       console.log('Exito al obtener cargos');
-  //       this.cargos = response;
-  //     },
-  //     (error) => {
-  //       console.error('Error al actualizar el encargado:', error);
-  //       if(error.status === 401){
-  //         Swal.fire('Sesión Caducada', 'Su sesión ha cadicado. Inicie sesión de nuevo, por favor.', 'info').then(data => this.cerrarSesion());
-  //       }
-  //     }
-  //   )
-  // }
+  obtenerCargos(){
+    this.cargoService.obtenerCargos().subscribe(
+      (response) =>{
+        console.log('Exito al obtener cargos');
+        this.cargos = response;
+      },
+      (error) => {
+        console.error('Error al actualizar el encargado:', error);
+        if(error.status === 401){
+          Swal.fire('Sesión Caducada', 'Su sesión ha cadicado. Inicie sesión de nuevo, por favor.', 'info').then(data => this.cerrarSesion());
+        }
+      }
+    )
+  }
+
+  confirmarRegresoListadoColaboradores(){
+    Swal.fire({
+      title: 'Confirmar Regreso',
+      html: '¿Desea regresar al listado de Colaboradores? <br>El progreso realizado se perderá',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonText: 'Sí',
+      icon: 'question'
+    }).then((result) => {
+      if(result.isConfirmed){
+        this.regresarListadoColaboradores();
+      }
+    })
+  }
 
   cerrarSesion(){
     this.storageService.cerrarSesion();

@@ -5,6 +5,7 @@ import { StorageService } from '../../../../services/storage.service';
 import Swal from 'sweetalert2';
 import { ExportPdfService } from '../../../../services/export-pdf.service';
 import { ExportExcelService } from '../../../../services/export-excel.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listado-encargados',
@@ -17,16 +18,20 @@ export class ListadoEncargadosComponent implements OnInit {
   page: number = 1;
   pageSize: number = 5;
   totalEncargados: number = 0;
+  totalPages: number = 0;
   typeFilter: String = 'todos';
-  searchId = '';
+  searchName = '';
   searchDni = '';
   searchEmail = '';
+  searchInicioDate = '';
+  searchFinDate = '';
 
   constructor(
     private encargadosService: EncargadoSalonService,
     private storageService: StorageService,
     private exportPdf: ExportPdfService,
     private exportExcel: ExportExcelService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -46,9 +51,7 @@ export class ListadoEncargadosComponent implements OnInit {
     this.encargadosService.obtenerEncargadosSalon().subscribe(
       (data: EncargadoSalon[]) => {
         this.encargados = data;
-        this.filteredEncargados = this.getEncargados(this.page, this.pageSize);
-        this.totalEncargados = this.getTotalEncargados();
-        this.filtrarActivos();
+        this.mostrarActivos();
       },
       (error) => {
         console.error('Error al obtener la lista de encargados:', error);
@@ -63,15 +66,8 @@ export class ListadoEncargadosComponent implements OnInit {
     this.resetearPaginacion();
     this.typeFilter = 'filtrados';
     this.filteredEncargados = this.getEncargados(this.page, this.pageSize);
-  }
-
-  filtrarEncargados(): EncargadoSalon[]{
-    return this.encargados.filter((encargado) => {
-      const idMatch = encargado.id && encargado.id.toString().includes(this.searchId);
-      const dniMatch = encargado.dni && encargado.dni.includes(this.searchDni);
-      const emailMatch = encargado.usuario?.email && encargado.usuario.email.includes(this.searchEmail)
-      return idMatch && dniMatch && emailMatch;
-    });
+    this.totalEncargados = this.getTotalEncargados();
+    this.totalPages = Math.ceil(this.totalEncargados / this.pageSize);
   }
 
   resetearPaginacion(){
@@ -84,24 +80,70 @@ export class ListadoEncargadosComponent implements OnInit {
     this.typeFilter = 'todos';
     this.filteredEncargados = this.getEncargados(this.page, this.pageSize);
     this.totalEncargados = this.getTotalEncargados();
+    this.totalPages = Math.ceil(this.totalEncargados / this.pageSize);
+  }
+
+  mostrarActivos(){
+    this.resetearPaginacion()
+    this.typeFilter = 'activos';
+    this.filteredEncargados = this.getEncargados(this.page, this.pageSize);
+    this.totalEncargados = this.getTotalEncargados();
+    this.totalPages = Math.ceil(this.totalEncargados / this.pageSize);
+  }
+
+  mostrarPorFechas(){
+    this.resetearPaginacion()
+    this.typeFilter = 'fechas';
+    this.filteredEncargados = this.getEncargados(this.page, this.pageSize);
+    this.totalEncargados = this.getTotalEncargados();
+    this.totalPages = Math.ceil(this.totalEncargados / this.pageSize);
   }
 
   filtrarActivos(){
-    this.resetearPaginacion()
-    this.typeFilter = 'activos';
-    this.filteredEncargados = this.encargados.filter(encargado => encargado.status === 'activo');
-    this.filteredEncargados = this.getEncargados(this.page, this.pageSize);
-    this.totalEncargados = this.getTotalEncargados();
+    return this.encargados.filter(encargado => encargado.status === 'activo');
+  }
+
+  filtrarEncargados(): EncargadoSalon[]{
+    return this.encargados.filter((encargado) => {
+      const nameMatch = encargado.nombres && encargado.nombres.toLowerCase().includes(this.searchName.toLowerCase());
+      const dniMatch = encargado.dni && encargado.dni.includes(this.searchDni);
+      const emailMatch = encargado.usuario?.email && encargado.usuario.email.includes(this.searchEmail.toLowerCase())
+      return nameMatch && dniMatch && emailMatch;
+    });
+  }
+
+  filtrarPorFechas(fechaInicio: string, fechaFin: string) {
+    if (fechaInicio != '' && fechaFin != '') {
+      const fechaInicioDate = new Date(fechaInicio);
+      const fechaFinDate = new Date(fechaFin);
+
+      const proveedoresFiltrados = this.encargados.filter(proveedor => {
+        const fechaContratoDate = new Date(proveedor.fechaContratacion!);
+        return fechaContratoDate >= fechaInicioDate && fechaContratoDate <= fechaFinDate;
+      })
+
+      return proveedoresFiltrados;
+    }
+    else{
+      Swal.fire({
+        title: 'Validando Fechas',
+        html: 'Ingrese las fechas en los buscadores para filtrar los proveedores.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
+        icon: 'error'
+      });
+      return this.filteredEncargados;
+    }
   }
 
 
   resetearFiltros() {
-    this.searchId = '';
+    this.searchName = '';
     this.searchDni = '';
     this.searchEmail = '';
-    this.resetearPaginacion();
-    this.filteredEncargados = this.getEncargados(this.page, this.pageSize);
-    this.totalEncargados = this.getTotalEncargados();
+    this.searchInicioDate = '';
+    this.searchFinDate = '';
+    this.mostrarActivos();
   }
 
   validarEliminacion(encargado: EncargadoSalon){
@@ -112,6 +154,8 @@ export class ListadoEncargadosComponent implements OnInit {
       showCancelButton: true,
       cancelButtonText: 'No',
       confirmButtonText: 'Sí',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       icon: 'question'
     })
     .then(data => {
@@ -140,6 +184,10 @@ export class ListadoEncargadosComponent implements OnInit {
     );
   }
 
+  irActualizarEncargado(idEncargado: number){
+    this.router.navigate(['/dashboard', 'editar-encargado', idEncargado]);
+  }
+
   cerrarSesion(){
     this.storageService.cerrarSesion();
     this.storageService.volverMenuPrincipal();
@@ -154,8 +202,11 @@ export class ListadoEncargadosComponent implements OnInit {
     else if (this.typeFilter === 'filtrados'){
       return this.filtrarEncargados().slice(start, end);
     }
+    else if (this.typeFilter === 'fechas'){
+      return this.filtrarPorFechas(this.searchInicioDate, this.searchFinDate).slice(start, end);
+    }
     else{
-      return this.filteredEncargados.slice(start, end);
+      return this.filtrarActivos().slice(start, end);
     }
   }
 
@@ -180,8 +231,11 @@ export class ListadoEncargadosComponent implements OnInit {
     else if (this.typeFilter === 'filtrados'){
       return this.filtrarEncargados().length;
     }
+    else if (this.typeFilter === 'fechas'){
+      return this.filtrarPorFechas(this.searchInicioDate, this.searchFinDate).length;
+    }
     else{
-      return this.filteredEncargados.length;
+      return this.filtrarActivos().length;
     }
   }
 
@@ -190,6 +244,17 @@ export class ListadoEncargadosComponent implements OnInit {
       return '';
     }
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  transformarFechaLarga(fecha: string){
+    console.log(fecha);
+    const fechaContratacion = new Date(fecha);
+    return fechaContratacion.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 
   exportarAPdf(){
